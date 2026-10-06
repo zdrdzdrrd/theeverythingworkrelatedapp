@@ -1,18 +1,15 @@
 /* Rodolfo's Workspace: offline support.
  * The page itself is network-first, so a new version shows up as soon as you're online,
- * and the last copy opens when you're offline. Everything else (libraries, icons, fonts)
+ * and the last copy opens when you're offline. Everything else (icons, fonts)
  * is served from the cache and refreshed in the background.
  * build-pages.py bumps VERSION on every build so old caches get cleared.
  */
-const VERSION = "ws-20261006-042001";
+const VERSION = "ws-20261006-135632";
 const CACHE = "workspace-" + VERSION;
 const SHELL = [
   "./",
   "./index.html",
   "./manifest.webmanifest",
-  "./lib/react.production.min.js",
-  "./lib/react-dom.production.min.js",
-  "./lib/htm.umd.js",
   "./icon-192.png",
   "./icon-512.png",
   "./icon-maskable-512.png",

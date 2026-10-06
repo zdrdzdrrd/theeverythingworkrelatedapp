@@ -5,8 +5,7 @@ Everything in this folder is the whole app. Upload it to a GitHub repository and
 ## Put it online
 
 1. On github.com, click **New repository**. Name it, for example, `workspace`. A private repo works only on paid GitHub plans, so pick **Public** if you're on the free plan. The repo only holds the app code; your tasks are never uploaded.
-2. In the new repo, click **Add file → Upload files** and drag in everything from this folder: `index.html`, `manifest.webmanifest`, `service-worker.js`, the four icon PNGs, `.nojekyll`, and the `lib` folder. Then click **Commit changes**.
-   - If `.nojekyll` or the `lib` folder doesn't come along, it's fine to drag the folder contents again. `lib` must keep its name.
+2. In the new repo, click **Add file → Upload files** and drag in everything from this folder: `index.html`, `manifest.webmanifest`, `service-worker.js` and the four icon PNGs. Then click **Commit changes**. `index.html` holds the whole app, so it runs even if a file gets left behind.
 3. Go to **Settings → Pages**. Under **Build and deployment**, set Source to **Deploy from a branch**, Branch to **main** and folder to **/ (root)**, then **Save**.
 4. After a minute the page shows your address, like `https://<your-username>.github.io/workspace/`. Open it.
 
@@ -31,4 +30,4 @@ Photos are stored inside the browser too, shrunk to about 1024 px, so they use u
 
 ## Updating later
 
-Replace `index.html` and `service-worker.js` in the repo with the new ones. The app picks up the new version the next time it opens online.
+Replace `index.html` and `service-worker.js` in the repo with the new ones. If an old version keeps showing, close the app and open it again. The app picks up the new version the next time it opens online.
