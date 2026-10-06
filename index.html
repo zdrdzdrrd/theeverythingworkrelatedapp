@@ -1,0 +1,1971 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Rodolfo's Workspace</title>
+<meta name="description" content="Rodolfo's workspace: projects, tasks with checklists and logs, notes, calendar and timeline.">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" type="image/png" sizes="192x192" href="icon-192.png">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<meta name="theme-color" content="#fbfbfa" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#191918" media="(prefers-color-scheme: dark)">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="Workspace">
+<style>
+:root { color-scheme: light; padding-top: env(safe-area-inset-top, 0px); padding-bottom: env(safe-area-inset-bottom, 0px); box-sizing: border-box; }
+html, body { height: 100%; }
+body { margin: 0; font: 14px/1.5 system-ui, sans-serif; background: #fbfbfa; }
+img { max-width: 100%; }
+[hidden] { display: none !important; }
+</style>
+</head>
+<body>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,700&family=Geist:wght@400;500;600&family=Geist+Mono:wght@400;500&display=swap">
+<style>
+/* Layout: Notion-style shell. Fixed sidebar of pages on the left, one wide canvas on the right,
+   a slide-in peek panel for task details. Collapses to an off-canvas sidebar on phones. */
+:root {
+  --bg: #fbfbfa;
+  --side: #f5f5f2;
+  --card: #ffffff;
+  --fg: #2c2b28;
+  --fg-2: #5f5e59;
+  --muted: #8f8d86;
+  --line: #e9e8e3;
+  --line-2: #dcdad3;
+  --hover: rgba(55, 53, 47, .055);
+  --press: rgba(55, 53, 47, .09);
+  --accent: #2f6bd0;
+  --accent-soft: rgba(47, 107, 208, .1);
+  --accent-ink: #ffffff;
+  --good: #1f8a5b;
+  --good-soft: rgba(31, 138, 91, .12);
+  --warn: #b07200;
+  --warn-soft: rgba(237, 161, 0, .16);
+  --bad: #cf3f35;
+  --bad-soft: rgba(207, 63, 53, .1);
+  --shadow: 0 1px 2px rgba(15, 15, 10, .05), 0 8px 24px rgba(15, 15, 10, .08);
+  --c0: #2a78d6; --c1: #eb6834; --c2: #1baf7a; --c3: #eda100;
+  --c4: #e87ba4; --c5: #008300; --c6: #4a3aa7; --c7: #e34948;
+  --f-display: "Bricolage Grotesque", "Geist", ui-sans-serif, system-ui, sans-serif;
+  --f-body: "Geist", ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+  --f-mono: "Geist Mono", ui-monospace, "SF Mono", Menlo, monospace;
+  --side-w: 248px;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #191918; --side: #1f1f1e; --card: #232322; --fg: #e8e7e2; --fg-2: #b9b8b2; --muted: #8a8983;
+    --line: #2e2e2c; --line-2: #3a3a37; --hover: rgba(255, 255, 255, .055); --press: rgba(255, 255, 255, .09);
+    --accent: #5b93ec; --accent-soft: rgba(91, 147, 236, .16); --accent-ink: #0d1b30;
+    --good: #3fbf86; --good-soft: rgba(63, 191, 134, .14); --warn: #e0a42a; --warn-soft: rgba(224, 164, 42, .16);
+    --bad: #ef6b62; --bad-soft: rgba(239, 107, 98, .14);
+    --shadow: 0 1px 2px rgba(0, 0, 0, .3), 0 10px 30px rgba(0, 0, 0, .45);
+    --c0: #3987e5; --c1: #d95926; --c2: #199e70; --c3: #c98500;
+    --c4: #d55181; --c5: #2f9a2f; --c6: #9085e9; --c7: #e66767;
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #191918; --side: #1f1f1e; --card: #232322; --fg: #e8e7e2; --fg-2: #b9b8b2; --muted: #8a8983;
+  --line: #2e2e2c; --line-2: #3a3a37; --hover: rgba(255, 255, 255, .055); --press: rgba(255, 255, 255, .09);
+  --accent: #5b93ec; --accent-soft: rgba(91, 147, 236, .16); --accent-ink: #0d1b30;
+  --good: #3fbf86; --good-soft: rgba(63, 191, 134, .14); --warn: #e0a42a; --warn-soft: rgba(224, 164, 42, .16);
+  --bad: #ef6b62; --bad-soft: rgba(239, 107, 98, .14);
+  --shadow: 0 1px 2px rgba(0, 0, 0, .3), 0 10px 30px rgba(0, 0, 0, .45);
+  --c0: #3987e5; --c1: #d95926; --c2: #199e70; --c3: #c98500;
+  --c4: #d55181; --c5: #2f9a2f; --c6: #9085e9; --c7: #e66767;
+  color-scheme: dark;
+}
+
+html, body { height: 100%; }
+body { background: var(--bg); color: var(--fg); font-family: var(--f-body); font-size: 14px; line-height: 1.5; -webkit-font-smoothing: antialiased; }
+* { box-sizing: border-box; }
+button, input, select, textarea { font: inherit; color: inherit; }
+button { cursor: pointer; background: none; border: 0; padding: 0; }
+:focus-visible { outline: 2px solid var(--accent); outline-offset: 1px; border-radius: 4px; }
+::selection { background: var(--accent-soft); }
+#root { height: 100%; }
+svg[aria-hidden] { width: 15px; height: 15px; flex: none; }
+
+.shell { display: flex; height: 100%; }
+.side { width: var(--side-w); flex: none; background: var(--side); border-right: 1px solid var(--line); display: flex; flex-direction: column; padding: 10px 8px; gap: 2px; overflow-y: auto; }
+.main { flex: 1; min-width: 0; overflow-y: auto; position: relative; }
+.ws { display: flex; align-items: center; gap: 10px; padding: 6px 8px 10px; }
+.ws-mark { width: 24px; height: 24px; border-radius: 6px; background: var(--fg); color: var(--bg); display: grid; place-items: center; font: 700 13px/1 var(--f-display); }
+.ws-name { font-weight: 600; font-size: 14px; }
+.ws-sub { font-size: 12px; color: var(--muted); }
+.nav { display: flex; align-items: center; gap: 9px; padding: 5px 8px; border-radius: 6px; color: var(--fg-2); font-weight: 500; width: 100%; text-align: left; min-height: 30px; }
+.nav:hover { background: var(--hover); }
+.nav.on { background: var(--press); color: var(--fg); }
+.nav svg { width: 17px; height: 17px; flex: none; opacity: .8; }
+.nav .count { margin-left: auto; font: 500 11px var(--f-mono); color: var(--muted); }
+.nav .count.bad { color: var(--bad); }
+.side-h { display: flex; align-items: center; justify-content: space-between; padding: 14px 8px 4px; font-size: 11.5px; font-weight: 600; color: var(--muted); letter-spacing: .04em; text-transform: uppercase; }
+.icon-btn { width: 24px; height: 24px; display: grid; place-items: center; border-radius: 5px; color: var(--muted); }
+.icon-btn:hover { background: var(--hover); color: var(--fg); }
+.icon-btn svg { width: 16px; height: 16px; }
+.dot { width: 9px; height: 9px; border-radius: 3px; flex: none; }
+.side-foot { margin-top: auto; padding: 10px 8px 2px; font-size: 12px; color: var(--muted); display: flex; align-items: center; gap: 6px; }
+.sync { width: 7px; height: 7px; border-radius: 50%; background: var(--good); }
+.sync.local { background: var(--warn); }
+
+.topbar { display: none; position: sticky; top: env(safe-area-inset-top, 0px); z-index: 20; background: var(--bg); border-bottom: 1px solid var(--line); padding: 8px 16px; align-items: center; gap: 10px; }
+.scrim { display: none; }
+
+.page { max-width: 980px; margin: 0 auto; padding: 44px 48px 80px; display: flex; flex-direction: column; gap: 28px; }
+.page.wide { max-width: none; padding-inline: 32px; }
+.crumb { font-size: 13px; color: var(--muted); display: flex; gap: 6px; align-items: center; }
+.h1 { font: 700 36px/1.15 var(--f-display); letter-spacing: -.01em; margin: 0; text-wrap: balance; }
+.h1-input { font: 700 36px/1.15 var(--f-display); letter-spacing: -.01em; border: 0; background: transparent; width: 100%; padding: 0; outline: none; }
+.h1-input::placeholder { color: var(--line-2); }
+.sub { color: var(--fg-2); margin: 6px 0 0; }
+.desc-input { border: 0; background: transparent; width: 100%; color: var(--fg-2); resize: none; outline: none; padding: 0; margin-top: 8px; line-height: 1.55; }
+.desc-input::placeholder { color: var(--muted); }
+.h2 { font-size: 13px; font-weight: 600; color: var(--fg-2); margin: 0; display: flex; align-items: center; gap: 8px; }
+.h2 .n { font: 500 12px var(--f-mono); color: var(--muted); }
+.section { display: flex; flex-direction: column; gap: 10px; min-width: 0; }
+.muted { color: var(--muted); }
+.mono { font-family: var(--f-mono); font-variant-numeric: tabular-nums; }
+
+.btn { display: inline-flex; align-items: center; gap: 6px; padding: 5px 10px; border-radius: 6px; font-weight: 500; font-size: 13px; color: var(--fg-2); border: 1px solid var(--line-2); background: var(--card); min-height: 30px; }
+.btn:hover { background: var(--hover); color: var(--fg); }
+.btn.primary { background: var(--accent); border-color: var(--accent); color: var(--accent-ink); }
+.btn.primary:hover { filter: brightness(1.06); }
+.btn.ghost { border-color: transparent; background: transparent; }
+.btn.danger { color: var(--bad); border-color: var(--bad-soft); }
+.btn.danger.armed { background: var(--bad); color: #fff; border-color: var(--bad); }
+.btn svg { width: 15px; height: 15px; }
+.seg { display: inline-flex; padding: 2px; background: var(--hover); border-radius: 7px; gap: 2px; flex-wrap: wrap; }
+.seg button { padding: 4px 10px; border-radius: 5px; font-size: 13px; color: var(--fg-2); font-weight: 500; }
+.seg button.on { background: var(--card); color: var(--fg); box-shadow: 0 1px 2px rgba(0, 0, 0, .08); }
+.row { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+.spacer { flex: 1; }
+
+/* stat tiles */
+.tiles { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 12px; }
+.tile { border: 1px solid var(--line); border-radius: 10px; padding: 14px 16px; background: var(--card); display: flex; flex-direction: column; gap: 4px; text-align: left; }
+button.tile:hover { border-color: var(--line-2); }
+.tile .k { font-size: 12.5px; color: var(--muted); font-weight: 500; display: flex; align-items: center; gap: 6px; }
+.tile .v { font: 600 30px/1.1 var(--f-display); font-variant-numeric: tabular-nums; }
+.tile .v.bad { color: var(--bad); }
+.tile .hint { font-size: 12px; color: var(--muted); }
+
+.grid2 { display: grid; grid-template-columns: minmax(0, 1.35fr) minmax(0, 1fr); gap: 28px; }
+.panel-box { border: 1px solid var(--line); border-radius: 10px; background: var(--card); padding: 16px; min-width: 0; }
+
+/* chart */
+.chart { position: relative; }
+.chart svg { display: block; width: 100%; height: auto; overflow: visible; }
+.chart .tip { position: absolute; transform: translate(-50%, -100%); background: var(--fg); color: var(--bg); font-size: 12px; padding: 4px 8px; border-radius: 6px; white-space: nowrap; pointer-events: none; margin-top: -8px; }
+.legend { font-size: 12px; color: var(--muted); display: flex; gap: 14px; flex-wrap: wrap; }
+.legend i { display: inline-block; width: 10px; height: 10px; border-radius: 3px; margin-right: 6px; vertical-align: -1px; }
+
+/* progress */
+.prog { display: flex; flex-direction: column; gap: 12px; }
+.prog-row { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 4px 12px; align-items: center; text-align: left; padding: 4px 6px; margin: -4px -6px; border-radius: 6px; }
+.prog-row:hover { background: var(--hover); }
+.prog-row .name { display: flex; align-items: center; gap: 8px; font-weight: 500; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.bar { grid-column: 1 / -1; height: 6px; border-radius: 3px; background: var(--hover); overflow: hidden; }
+.bar > i { display: block; height: 100%; border-radius: 3px; }
+
+/* task list */
+.list { display: flex; flex-direction: column; }
+.task { display: flex; align-items: center; gap: 10px; padding: 6px 8px; border-radius: 6px; min-height: 36px; cursor: pointer; }
+.task:hover { background: var(--hover); }
+.task + .task { border-top: 1px solid var(--line); border-radius: 0; }
+.task:hover + .task { border-top-color: transparent; }
+.task .t { flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.task.done .t { color: var(--muted); text-decoration: line-through; text-decoration-color: var(--line-2); }
+.check { width: 17px; height: 17px; border-radius: 5px; border: 1.5px solid var(--line-2); flex: none; display: grid; place-items: center; background: var(--card); }
+.check:hover { border-color: var(--accent); }
+.check.on { background: var(--accent); border-color: var(--accent); color: var(--accent-ink); }
+.check svg { width: 12px; height: 12px; }
+.meta { display: flex; align-items: center; gap: 6px; flex: none; font-size: 12px; color: var(--muted); }
+.chip { display: inline-flex; align-items: center; gap: 5px; font-size: 12px; padding: 1px 7px; border-radius: 5px; background: var(--hover); color: var(--fg-2); white-space: nowrap; line-height: 20px; }
+.chip.due-bad { background: var(--bad-soft); color: var(--bad); }
+.chip.due-today { background: var(--warn-soft); color: var(--warn); }
+.chip.p-high { background: var(--bad-soft); color: var(--bad); }
+.chip.p-medium { background: var(--warn-soft); color: var(--warn); }
+.chip.p-low { background: var(--hover); color: var(--fg-2); }
+.chip.s-doing { background: var(--accent-soft); color: var(--accent); }
+.chip.s-done { background: var(--good-soft); color: var(--good); }
+.chip svg { width: 12px; height: 12px; }
+.empty { color: var(--muted); padding: 14px 8px; font-size: 13px; }
+.add { display: flex; align-items: center; gap: 10px; padding: 4px 8px; border-radius: 6px; color: var(--muted); min-height: 36px; }
+.add:focus-within { background: var(--hover); }
+.add input { border: 0; background: transparent; flex: 1; outline: none; min-width: 0; padding: 4px 0; }
+.add input::placeholder { color: var(--muted); }
+.add svg { width: 16px; height: 16px; flex: none; }
+.add select { border: 1px solid var(--line-2); background: var(--card); border-radius: 5px; font-size: 12px; padding: 2px 4px; max-width: 140px; }
+
+/* board */
+.board { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 14px; align-items: start; }
+.col { background: var(--hover); border-radius: 10px; padding: 8px; display: flex; flex-direction: column; gap: 6px; min-height: 120px; transition: background .12s; }
+.col.over { background: var(--accent-soft); }
+.col-h { display: flex; align-items: center; gap: 8px; padding: 2px 4px 4px; font-size: 13px; font-weight: 600; }
+.col-h .n { font: 500 12px var(--f-mono); color: var(--muted); }
+.card { background: var(--card); border: 1px solid var(--line); border-radius: 8px; padding: 9px 10px; display: flex; flex-direction: column; gap: 7px; cursor: grab; box-shadow: 0 1px 1px rgba(0, 0, 0, .03); text-align: left; }
+.card:hover { border-color: var(--line-2); }
+.card.dragging { opacity: .45; }
+.card .t { font-weight: 500; overflow-wrap: anywhere; }
+.card.done .t { color: var(--muted); text-decoration: line-through; }
+.card .meta { flex-wrap: wrap; }
+.col .add { min-height: 32px; }
+
+/* peek panel */
+.peek-scrim { position: fixed; inset: 0; background: rgba(15, 15, 10, .18); z-index: 40; }
+.peek { position: fixed; top: 0; right: 0; bottom: 0; width: min(520px, 100%); background: var(--card); border-left: 1px solid var(--line); box-shadow: var(--shadow); z-index: 41; display: flex; flex-direction: column; padding-top: env(safe-area-inset-top, 0px); padding-bottom: env(safe-area-inset-bottom, 0px); animation: slide .18s ease-out; }
+@keyframes slide { from { transform: translateX(24px); opacity: .6; } }
+.peek-bar { display: flex; align-items: center; gap: 6px; padding: 10px 14px; border-bottom: 1px solid var(--line); color: var(--muted); font-size: 13px; }
+.peek-body { padding: 22px 28px 40px; overflow-y: auto; display: flex; flex-direction: column; gap: 18px; }
+.peek-body > * { flex-shrink: 0; }
+.title-area { font: 700 26px/1.25 var(--f-display); border: 0; background: transparent; resize: none; outline: none; width: 100%; padding: 0; overflow: hidden; }
+.props { display: grid; grid-template-columns: 110px minmax(0, 1fr); gap: 4px 12px; align-items: center; font-size: 13.5px; }
+.props .pk { color: var(--muted); display: flex; align-items: center; gap: 7px; min-height: 32px; }
+.props .pk svg { width: 15px; height: 15px; }
+.props select, .props input[type=date] { border: 1px solid transparent; background: transparent; border-radius: 5px; padding: 4px 6px; margin-left: -6px; max-width: 100%; }
+.props select:hover, .props input[type=date]:hover { background: var(--hover); }
+.notes-area { border: 1px solid var(--line); border-radius: 8px; background: var(--bg); min-height: 160px; resize: vertical; padding: 10px 12px; outline: none; line-height: 1.6; width: 100%; }
+.notes-area:focus { border-color: var(--line-2); }
+.peek-foot { font-size: 12px; color: var(--muted); display: flex; flex-direction: column; gap: 2px; }
+
+/* notes */
+.notes-wrap { display: grid; grid-template-columns: 280px minmax(0, 1fr); height: 100%; }
+.notes-list { border-right: 1px solid var(--line); overflow-y: auto; padding: 16px 10px; display: flex; flex-direction: column; gap: 2px; }
+.notes-list .search { margin: 0 4px 10px; }
+.note-item { text-align: left; padding: 8px 10px; border-radius: 7px; display: flex; flex-direction: column; gap: 2px; }
+.note-item:hover { background: var(--hover); }
+.note-item.on { background: var(--press); }
+.note-item .nt { font-weight: 500; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.note-item .np { font-size: 12.5px; color: var(--muted); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.note-item .nm { font-size: 11.5px; color: var(--muted); display: flex; gap: 6px; align-items: center; }
+.note-ed { overflow-y: auto; }
+.note-ed .page { gap: 14px; max-width: 760px; }
+.body-area { border: 0; background: transparent; outline: none; resize: none; width: 100%; min-height: 50vh; line-height: 1.7; font-size: 15px; padding: 0; }
+.md { font-size: 15px; line-height: 1.7; overflow-wrap: anywhere; }
+.md h1, .md h2, .md h3 { font-family: var(--f-display); margin: 1.1em 0 .3em; line-height: 1.25; }
+.md h1 { font-size: 26px; } .md h2 { font-size: 21px; } .md h3 { font-size: 17px; }
+.md p { margin: 0 0 .7em; }
+.md ul { margin: 0 0 .7em; padding-left: 1.3em; }
+.md li.todo { list-style: none; margin-left: -1.3em; display: flex; gap: 8px; align-items: baseline; }
+.md li.todo .check { transform: translateY(3px); }
+.md li.todo.done span { color: var(--muted); text-decoration: line-through; }
+.md code { font-family: var(--f-mono); font-size: .88em; background: var(--hover); padding: 1px 5px; border-radius: 4px; }
+.md blockquote { margin: 0 0 .7em; padding-left: 14px; border-left: 3px solid var(--line-2); color: var(--fg-2); }
+.md a { color: var(--accent); }
+.md hr { border: 0; border-top: 1px solid var(--line); margin: 1.2em 0; }
+.input { border: 1px solid var(--line-2); background: var(--card); border-radius: 6px; padding: 6px 10px; outline: none; width: 100%; }
+.input:focus { border-color: var(--accent); }
+.note-cards { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 12px; }
+.note-card { border: 1px solid var(--line); border-radius: 9px; background: var(--card); padding: 12px 14px; text-align: left; display: flex; flex-direction: column; gap: 6px; min-height: 104px; }
+.note-card:hover { border-color: var(--line-2); }
+.note-card .nt { font-weight: 600; }
+.note-card .np { color: var(--fg-2); font-size: 13px; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; }
+.note-card .nm { margin-top: auto; font-size: 12px; color: var(--muted); }
+
+/* feed */
+.feed { display: flex; flex-direction: column; gap: 2px; }
+.ev { display: grid; grid-template-columns: 18px minmax(0, 1fr) auto; gap: 10px; align-items: baseline; padding: 5px 0; font-size: 13.5px; }
+.ev .ic { width: 18px; height: 18px; display: grid; place-items: center; color: var(--muted); align-self: center; }
+.ev .ic svg { width: 15px; height: 15px; }
+.ev .ic.good { color: var(--good); }
+.ev .txt { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; color: var(--fg-2); }
+.ev .txt b { color: var(--fg); font-weight: 500; }
+.ev .when { font: 12px var(--f-mono); color: var(--muted); }
+
+/* timeline */
+.tl-wrap { border: 1px solid var(--line); border-radius: 10px; background: var(--card); overflow: auto; max-height: calc(100vh - 230px); min-height: 280px; position: relative; }
+.tl { position: relative; }
+.tl-row { display: flex; height: 36px; position: relative; }
+.tl-row.proj { height: 34px; background: var(--bg); }
+.tl-label { position: sticky; left: 0; z-index: 3; flex: none; background: var(--card); border-right: 1px solid var(--line); display: flex; align-items: center; gap: 8px; padding: 0 12px; overflow: hidden; white-space: nowrap; font-size: 13px; cursor: pointer; }
+.tl-row.proj .tl-label { background: var(--bg); font-weight: 600; cursor: default; }
+.tl-label .t { overflow: hidden; text-overflow: ellipsis; }
+.tl-label:hover .t { text-decoration: underline; text-decoration-color: var(--line-2); }
+.tl-track { position: relative; flex: none; border-bottom: 1px solid var(--line); }
+.tl-head { position: sticky; top: 0; z-index: 5; background: var(--card); border-bottom: 1px solid var(--line); }
+.tl-head .tl-label { z-index: 6; color: var(--muted); font-size: 12px; font-weight: 500; cursor: default; }
+.tl-months { height: 22px; position: relative; }
+.tl-months span { position: absolute; top: 4px; font-size: 12px; font-weight: 600; padding-left: 6px; white-space: nowrap; }
+.tl-days { height: 22px; position: relative; }
+.tl-days span { position: absolute; top: 2px; font: 10.5px var(--f-mono); color: var(--muted); text-align: center; }
+.tl-days span.today { color: var(--accent); font-weight: 600; }
+.tl-bg { position: absolute; top: 0; bottom: 0; pointer-events: none; }
+.tl-we { position: absolute; top: 0; bottom: 0; background: var(--hover); opacity: .55; }
+.tl-today { position: absolute; top: 0; bottom: 0; width: 2px; background: var(--accent); opacity: .8; z-index: 2; }
+.tl-bar { position: absolute; top: 7px; height: 22px; border-radius: 5px; display: flex; align-items: center; padding: 0 8px; font-size: 12px; font-weight: 500; color: #fff; white-space: nowrap; overflow: hidden; cursor: grab; touch-action: none; user-select: none; z-index: 1; }
+.tl-bar.done { opacity: .45; }
+.tl-bar.dragging { cursor: grabbing; box-shadow: var(--shadow); z-index: 4; }
+.tl-bar .h { position: absolute; top: 0; bottom: 0; width: 8px; cursor: ew-resize; }
+.tl-bar .h.l { left: 0; } .tl-bar .h.r { right: 0; }
+.tl-span { position: absolute; top: 15px; height: 4px; border-radius: 2px; opacity: .55; }
+.tl-milestone { position: absolute; top: 11px; width: 14px; height: 14px; transform: rotate(45deg); border-radius: 3px; cursor: grab; touch-action: none; z-index: 1; }
+
+/* palette */
+.pal-scrim { position: fixed; inset: 0; background: rgba(15, 15, 10, .25); z-index: 60; display: flex; justify-content: center; align-items: flex-start; padding: 12vh 16px 16px; }
+.pal { width: min(600px, 100%); background: var(--card); border-radius: 12px; box-shadow: var(--shadow); border: 1px solid var(--line); overflow: hidden; }
+.pal input { width: 100%; border: 0; border-bottom: 1px solid var(--line); padding: 14px 16px; font-size: 16px; outline: none; background: transparent; }
+.pal-res { max-height: 50vh; overflow-y: auto; padding: 6px; }
+.pal-item { display: flex; align-items: center; gap: 10px; width: 100%; text-align: left; padding: 8px 10px; border-radius: 7px; }
+.pal-item.on, .pal-item:hover { background: var(--hover); }
+.pal-item .k { margin-left: auto; font-size: 12px; color: var(--muted); }
+.pal-item svg { width: 16px; height: 16px; color: var(--muted); flex: none; }
+.kbd { font: 11px var(--f-mono); border: 1px solid var(--line-2); border-bottom-width: 2px; border-radius: 4px; padding: 0 4px; color: var(--muted); }
+
+.toast { position: fixed; bottom: calc(18px + env(safe-area-inset-bottom, 0px)); left: 50%; transform: translateX(-50%); background: var(--fg); color: var(--bg); padding: 8px 14px; border-radius: 8px; font-size: 13px; z-index: 80; box-shadow: var(--shadow); display: flex; gap: 12px; align-items: center; max-width: calc(100% - 32px); }
+.toast button { color: var(--bg); font-weight: 600; text-decoration: underline; }
+.loading { display: grid; place-items: center; height: 100%; color: var(--muted); gap: 10px; }
+.skel { width: 220px; height: 10px; border-radius: 5px; background: var(--hover); }
+.color-pick { display: flex; gap: 6px; flex-wrap: wrap; }
+.color-pick button { width: 20px; height: 20px; border-radius: 6px; border: 2px solid transparent; }
+.color-pick button.on { border-color: var(--fg); }
+.menu-pop { position: absolute; right: 0; top: 34px; background: var(--card); border: 1px solid var(--line); border-radius: 10px; box-shadow: var(--shadow); padding: 12px; z-index: 30; display: flex; flex-direction: column; gap: 10px; width: 240px; }
+.welcome { border: 1px dashed var(--line-2); border-radius: 12px; padding: 28px; display: flex; flex-direction: column; gap: 10px; align-items: flex-start; }
+
+/* v2: work-order features */
+.num { font: 500 11.5px var(--f-mono); color: var(--muted); flex: none; font-variant-numeric: tabular-nums; }
+.avatar { width: 22px; height: 22px; border-radius: 50%; background: var(--accent-soft); color: var(--accent); font: 600 10px/22px var(--f-body); text-align: center; flex: none; letter-spacing: .02em; }
+.chip.tagc { background: transparent; border: 1px solid var(--line-2); color: var(--fg-2); line-height: 18px; }
+.chip.tagc button { display: inline-flex; color: var(--muted); margin-right: -3px; }
+.chip.tagc button:hover { color: var(--fg); }
+.taginput { display: flex; flex-wrap: wrap; gap: 5px; align-items: center; min-height: 32px; }
+.taginput input { border: 0; background: transparent; outline: none; min-width: 120px; flex: 1; padding: 4px 0; }
+.prop-in { border: 1px solid transparent; background: transparent; border-radius: 5px; padding: 4px 6px; margin-left: -6px; width: 100%; max-width: 280px; outline: none; }
+.prop-in:hover { background: var(--hover); }
+.prop-in:focus { border-color: var(--line-2); background: var(--card); }
+.check.sm { width: 16px; height: 16px; border-radius: 4px; }
+.steps { display: flex; flex-direction: column; }
+.stepr { display: flex; align-items: center; gap: 8px; padding: 3px 4px; border-radius: 6px; min-height: 34px; }
+.stepr:hover { background: var(--hover); }
+.stepr.done .step-text { color: var(--muted); text-decoration: line-through; }
+.step-text { flex: 1; min-width: 0; border: 0; background: transparent; outline: none; padding: 3px 0; }
+.step-date { border: 1px solid transparent; background: transparent; border-radius: 5px; font: 12px var(--f-mono); color: var(--fg-2); padding: 2px 4px; max-width: 132px; }
+.step-date:hover { background: var(--card); border-color: var(--line); }
+.step-date.empty { color: var(--muted); opacity: .55; }
+.stepr:hover .step-date.empty { opacity: 1; }
+.step-date.late { color: var(--bad); background: var(--bad-soft); }
+.icon-btn.armed { color: var(--bad); background: var(--bad-soft); }
+.composer { border: 1px solid var(--line); border-radius: 10px; background: var(--bg); padding: 10px; display: flex; flex-direction: column; gap: 8px; }
+.composer.drag { border-color: var(--accent); background: var(--accent-soft); }
+.composer-in { border: 0; background: transparent; outline: none; resize: vertical; width: 100%; line-height: 1.55; min-height: 60px; }
+.type-pills { display: flex; flex-wrap: wrap; gap: 4px; }
+.tpill { display: inline-flex; align-items: center; gap: 5px; font-size: 12px; font-weight: 500; padding: 2px 8px; border-radius: 999px; color: var(--fg-2); border: 1px solid transparent; }
+.tpill svg { width: 13px; height: 13px; }
+.tpill:hover { background: var(--hover); }
+.tpill.on { --tc: var(--fg-2); color: var(--tc); background: color-mix(in srgb, var(--tc) 13%, transparent); }
+.tpill.t-measurement { --tc: var(--accent); }
+.tpill.t-decision { --tc: var(--c6); }
+.tpill.t-call { --tc: var(--good); }
+.tpill.t-issue { --tc: var(--bad); }
+.entries { display: flex; flex-direction: column; gap: 8px; }
+.entry { border: 1px solid var(--line); border-radius: 9px; padding: 8px 10px 10px; display: flex; flex-direction: column; gap: 6px; background: var(--card); }
+.entry.pinned { border-color: var(--accent); box-shadow: inset 0 0 0 1px var(--accent-soft); }
+.entry-h { display: flex; align-items: center; gap: 8px; }
+.entry-h .icon-btn { opacity: .55; }
+.entry:hover .entry-h .icon-btn, .entry-h .icon-btn:focus-visible, .entry-h .icon-btn.armed { opacity: 1; }
+.entry-text { white-space: pre-wrap; overflow-wrap: anywhere; line-height: 1.55; }
+.thumbs { display: flex; flex-wrap: wrap; gap: 6px; }
+.thumb { width: 84px; height: 84px; border-radius: 8px; overflow: hidden; border: 1px solid var(--line); position: relative; background: var(--hover); display: grid; place-items: center; font-size: 11px; color: var(--muted); padding: 0; }
+.thumb img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.thumb > button { position: absolute; top: 3px; right: 3px; width: 20px; height: 20px; border-radius: 50%; background: rgba(0, 0, 0, .55); color: #fff; display: grid; place-items: center; }
+.thumb > button svg { width: 12px; height: 12px; }
+.lightbox { position: fixed; inset: 0; z-index: 70; background: rgba(10, 10, 8, .82); display: grid; place-items: center; padding: 24px 16px; }
+.lightbox img { max-width: 100%; max-height: 100%; border-radius: 8px; object-fit: contain; }
+.lightbox .icon-btn { position: absolute; top: calc(14px + env(safe-area-inset-top, 0px)); right: 14px; color: #fff; background: rgba(255, 255, 255, .12); width: 32px; height: 32px; }
+.banner { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; padding: 8px 12px; border-radius: 8px; background: var(--hover); color: var(--fg-2); font-size: 13px; }
+.banner.good { background: var(--good-soft); color: var(--good); }
+.banner.bad { background: var(--bad-soft); color: var(--bad); }
+.linkbtn { color: var(--accent); font-size: 12.5px; font-weight: 500; display: inline-flex; align-items: center; gap: 4px; cursor: pointer; }
+.linkbtn:hover { text-decoration: underline; }
+.filters { display: flex; flex-direction: column; gap: 10px; }
+.search-in { flex: 1 1 220px; width: auto; }
+.sort-in { flex: 0 0 auto; width: auto; }
+.chips-row { gap: 6px; }
+.fchip { display: inline-flex; align-items: center; gap: 5px; padding: 3px 9px; border-radius: 999px; border: 1px solid var(--line-2); font-size: 12.5px; color: var(--fg-2); background: var(--card); }
+.fchip svg { width: 13px; height: 13px; }
+.fchip .mono { font-size: 11px; color: var(--muted); }
+.fchip:hover { border-color: var(--muted); }
+.fchip.on { background: var(--fg); color: var(--bg); border-color: var(--fg); }
+.fchip.on .mono { color: inherit; opacity: .7; }
+.fchip.bad:not(.on) { color: var(--bad); border-color: var(--bad-soft); }
+.vsep { width: 1px; height: 18px; background: var(--line-2); }
+.tpl-row { gap: 6px; padding-left: 8px; }
+.tpl { display: inline-flex; align-items: center; border: 1px dashed var(--line-2); border-radius: 7px; font-size: 12.5px; overflow: hidden; }
+.tpl button:first-child { padding: 3px 4px 3px 9px; color: var(--fg-2); font-weight: 500; }
+.tpl button:first-child:hover { color: var(--accent); }
+.tpl .x { padding: 3px 6px 3px 2px; color: var(--muted); display: inline-flex; }
+.tpl .x:hover { color: var(--bad); }
+.tpl .x svg { width: 12px; height: 12px; }
+.grp { cursor: pointer; text-align: left; }
+.caret { display: inline-flex; transition: transform .12s; }
+.caret svg { width: 13px; height: 13px; }
+.task.step { min-height: 34px; }
+.linkchip { cursor: pointer; }
+.linkchip:hover { background: var(--press); }
+.cal-grid { display: grid; grid-template-columns: repeat(7, minmax(0, 1fr)); border: 1px solid var(--line); border-radius: 10px; overflow: hidden; background: var(--card); }
+.cal-dow { padding: 6px 8px; font-size: 11.5px; font-weight: 600; color: var(--muted); border-bottom: 1px solid var(--line); text-transform: uppercase; letter-spacing: .04em; }
+.cal-cell { min-height: 108px; border-right: 1px solid var(--line); border-bottom: 1px solid var(--line); padding: 5px 6px; display: flex; flex-direction: column; gap: 3px; cursor: pointer; min-width: 0; }
+.cal-cell:nth-child(7n) { border-right: 0; }
+.cal-cell:hover { background: var(--hover); }
+.cal-cell.out { background: var(--bg); }
+.cal-cell.out .cal-n { color: var(--muted); opacity: .6; }
+.cal-cell.sel { box-shadow: inset 0 0 0 2px var(--accent); }
+.cal-d { display: flex; align-items: center; justify-content: space-between; }
+.cal-n { font: 500 12.5px var(--f-mono); width: 24px; height: 24px; display: grid; place-items: center; border-radius: 50%; }
+.cal-n.late { color: var(--bad); }
+.cal-cell.today .cal-n { background: var(--accent); color: var(--accent-ink); }
+.cal-count { display: none; font-size: 11px; color: var(--muted); }
+.cal-items { display: flex; flex-direction: column; gap: 2px; min-width: 0; }
+.cal-item { display: flex; align-items: center; gap: 5px; font-size: 12px; padding: 1px 4px; border-radius: 4px; text-align: left; min-width: 0; }
+.cal-item:hover { background: var(--press); }
+.cal-item .ct { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.cal-item.done .ct { color: var(--muted); text-decoration: line-through; }
+.cal-item .dot { width: 7px; height: 7px; border-radius: 2px; }
+.cal-more { font-size: 11px; color: var(--muted); padding-left: 4px; display: inline-flex; gap: 3px; align-items: center; }
+.cal-more svg { width: 11px; height: 11px; }
+.cal-page { max-width: 1180px; }
+.modal { width: min(640px, 100%); }
+.modal-body { padding: 16px; display: flex; flex-direction: column; gap: 14px; }
+.data-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px; }
+.data-btn { border: 1px solid var(--line); border-radius: 10px; padding: 12px; display: flex; flex-direction: column; gap: 4px; text-align: left; background: var(--card); }
+.data-btn:hover:not(:disabled) { border-color: var(--accent); }
+.data-btn:disabled { opacity: .5; cursor: not-allowed; }
+.data-btn svg { width: 18px; height: 18px; color: var(--accent); }
+.data-btn span { font-size: 12px; color: var(--muted); }
+.btn:disabled { opacity: .5; cursor: not-allowed; }
+.peek.wide { width: min(920px, 100%); }
+.peek.wide .peek-body { padding-inline: 40px; }
+.toast.err { background: var(--bad); color: #fff; }
+.toast.err button { color: #fff; }
+.side-foot { flex-direction: column; align-items: stretch; gap: 6px; padding: 10px 0 2px; }
+.sync-line { display: flex; align-items: center; gap: 6px; padding: 0 8px; }
+@media (max-width: 760px) {
+  .cal-cell { min-height: 58px; padding: 3px; }
+  .cal-items { display: none; }
+  .cal-count { display: inline; }
+  .cal-d { flex-direction: column; gap: 1px; }
+  .data-grid { grid-template-columns: minmax(0, 1fr); }
+  .peek.wide .peek-body { padding-inline: 16px; }
+  .vsep { display: none; }
+  .task { flex-wrap: wrap; row-gap: 4px; padding-block: 8px; }
+  .task .t { flex: 1 1 calc(100% - 80px); white-space: normal; overflow-wrap: anywhere; }
+  .task > .meta { flex: 1 1 100%; padding-left: 27px; flex-wrap: wrap; }
+  .task > .meta:empty { display: none; }
+}
+
+@media (prefers-reduced-motion: reduce) { * { animation: none !important; transition: none !important; } }
+
+@media (max-width: 900px) {
+  .tiles { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .grid2 { grid-template-columns: minmax(0, 1fr); }
+  .page { padding: 28px 24px 64px; }
+}
+@media (max-width: 760px) {
+  .side { position: fixed; top: 0; bottom: 0; left: 0; z-index: 50; transform: translateX(-102%); transition: transform .2s; box-shadow: var(--shadow); padding-top: calc(10px + env(safe-area-inset-top, 0px)); }
+  .side.open { transform: none; }
+  .scrim.open { display: block; position: fixed; inset: 0; z-index: 45; background: rgba(15, 15, 10, .25); }
+  .topbar { display: flex; }
+  .page, .page.wide { padding: 20px 16px 64px; gap: 22px; }
+  .h1, .h1-input { font-size: 28px; }
+  .board { grid-template-columns: minmax(0, 1fr); }
+  .notes-wrap { grid-template-columns: minmax(0, 1fr); }
+  .notes-wrap.has-note .notes-list { display: none; }
+  .notes-wrap:not(.has-note) .note-ed { display: none; }
+  .notes-list { border-right: 0; }
+  .peek-body { padding: 18px 16px 40px; }
+  .props { grid-template-columns: 96px minmax(0, 1fr); }
+  .tl-wrap { max-height: none; }
+  .meta .hide-sm { display: none; }
+}
+</style>
+
+<div id="root">
+  <div class="loading"><div style="display:grid;gap:10px;justify-items:center"><div class="skel"></div><div class="skel" style="width:160px"></div><div>Opening your workspace</div></div></div>
+</div>
+
+<script src="lib/react.production.min.js"></script>
+<script src="lib/react-dom.production.min.js"></script>
+<script src="lib/htm.umd.js"></script>
+<script>
+"use strict";
+const { useState, useEffect, useMemo, useRef, useCallback, useSyncExternalStore } = React;
+const html = htm.bind(React.createElement);
+const OWNER = "Rodolfo";
+
+/* ---------- dates ---------- */
+const pad = n => String(n).padStart(2, "0");
+const fmtDate = d => d.getFullYear() + "-" + pad(d.getMonth() + 1) + "-" + pad(d.getDate());
+const parseDate = s => { const [y, m, d] = s.split("-").map(Number); return new Date(y, m - 1, d); };
+const today = () => fmtDate(new Date());
+const addDays = (s, n) => { const d = parseDate(s); d.setDate(d.getDate() + n); return fmtDate(d); };
+const diffDays = (a, b) => Math.round((parseDate(b) - parseDate(a)) / 864e5);
+const MON = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+const DOW = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
+function dueLabel(s) {
+  const d = diffDays(today(), s);
+  if (d === 0) return "Today";
+  if (d === 1) return "Tomorrow";
+  if (d === -1) return "Yesterday";
+  if (d > 1 && d < 7) return DOW[parseDate(s).getDay()];
+  const p = parseDate(s);
+  return MON[p.getMonth()] + " " + p.getDate() + (p.getFullYear() !== new Date().getFullYear() ? ", " + p.getFullYear() : "");
+}
+function ago(ms) {
+  const s = (Date.now() - ms) / 1000;
+  if (s < 60) return "now";
+  if (s < 3600) return Math.floor(s / 60) + "m";
+  if (s < 86400) return Math.floor(s / 3600) + "h";
+  if (s < 86400 * 7) return Math.floor(s / 86400) + "d";
+  const d = new Date(ms); return MON[d.getMonth()] + " " + d.getDate();
+}
+const uid = () => (crypto.randomUUID ? crypto.randomUUID() : Date.now().toString(36) + Math.random().toString(36).slice(2)).replace(/-/g, "").slice(0, 20);
+const sleep = ms => new Promise(r => setTimeout(r, ms));
+
+/* ---------- storage: your account's database when the viewer provides it, this browser otherwise ---------- */
+const COLS = ["projects", "tasks", "notes", "templates"];
+const LS_KEY = "workspace.data.v1";
+const S = { mode: "loading", projects: {}, tasks: {}, notes: {}, templates: {}, toast: null, caps: { assets: false, downloads: false }, v: 0 };
+let snap = { ...S };
+const subs = new Set();
+let DB = null, ASSETS = null, DOWNLOADS = null;
+// Opened as its own website (GitHub Pages) rather than inside Claude: save in this browser, keep photos inline, download files directly.
+const STANDALONE = !(window.claude && window.claude.use);
+let storageFull = false;
+const queued = {}, inflight = {};
+function normTask(t) { return { tags: [], subtasks: [], entries: [], assignee: "", recur: "", notes: "", priority: "none", status: "todo", ...t }; }
+function norm(col, o) { return col === "tasks" ? normTask(o) : o; }
+function commit() {
+  S.v++; snap = { ...S }; subs.forEach(f => f());
+  if (S.mode === "local") {
+    try { localStorage.setItem(LS_KEY, JSON.stringify({ projects: S.projects, tasks: S.tasks, notes: S.notes, templates: S.templates })); storageFull = false; }
+    catch (e) {
+      if (!storageFull) { storageFull = true; S.toast = { text: "This browser's storage is full, so your latest changes aren't saved. Delete some photos or old tasks, and save a backup.", kind: "error" }; S.v++; snap = { ...S }; subs.forEach(f => f()); }
+    }
+  }
+}
+function useStore() { return useSyncExternalStore(f => { subs.add(f); return () => subs.delete(f); }, () => snap); }
+let toastTimer = null;
+function toast(text, kind, undo) {
+  clearTimeout(toastTimer);
+  S.toast = text ? { text, kind: kind || "info", undo } : null; commit();
+  if (text && kind !== "error") toastTimer = setTimeout(() => { S.toast = null; commit(); }, 6000);
+}
+function setError(msg) { toast(msg, "error"); }
+function put(col, obj) {
+  obj = norm(col, obj);
+  S[col] = { ...S[col], [obj.id]: obj }; commit();
+  return S.mode === "db" ? writeDoc(col, obj.id, obj) : Promise.resolve();
+}
+function patch(col, id, fields) { const cur = S[col][id]; if (!cur) return Promise.resolve(); return put(col, { ...cur, ...fields }); }
+function remove(col, id) { const n = { ...S[col] }; delete n[id]; S[col] = n; commit(); return S.mode === "db" ? writeDoc(col, id, null) : Promise.resolve(); }
+async function writeDoc(col, id, obj) {
+  const key = col + "/" + id;
+  queued[key] = { obj };
+  if (inflight[key]) return;
+  inflight[key] = true;
+  try {
+    while (queued[key]) {
+      const job = queued[key]; delete queued[key];
+      const ref = DB.collection(col).doc(id);
+      const run = () => job.obj ? ref.set(job.obj) : ref.delete();
+      try { await run(); }
+      catch (e) {
+        if (e && (e.code === "unavailable" || e.code === "resource_exhausted")) { await sleep(600 + Math.random() * 1200); try { await run(); } catch (e2) { reportWrite(e2); } }
+        else reportWrite(e);
+      }
+    }
+  } finally { inflight[key] = false; }
+}
+function reportWrite(e) {
+  const c = e && e.code;
+  if (c === "quota_exceeded") setError("Your workspace is full. Delete some old tasks or notes to keep adding.");
+  else if (c === "invalid_argument") setError("That change didn't save. A task may be too large; try removing some log entries.");
+  else setError("A change didn't save. Check your connection and try again.");
+}
+function loadLocal() {
+  try { const d = JSON.parse(localStorage.getItem(LS_KEY) || "null"); if (d) COLS.forEach(c => { S[c] = {}; Object.values(d[c] || {}).forEach(o => S[c][o.id] = norm(c, o)); }); } catch (e) {}
+}
+(async function boot() {
+  const use = name => (window.claude && window.claude.use ? window.claude.use(name).catch(() => null) : Promise.resolve(null));
+  if (STANDALONE) S.caps = { assets: true, downloads: true };
+  else {
+    use("assets").then(a => { ASSETS = a; S.caps = { ...S.caps, assets: !!a }; commit(); });
+    use("downloads").then(d => { DOWNLOADS = d; S.caps = { ...S.caps, downloads: !!d }; commit(); });
+  }
+  const db = await use("db");
+  if (!db) { loadLocal(); S.mode = "local"; commit(); return; }
+  DB = db;
+  const loaded = {};
+  COLS.forEach(col => {
+    db.collection(col).onSnapshot(qs => {
+      const next = {};
+      qs.docs.forEach(d => { next[d.id] = norm(col, { ...d.data(), id: d.id }); });
+      // keep local edits that are still on their way to the store
+      Object.keys(queued).concat(Object.keys(inflight).filter(k => inflight[k])).forEach(k => {
+        const [c, id] = k.split("/");
+        if (c !== col) return;
+        if (S[col][id]) next[id] = S[col][id]; else delete next[id];
+      });
+      S[col] = next; loaded[col] = true;
+      if (COLS.every(c => loaded[c])) S.mode = "db";
+      commit();
+    }, err => {
+      if (err && (err.code === "revoked" || err.code === "not_granted" || err.code === "capability_disabled")) setError("This workspace isn't available in this view.");
+      else setError("Lost the live connection. Reload the page to reconnect.");
+    });
+  });
+})();
+
+/* ---------- derived data ---------- */
+const STATUS = [["todo", "To do"], ["doing", "In progress"], ["done", "Done"]];
+const PRIOS = [["none", "No priority"], ["low", "Low"], ["medium", "Medium"], ["high", "High"]];
+const PRANK = { high: 0, medium: 1, low: 2, none: 3 };
+const ENTRY_TYPES = [["note", "Note"], ["measurement", "Measurement"], ["decision", "Decision"], ["call", "Call"], ["issue", "Issue"]];
+const ENTRY_LABEL = Object.fromEntries(ENTRY_TYPES);
+const RECUR = [["", "Doesn't repeat"], ["daily", "Every day"], ["weekly", "Every week"], ["biweekly", "Every 2 weeks"], ["monthly", "Every month"]];
+const RECUR_LABEL = Object.fromEntries(RECUR);
+const ARCHIVE_DAYS = 30;
+const isArchived = t => !!t.archived || (t.status === "done" && !!t.completedAt && t.completedAt < Date.now() - ARCHIVE_DAYS * 864e5);
+const preview = (b, n) => (b || "").replace(/\[[ xX]\]/g, "").replace(/[#*_`>]/g, "").replace(/^\s*[-]\s+/gm, "").replace(/\s+/g, " ").trim().slice(0, n);
+const pcolor = p => `var(--c${(p && p.color) || 0})`;
+const fmtNum = n => n ? "#" + n : "";
+const stepsOf = t => { const s = t.subtasks || []; return { done: s.filter(x => x.done).length, total: s.length, late: t.status === "done" ? 0 : s.filter(x => !x.done && x.due && x.due < today()).length }; };
+function nextRecur(s, r) {
+  if (!s) return s;
+  if (r === "daily") return addDays(s, 1);
+  if (r === "weekly") return addDays(s, 7);
+  if (r === "biweekly") return addDays(s, 14);
+  if (r === "monthly") { const d = parseDate(s); const day = d.getDate(); const n = new Date(d.getFullYear(), d.getMonth() + 1, 1); n.setDate(Math.min(day, new Date(n.getFullYear(), n.getMonth() + 1, 0).getDate())); return fmtDate(n); }
+  return s;
+}
+function sortTasks(list, mode) {
+  const byDue = (a, b) => {
+    if (a.due && b.due && a.due !== b.due) return a.due < b.due ? -1 : 1;
+    if (!!a.due !== !!b.due) return a.due ? -1 : 1;
+    return 0;
+  };
+  const byPrio = (a, b) => PRANK[a.priority || "none"] - PRANK[b.priority || "none"];
+  return list.slice().sort((a, b) => {
+    const ad = a.status === "done", bd = b.status === "done";
+    if (ad !== bd) return ad ? 1 : -1;
+    if (mode === "newest") return (b.createdAt || 0) - (a.createdAt || 0);
+    const r = mode === "priority" ? (byPrio(a, b) || byDue(a, b)) : (byDue(a, b) || byPrio(a, b));
+    return r || (a.createdAt || 0) - (b.createdAt || 0);
+  });
+}
+function matchesSearch(t, q, st) {
+  if (!q) return true;
+  q = q.toLowerCase();
+  const p = st && st.projects[t.projectId];
+  return [t.title, t.notes, t.assignee, fmtNum(t.num), p && p.name, ...(t.tags || []), ...(t.subtasks || []).map(s => s.text), ...(t.entries || []).map(e => e.text)]
+    .some(x => x && String(x).toLowerCase().includes(q));
+}
+function nextNum() { return Math.max(0, ...Object.values(S.tasks).map(t => t.num || 0)) + 1; }
+function newTask(fields) {
+  const now = Date.now();
+  const t = { id: uid(), num: nextNum(), title: "", projectId: null, status: "todo", priority: "none", start: null, due: null, notes: "", assignee: "", tags: [], recur: "", subtasks: [], entries: [], createdAt: now, updatedAt: now, completedAt: null, ...fields };
+  put("tasks", t); return t;
+}
+function setStatus(t, status) {
+  t = S.tasks[t.id] || t;
+  const wasDone = t.status === "done";
+  const fields = { status, completedAt: status === "done" ? (t.completedAt || Date.now()) : null, archived: status === "done" ? t.archived : false, updatedAt: Date.now() };
+  if (status === "done" && !wasDone && t.recur && !t.spawnedNext) {
+    const base = t.due || t.start ? null : today();
+    const nt = newTask({
+      title: t.title, projectId: t.projectId, priority: t.priority, assignee: t.assignee, tags: [...(t.tags || [])], recur: t.recur, notes: t.notes,
+      start: t.start ? nextRecur(t.start, t.recur) : null, due: t.due ? nextRecur(t.due, t.recur) : (base ? nextRecur(base, t.recur) : null),
+      subtasks: (t.subtasks || []).map(s => ({ id: uid(), text: s.text, done: false, due: s.due ? nextRecur(s.due, t.recur) : null })),
+    });
+    fields.spawnedNext = nt.id;
+    toast(`${RECUR_LABEL[t.recur]}: the next “${t.title || "task"}” is ${nt.due ? "due " + dueLabel(nt.due) : "ready"}.`);
+  }
+  patch("tasks", t.id, fields);
+}
+function duplicateTask(t) {
+  return newTask({ title: t.title + " (copy)", projectId: t.projectId, priority: t.priority, assignee: t.assignee, tags: [...(t.tags || [])], notes: t.notes,
+    subtasks: (t.subtasks || []).map(s => ({ id: uid(), text: s.text, done: false, due: s.due || null })) });
+}
+function saveTemplate(t) {
+  const tp = { id: uid(), name: (t.title || "Untitled").slice(0, 60), priority: t.priority, tags: [...(t.tags || [])], subtasks: (t.subtasks || []).map(s => s.text), notes: t.notes || "", createdAt: Date.now() };
+  put("templates", tp); toast(`Saved “${tp.name}” as a template.`);
+}
+function fromTemplate(tp, extra) {
+  return newTask({ title: tp.name, priority: tp.priority || "none", tags: [...(tp.tags || [])], notes: tp.notes || "", subtasks: (tp.subtasks || []).map(text => ({ id: uid(), text, done: false, due: null })), ...extra });
+}
+function newProject(fields) {
+  const n = Object.keys(S.projects).length;
+  const p = { id: uid(), name: "", description: "", color: n % 8, createdAt: Date.now(), ...fields };
+  put("projects", p); return p;
+}
+function newNote(fields) {
+  const now = Date.now();
+  const n = { id: uid(), title: "", body: "", projectId: null, pinned: false, createdAt: now, updatedAt: now, ...fields };
+  put("notes", n); return n;
+}
+function parseQuick(s) {
+  const tags = []; let assignee = "", priority = null;
+  const title = s
+    .replace(/(^|\s)#([^\s#@!]+)/g, (m, a, b) => { tags.push(b); return a; })
+    .replace(/(^|\s)@([^\s#@!]+)/g, (m, a, b) => { assignee = b; return a; })
+    .replace(/(^|\s)!(high|medium|med|low)\b/gi, (m, a, b) => { b = b.toLowerCase(); priority = b === "med" ? "medium" : b; return a; })
+    .replace(/\s+/g, " ").trim();
+  return { title, tags, assignee, priority };
+}
+function allTags(st) {
+  const c = {};
+  Object.values(st.tasks).forEach(t => { if (!isArchived(t)) (t.tags || []).forEach(g => c[g] = (c[g] || 0) + 1); });
+  return Object.entries(c).sort((a, b) => b[1] - a[1] || a[0].localeCompare(b[0]));
+}
+
+/* ---------- icons ---------- */
+const P = {
+  home: "M3 10.5 12 3l9 7.5M5 9v11h5v-6h4v6h5V9",
+  sun: "M12 4V2M12 22v-2M4 12H2M22 12h-2M5.6 5.6 4.2 4.2M19.8 19.8l-1.4-1.4M5.6 18.4l-1.4 1.4M19.8 4.2l-1.4 1.4M12 16a4 4 0 1 0 0-8 4 4 0 0 0 0 8z",
+  timeline: "M3 6h9M7 12h10M10 18h11M3 3v18",
+  note: "M6 3h9l4 4v14H6zM14 3v5h5M9 12h7M9 16h5",
+  plus: "M12 5v14M5 12h14",
+  search: "M11 18a7 7 0 1 0 0-14 7 7 0 0 0 0 14zM20 20l-4-4",
+  check: "M5 12.5 10 17 19 7",
+  x: "M6 6l12 12M18 6 6 18",
+  menu: "M4 7h16M4 12h16M4 17h16",
+  cal: "M4 6h16v14H4zM4 10h16M8 3v4M16 3v4",
+  flag: "M5 21V4h11l-2 4 2 4H5",
+  folder: "M3 6h6l2 2h10v11H3z",
+  status: "M12 21a9 9 0 1 0 0-18 9 9 0 0 0 0 18zM12 7v5l3 2",
+  trash: "M4 7h16M9 7V4h6v3M6 7l1 13h10l1-13",
+  pin: "M9 3h6l-1 6 4 3H6l4-3zM12 12v9",
+  board: "M4 4h5v16H4zM10 4h5v10h-5zM16 4h4v13h-4z",
+  list: "M8 6h12M8 12h12M8 18h12M4 6h.01M4 12h.01M4 18h.01",
+  dots: "M5 12h.01M12 12h.01M19 12h.01",
+  arrowL: "M15 6l-6 6 6 6",
+  arrowR: "M9 6l6 6-6 6",
+  edit: "M4 20h4L19 9l-4-4L4 16zM14 6l4 4",
+  done: "M12 21a9 9 0 1 0 0-18 9 9 0 0 0 0 18zM8 12l3 3 5-6",
+  open: "M14 4h6v6M20 4l-9 9M18 14v6H4V6h6",
+  tag: "M3 12V4h8l10 10-8 8zM7.5 8.5h.01",
+  user: "M12 12a4 4 0 1 0 0-8 4 4 0 0 0 0 8zM4 21a8 8 0 0 1 16 0",
+  repeat: "M17 2l3 3-3 3M20 5H8a4 4 0 0 0-4 4v1M7 22l-3-3 3-3M4 19h12a4 4 0 0 0 4-4v-1",
+  steps: "M4 6l2 2 3-3M4 13l2 2 3-3M12 7h8M12 14h8M12 20h8M5 20h1",
+  camera: "M4 8h3l2-3h6l2 3h3v11H4zM12 17a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7z",
+  copy: "M8 8h12v12H8zM4 16V4h12",
+  log: "M5 4h14v16H5zM9 8h6M9 12h6M9 16h3",
+  grid: "M4 5h16v15H4zM4 10h16M4 15h16M9 5v15M15 5v15",
+  archive: "M3 5h18v4H3zM5 9v11h14V9M10 13h4",
+  download: "M12 4v12M7 11l5 5 5-5M5 20h14",
+  upload: "M12 20V8M7 13l5-5 5 5M5 4h14",
+  expand: "M4 9V4h5M20 9V4h-5M4 15v5h5M20 15v5h-5",
+  shrink: "M9 4v5H4M15 4v5h5M9 20v-5H4M15 20v-5h5",
+  template: "M4 4h16v5H4zM4 13h7v7H4zM15 13h5M15 17h5",
+  measure: "M3 17 17 3l4 4L7 21zM7 13l2 2M10 10l2 2M13 7l2 2",
+  decision: "M12 3v18M5 8h14l-3 4 3 4H5",
+  call: "M5 4h4l2 5-3 2a11 11 0 0 0 5 5l2-3 5 2v4a2 2 0 0 1-2 2A17 17 0 0 1 3 6a2 2 0 0 1 2-2",
+  issue: "M12 3 2 21h20zM12 10v5M12 18h.01",
+};
+const ENTRY_ICON = { note: "note", measurement: "measure", decision: "decision", call: "call", issue: "issue" };
+const Icon = ({ n, w = 1.8 }) => html`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width=${w} stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d=${P[n]} /></svg>`;
+
+/* ---------- small pieces ---------- */
+function useLS(key, init) {
+  const [v, setV] = useState(() => { try { const x = localStorage.getItem(key); return x == null ? init : JSON.parse(x); } catch (e) { return init; } });
+  const set = x => { setV(x); try { localStorage.setItem(key, JSON.stringify(x)); } catch (e) {} };
+  return [v, set];
+}
+function Check({ on, onClick, label, small }) {
+  return html`<button class=${"check" + (on ? " on" : "") + (small ? " sm" : "")} aria-label=${label || (on ? "Mark as not done" : "Mark as done")} onClick=${e => { e.stopPropagation(); onClick(); }}>${on && html`<${Icon} n="check" w="3" />`}</button>`;
+}
+function DateChip({ d, done }) {
+  if (!d) return null;
+  const n = diffDays(today(), d);
+  const cls = done ? "" : n < 0 ? " due-bad" : n === 0 ? " due-today" : "";
+  return html`<span class=${"chip" + cls}><${Icon} n="cal" />${dueLabel(d)}</span>`;
+}
+const DueChip = ({ t }) => html`<${DateChip} d=${t.due} done=${t.status === "done"} />`;
+function PrioChip({ p }) {
+  if (!p || p === "none") return null;
+  return html`<span class=${"chip p-" + p}><${Icon} n="flag" />${p[0].toUpperCase() + p.slice(1)}</span>`;
+}
+function ProjTag({ p }) {
+  if (!p) return null;
+  return html`<span class="chip hide-sm"><span class="dot" style=${{ background: pcolor(p) }}></span>${p.name || "Untitled"}</span>`;
+}
+function Avatar({ name }) {
+  if (!name) return null;
+  const ini = name.split(/[\s._-]+/).filter(Boolean).slice(0, 2).map(x => x[0].toUpperCase()).join("");
+  return html`<span class="avatar" title=${"Owner: " + name}>${ini}</span>`;
+}
+function TaskMeta({ t, projects, showProject, compact }) {
+  const s = stepsOf(t);
+  const tags = t.tags || [];
+  return html`<span class="meta">
+    ${t.status === "doing" && !compact && html`<span class="chip s-doing">In progress</span>`}
+    ${tags.slice(0, compact ? 3 : 2).map(g => html`<span key=${g} class="chip tagc hide-sm">${g}</span>`)}
+    ${tags.length > (compact ? 3 : 2) && html`<span class="chip tagc hide-sm">+${tags.length - (compact ? 3 : 2)}</span>`}
+    ${s.total > 0 && html`<span class=${"chip" + (s.late ? " due-bad" : s.done === s.total ? " s-done" : "")} title=${s.late ? s.late + " checklist steps are late" : "Checklist steps done"}><${Icon} n="steps" />${s.done}/${s.total}</span>`}
+    ${t.recur && html`<span class="muted" title=${RECUR_LABEL[t.recur]} style=${{ display: "inline-flex" }}><${Icon} n="repeat" /></span>`}
+    ${(t.entries || []).length > 0 && html`<span class="muted hide-sm" title=${t.entries.length + " log entries"} style=${{ display: "inline-flex", alignItems: "center", gap: 3 }}><${Icon} n="log" /><span class="mono" style=${{ fontSize: 11 }}>${t.entries.length}</span></span>`}
+    <${PrioChip} p=${t.priority} />
+    ${showProject && html`<${ProjTag} p=${projects[t.projectId]} />`}
+    <${DueChip} t=${t} />
+    <${Avatar} name=${t.assignee} />
+  </span>`;
+}
+function TaskRow({ t, projects, showProject, open }) {
+  return html`<div class=${"task" + (t.status === "done" ? " done" : "")} onClick=${() => open(t.id)} role="button" tabIndex="0" onKeyDown=${e => e.key === "Enter" && open(t.id)}>
+    <${Check} on=${t.status === "done"} onClick=${() => setStatus(t, t.status === "done" ? "todo" : "done")} />
+    ${t.num && html`<span class="num">${fmtNum(t.num)}</span>`}
+    <span class="t">${t.title || html`<span class="muted">Untitled</span>`}</span>
+    <${TaskMeta} t=${t} projects=${projects} showProject=${showProject} />
+  </div>`;
+}
+
+function QuickAdd({ projectId, due, status, projects, placeholder, compact }) {
+  const [v, setV] = useState("");
+  const [pid, setPid] = useState(projectId || "");
+  const plist = Object.values(projects || {}).sort((a, b) => a.createdAt - b.createdAt);
+  const submit = e => {
+    e.preventDefault();
+    const q = parseQuick(v); if (!q.title) return;
+    newTask({ title: q.title, tags: q.tags, assignee: q.assignee, priority: q.priority || "none", projectId: projectId || pid || null, due: due || null, status: status || "todo" });
+    setV("");
+  };
+  return html`<form class="add" onSubmit=${submit}>
+    <${Icon} n="plus" />
+    <input value=${v} onInput=${e => setV(e.target.value)} placeholder=${placeholder || (compact ? "New" : "Add a task  ·  #tag  @owner  !high")} aria-label="New task title" />
+    ${!projectId && projects && plist.length > 0 && html`<select value=${pid} onChange=${e => setPid(e.target.value)} aria-label="Project for new task">
+      <option value="">No project</option>
+      ${plist.map(p => html`<option key=${p.id} value=${p.id}>${p.name || "Untitled"}</option>`)}
+    </select>`}
+  </form>`;
+}
+
+function TemplateRow({ st, extra, openTask }) {
+  const tps = Object.values(st.templates).sort((a, b) => a.createdAt - b.createdAt);
+  if (!tps.length) return null;
+  return html`<div class="row tpl-row">
+    <span class="muted" style=${{ fontSize: 12.5, display: "inline-flex", gap: 5, alignItems: "center" }}><${Icon} n="template" />From template</span>
+    ${tps.map(tp => html`<span key=${tp.id} class="tpl">
+      <button onClick=${() => openTask(fromTemplate(tp, extra).id)} title=${`Create “${tp.name}” with ${(tp.subtasks || []).length} checklist steps`}>${tp.name}</button>
+      <button class="x" aria-label=${"Delete template " + tp.name} onClick=${() => { remove("templates", tp.id); toast(`Deleted template “${tp.name}”.`, "info", () => put("templates", tp)); }}><${Icon} n="x" /></button>
+    </span>`)}
+  </div>`;
+}
+
+function useDebounced(value, save, delay) {
+  const first = useRef(true);
+  const saveRef = useRef(save); saveRef.current = save;
+  useEffect(() => {
+    if (first.current) { first.current = false; return; }
+    const t = setTimeout(() => saveRef.current(value), delay);
+    return () => clearTimeout(t);
+  }, [value]);
+}
+
+function AutoText({ value, onChange, className, placeholder, onBlur, autoFocus, ariaLabel, onKeyDown }) {
+  const ref = useRef(null);
+  useEffect(() => { const el = ref.current; if (el) { el.style.height = "auto"; el.style.height = el.scrollHeight + "px"; } }, [value]);
+  return html`<textarea ref=${ref} rows="1" class=${className} value=${value} placeholder=${placeholder} aria-label=${ariaLabel || placeholder} autoFocus=${autoFocus}
+    onInput=${e => onChange(e.target.value)} onBlur=${onBlur} onKeyDown=${e => { if (onKeyDown) return onKeyDown(e); if (e.key === "Enter" && className && className.includes("title")) { e.preventDefault(); e.target.blur(); } }}></textarea>`;
+}
+
+function TagInput({ tags, onChange, suggestions }) {
+  const [v, setV] = useState("");
+  const add = raw => {
+    const parts = raw.split(/[,;]/).map(x => x.trim().replace(/^#/, "")).filter(Boolean);
+    if (!parts.length) return;
+    onChange([...new Set([...(tags || []), ...parts])]); setV("");
+  };
+  return html`<div class="taginput">
+    ${(tags || []).map(g => html`<span key=${g} class="chip tagc">${g}<button aria-label=${"Remove tag " + g} onClick=${() => onChange(tags.filter(x => x !== g))}><${Icon} n="x" /></button></span>`)}
+    <input value=${v} list="tag-suggest" placeholder=${(tags || []).length ? "Add" : "Add tags, e.g. ZOLL, FCT"} aria-label="Add a tag"
+      onInput=${e => { const x = e.target.value; if (/[,;]$/.test(x)) add(x); else setV(x); }}
+      onKeyDown=${e => { if (e.key === "Enter") { e.preventDefault(); add(v); } else if (e.key === "Backspace" && !v && tags && tags.length) onChange(tags.slice(0, -1)); }}
+      onBlur=${() => add(v)} />
+    <datalist id="tag-suggest">${(suggestions || []).filter(g => !(tags || []).includes(g)).map(g => html`<option key=${g} value=${g} />`)}</datalist>
+  </div>`;
+}
+
+/* ---------- sidebar ---------- */
+function Sidebar({ st, route, go, open, onSearch, onData }) {
+  const projects = Object.values(st.projects).sort((a, b) => a.createdAt - b.createdAt);
+  const t0 = today();
+  const openTasks = Object.values(st.tasks).filter(t => t.status !== "done");
+  const overdue = openTasks.filter(t => t.due && t.due < t0).length;
+  const dueToday = openTasks.filter(t => t.due === t0).length;
+  const openSteps = openTasks.reduce((n, t) => n + (t.subtasks || []).filter(s => !s.done).length, 0);
+  const nav = (key, icon, label, extra) => html`<button class=${"nav" + (route.view === key ? " on" : "")} onClick=${() => go({ view: key })}><${Icon} n=${icon} />${label}${extra}</button>`;
+  const addProject = () => { const p = newProject({}); go({ view: "project", id: p.id, fresh: true }); };
+  return html`<aside class=${"side" + (open ? " open" : "")} aria-label="Workspace navigation">
+    <div class="ws"><div class="ws-mark">R</div><div><div class="ws-name">${OWNER}'s Workspace</div><div class="ws-sub">${projects.length} ${projects.length === 1 ? "project" : "projects"} · ${openTasks.length} open</div></div></div>
+    <button class="nav" onClick=${onSearch}><${Icon} n="search" />Search<span class="count"><span class="kbd">/</span></span></button>
+    ${nav("dashboard", "home", "Dashboard")}
+    ${nav("today", "sun", "Tasks", (overdue || dueToday) ? html`<span class=${"count" + (overdue ? " bad" : "")}>${overdue ? overdue + " late" : dueToday}</span>` : null)}
+    ${nav("checklist", "steps", "Checklist", html`<span class="count">${openSteps || ""}</span>`)}
+    ${nav("calendar", "grid", "Calendar")}
+    ${nav("timeline", "timeline", "Timeline")}
+    ${nav("notes", "note", "Notes", html`<span class="count">${Object.keys(st.notes).length || ""}</span>`)}
+    <div class="side-h"><span>Projects</span><button class="icon-btn" aria-label="New project" title="New project" onClick=${addProject}><${Icon} n="plus" /></button></div>
+    ${projects.map(p => {
+      const left = Object.values(st.tasks).filter(t => t.projectId === p.id && t.status !== "done").length;
+      return html`<button key=${p.id} class=${"nav" + (route.view === "project" && route.id === p.id ? " on" : "")} onClick=${() => go({ view: "project", id: p.id })}>
+        <span class="dot" style=${{ background: pcolor(p) }}></span><span style=${{ overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>${p.name || "Untitled"}</span><span class="count">${left || ""}</span></button>`;
+    })}
+    ${projects.length === 0 && html`<button class="nav" onClick=${addProject}><${Icon} n="plus" />New project</button>`}
+    <div class="side-foot">
+      <button class="nav" onClick=${onData}><${Icon} n="archive" />Backup and import</button>
+      <div class="sync-line" title=${st.mode === "db" ? "Changes save to your account and show up on any device" : "Changes are kept in this browser only"}>
+        <span class=${"sync" + (st.mode === "db" ? "" : " local")}></span>${st.mode === "db" ? "Saved to your account" : "Saved in this browser"}
+      </div>
+    </div>
+  </aside>`;
+}
+
+/* ---------- dashboard ---------- */
+function CompletedChart({ tasks }) {
+  const [hover, setHover] = useState(-1);
+  const days = 14, t0 = today();
+  const data = [];
+  for (let i = days - 1; i >= 0; i--) data.push({ d: addDays(t0, -i), done: 0, added: 0 });
+  const idx = {}; data.forEach((x, i) => idx[x.d] = i);
+  tasks.forEach(t => {
+    if (t.completedAt) { const k = fmtDate(new Date(t.completedAt)); if (k in idx) data[idx[k]].done++; }
+  });
+  const max = Math.max(4, ...data.map(x => x.done));
+  const niceMax = max <= 4 ? 4 : Math.ceil(max / 2) * 2;
+  const W = 560, H = 170, L = 26, B = 22, T = 8;
+  const cw = (W - L) / days, bw = Math.min(22, cw * .56);
+  const y = v => T + (H - T - B) * (1 - v / niceMax);
+  const total = data.reduce((s, x) => s + x.done, 0);
+  const ticks = [0, niceMax / 2, niceMax];
+  const hx = hover >= 0 ? ((L + cw * hover + cw / 2) / W * 100) : 0;
+  return html`<div class="section">
+    <div class="row"><h3 class="h2">Tasks completed, last 14 days</h3><span class="spacer"></span><span class="mono muted" style=${{ fontSize: 12 }}>${total} total</span></div>
+    <div class="chart">
+      <svg viewBox=${`0 0 ${W} ${H}`} role="img" aria-label=${`Tasks completed per day over the last 14 days, ${total} in total`}>
+        ${ticks.map(v => html`<g key=${v}><line x1=${L} x2=${W} y1=${y(v)} y2=${y(v)} stroke="var(--line)" stroke-width="1" />
+          <text x=${L - 8} y=${y(v) + 4} text-anchor="end" font-size="10.5" fill="var(--muted)" font-family="var(--f-mono)">${v}</text></g>`)}
+        ${data.map((x, i) => {
+          const cx = L + cw * i + cw / 2, h = y(0) - y(x.done);
+          const isT = i === days - 1;
+          const r = Math.min(4, h / 2);
+          const path = h > 0 ? `M${cx - bw / 2},${y(0)} V${y(x.done) + r} Q${cx - bw / 2},${y(x.done)} ${cx - bw / 2 + r},${y(x.done)} H${cx + bw / 2 - r} Q${cx + bw / 2},${y(x.done)} ${cx + bw / 2},${y(x.done) + r} V${y(0)} Z` : "";
+          const lab = parseDate(x.d);
+          return html`<g key=${x.d}>
+            ${h > 0 && html`<path d=${path} fill="var(--accent)" opacity=${hover === -1 || hover === i ? 1 : .45} />`}
+            ${(i % 2 === 1 || isT) && html`<text x=${cx} y=${H - 6} text-anchor="middle" font-size="10.5" fill=${isT ? "var(--fg)" : "var(--muted)"} font-weight=${isT ? 600 : 400} font-family="var(--f-mono)">${isT ? "Today" : lab.getDate()}</text>`}
+            <rect x=${L + cw * i} y=${T} width=${cw} height=${H - T - B} fill="transparent" onMouseEnter=${() => setHover(i)} onMouseLeave=${() => setHover(-1)} />
+          </g>`;
+        })}
+        <line x1=${L} x2=${W} y1=${y(0)} y2=${y(0)} stroke="var(--line-2)" stroke-width="1" />
+      </svg>
+      ${hover >= 0 && html`<div class="tip" style=${{ left: hx + "%", top: (y(data[hover].done) / H * 100) + "%" }}>${dueLabel(data[hover].d)}: ${data[hover].done} done</div>`}
+    </div>
+  </div>`;
+}
+
+function deriveEvents(st) {
+  const ev = [];
+  Object.values(st.tasks).forEach(t => {
+    ev.push({ at: t.createdAt, kind: "add", text: "Added", name: t.title || "Untitled task", go: { task: t.id } });
+    if (t.completedAt) ev.push({ at: t.completedAt, kind: "done", text: "Completed", name: t.title || "Untitled task", go: { task: t.id } });
+  });
+  Object.values(st.tasks).forEach(t => (t.entries || []).forEach(e => ev.push({ at: e.at, kind: "log", text: "Logged a " + (ENTRY_LABEL[e.type] || "note").toLowerCase() + " on", name: t.title || "Untitled task", go: { task: t.id } })));
+  Object.values(st.notes).forEach(n => {
+    ev.push({ at: n.updatedAt || n.createdAt, kind: "note", text: (n.updatedAt - n.createdAt > 60000) ? "Edited note" : "Wrote note", name: n.title || "Untitled note", go: { view: "notes", id: n.id } });
+  });
+  Object.values(st.projects).forEach(p => ev.push({ at: p.createdAt, kind: "proj", text: "Started project", name: p.name || "Untitled", go: { view: "project", id: p.id } }));
+  return ev.filter(e => e.at).sort((a, b) => b.at - a.at);
+}
+
+function Dashboard({ st, go, openTask }) {
+  const t0 = today();
+  const tasks = Object.values(st.tasks);
+  const open = tasks.filter(t => t.status !== "done");
+  const overdue = open.filter(t => t.due && t.due < t0);
+  const dueToday = open.filter(t => t.due === t0);
+  const weekAgo = Date.now() - 7 * 864e5;
+  const doneWeek = tasks.filter(t => t.completedAt && t.completedAt >= weekAgo).length;
+  const doing = open.filter(t => t.status === "doing").length;
+  const lateSteps = open.reduce((n, t) => n + stepsOf(t).late, 0);
+  const upcoming = sortTasks(open.filter(t => t.due && t.due >= t0 && t.due <= addDays(t0, 7)));
+  const projects = Object.values(st.projects).sort((a, b) => a.createdAt - b.createdAt);
+  const events = deriveEvents(st).slice(0, 10);
+  const h = new Date().getHours();
+  const greet = h < 5 ? "Working late" : h < 12 ? "Good morning" : h < 18 ? "Good afternoon" : "Good evening";
+  const now = new Date();
+  const focus = sortTasks([...overdue, ...dueToday]).slice(0, 6);
+  return html`<div class="page">
+    <div>
+      <div class="crumb">${now.toLocaleDateString([], { weekday: "long", month: "long", day: "numeric" })}</div>
+      <h1 class="h1" style=${{ marginTop: 4 }}>${greet}, ${OWNER}</h1>
+      <p class="sub">${open.length === 0 ? "Nothing open. Add a task or start a project to get going." : `You have ${dueToday.length} ${dueToday.length === 1 ? "task" : "tasks"} due today${overdue.length ? ` and ${overdue.length} running late` : ""}.`}</p>
+    </div>
+    ${projects.length === 0 && tasks.length === 0 ? html`<div class="welcome">
+      <h2 class="h2" style=${{ fontSize: 16, color: "var(--fg)" }}>Set up your workspace</h2>
+      <p class="muted" style=${{ margin: 0 }}>Projects hold tasks, notes and a timeline. Start with whatever is on your mind this week.</p>
+      <div class="row"><button class="btn primary" onClick=${() => { const p = newProject({}); go({ view: "project", id: p.id, fresh: true }); }}><${Icon} n="plus" />New project</button>
+      <button class="btn" onClick=${() => { const n = newNote({}); go({ view: "notes", id: n.id }); }}><${Icon} n="note" />Write a note</button></div>
+    </div>` : null}
+    <div class="tiles">
+      <button class="tile" onClick=${() => go({ view: "today" })}><span class="k">Open tasks</span><span class="v">${open.length}</span><span class="hint">${doing} in progress</span></button>
+      <button class="tile" onClick=${() => go({ view: "today" })}><span class="k">Due today</span><span class="v">${dueToday.length}</span><span class="hint">${upcoming.filter(t => t.due !== t0).length} more this week</span></button>
+      <button class="tile" onClick=${() => go({ view: "today" })}><span class="k">Overdue</span><span class=${"v" + (overdue.length ? " bad" : "")}>${overdue.length}</span><span class="hint">${lateSteps ? `${lateSteps} checklist ${lateSteps === 1 ? "step" : "steps"} late too` : overdue.length ? "Needs a new date" : "All on track"}</span></button>
+      <div class="tile"><span class="k">Done this week</span><span class="v">${doneWeek}</span><span class="hint">Last 7 days</span></div>
+    </div>
+    <div class="grid2">
+      <div class="section">
+        <h3 class="h2">Focus now <span class="n">${focus.length}</span></h3>
+        <div class="list">
+          ${focus.map(t => html`<${TaskRow} key=${t.id} t=${t} projects=${st.projects} showProject open=${openTask} />`)}
+          ${focus.length === 0 && html`<div class="empty">Nothing due today or overdue.</div>`}
+          <${QuickAdd} due=${t0} projects=${st.projects} placeholder="Add a task for today" />
+        </div>
+      </div>
+      <div class="section">
+        <h3 class="h2">Coming up this week <span class="n">${upcoming.filter(t => t.due !== t0).length}</span></h3>
+        <div class="list">
+          ${upcoming.filter(t => t.due !== t0).slice(0, 7).map(t => html`<${TaskRow} key=${t.id} t=${t} projects=${st.projects} open=${openTask} />`)}
+          ${upcoming.filter(t => t.due !== t0).length === 0 && html`<div class="empty">No due dates in the next 7 days.</div>`}
+        </div>
+      </div>
+    </div>
+    <div class="grid2">
+      <div class="panel-box"><${CompletedChart} tasks=${tasks} /></div>
+      <div class="panel-box section">
+        <h3 class="h2">Projects</h3>
+        <div class="prog">
+          ${projects.map(p => {
+            const ts = tasks.filter(t => t.projectId === p.id);
+            const done = ts.filter(t => t.status === "done").length;
+            const pct = ts.length ? Math.round(done / ts.length * 100) : 0;
+            return html`<button key=${p.id} class="prog-row" onClick=${() => go({ view: "project", id: p.id })}>
+              <span class="name"><span class="dot" style=${{ background: pcolor(p) }}></span>${p.name || "Untitled"}</span>
+              <span class="mono muted" style=${{ fontSize: 12 }}>${done}/${ts.length} · ${pct}%</span>
+              <span class="bar"><i style=${{ width: pct + "%", background: pcolor(p) }}></i></span>
+            </button>`;
+          })}
+          ${projects.length === 0 && html`<div class="empty" style=${{ padding: 0 }}>No projects yet.</div>`}
+        </div>
+      </div>
+    </div>
+    <div class="section">
+      <h3 class="h2">Recent activity</h3>
+      <div class="feed">
+        ${events.map((e, i) => html`<div key=${i} class="ev">
+          <span class=${"ic" + (e.kind === "done" ? " good" : "")}><${Icon} n=${e.kind === "done" ? "done" : e.kind === "log" ? "log" : e.kind === "note" ? "note" : e.kind === "proj" ? "folder" : "plus"} /></span>
+          <span class="txt">${e.text} <b style=${{ cursor: "pointer" }} onClick=${() => e.go.task ? openTask(e.go.task) : go(e.go)}>${e.name}</b></span>
+          <span class="when">${ago(e.at)}</span>
+        </div>`)}
+        ${events.length === 0 && html`<div class="empty" style=${{ padding: 0 }}>Your activity will show up here.</div>`}
+      </div>
+    </div>
+  </div>`;
+}
+
+/* ---------- all tasks ---------- */
+function TasksView({ st, openTask }) {
+  const t0 = today();
+  const [tab, setTab] = useLS("workspace.tab", "open");
+  const [sort, setSort] = useLS("workspace.sort", "due");
+  const [q, setQ] = useState("");
+  const [tag, setTag] = useState(null);
+  const [owner, setOwner] = useState(null);
+  const [dueF, setDueF] = useState(null);
+  const all = Object.values(st.tasks);
+  const inTab = t => tab === "all" ? true : tab === "archived" ? isArchived(t) : tab === "done" ? t.status === "done" && !isArchived(t) : t.status !== "done";
+  const dueOk = t => !dueF ? true : dueF === "overdue" ? t.status !== "done" && t.due && t.due < t0 : dueF === "today" ? t.due === t0 : t.due && t.due >= t0 && t.due <= addDays(t0, 7);
+  const list = all.filter(t => inTab(t) && dueOk(t) && (!tag || (t.tags || []).includes(tag)) && (!owner || t.assignee === owner) && matchesSearch(t, q, st));
+  const tags = allTags(st);
+  const owners = [...new Set(all.filter(t => !isArchived(t) && t.assignee).map(t => t.assignee))].sort();
+  const counts = { overdue: all.filter(t => t.status !== "done" && t.due && t.due < t0).length, today: all.filter(t => t.status !== "done" && t.due === t0).length, week: all.filter(t => t.status !== "done" && t.due && t.due >= t0 && t.due <= addDays(t0, 7)).length };
+  const grouped = sort === "due" && tab === "open";
+  const groups = grouped ? [
+    ["Overdue", list.filter(t => t.due && t.due < t0)],
+    ["Today", list.filter(t => t.due === t0)],
+    ["Next 7 days", list.filter(t => t.due && t.due > t0 && t.due <= addDays(t0, 7))],
+    ["Later", list.filter(t => t.due && t.due > addDays(t0, 7))],
+    ["No date", list.filter(t => !t.due)],
+  ] : [[tab === "archived" ? "Archived" : tab === "done" ? "Closed" : tab === "all" ? "All tasks" : "Open", list]];
+  const filtered = q || tag || owner || dueF;
+  const exportCsv = () => exportTasksCsv(sortTasks(list, sort), st);
+  return html`<div class="page">
+    <div><div class="crumb"><${Icon} n="sun" /> Every project</div><h1 class="h1">Tasks</h1><p class="sub">Everything across your projects. Closed tasks move to Archived after ${ARCHIVE_DAYS} days.</p></div>
+    <div class="section">
+      <${QuickAdd} projects=${st.projects} />
+      <${TemplateRow} st=${st} openTask=${openTask} />
+    </div>
+    <div class="filters">
+      <div class="row">
+        <div class="seg">${[["open", "Open"], ["done", "Closed"], ["archived", "Archived"], ["all", "All"]].map(([k, l]) => html`<button key=${k} class=${tab === k ? "on" : ""} onClick=${() => setTab(k)}>${l}</button>`)}</div>
+        <input class="input search-in" type="search" value=${q} onInput=${e => setQ(e.target.value)} placeholder="Search titles, notes, tags, checklist, log" aria-label="Search tasks" />
+        <select class="input sort-in" value=${sort} onChange=${e => setSort(e.target.value)} aria-label="Sort order">
+          <option value="due">Sort by due date</option><option value="priority">Sort by priority</option><option value="newest">Newest first</option>
+        </select>
+      </div>
+      <div class="row chips-row">
+        ${[["overdue", "Overdue", counts.overdue], ["today", "Due today", counts.today], ["week", "Next 7 days", counts.week]].map(([k, l, n]) => html`<button key=${k} class=${"fchip" + (dueF === k ? " on" : "") + (k === "overdue" && n ? " bad" : "")} onClick=${() => setDueF(dueF === k ? null : k)}>${l} <span class="mono">${n}</span></button>`)}
+        ${tags.length > 0 && html`<span class="vsep"></span>`}
+        ${tags.slice(0, 14).map(([g, n]) => html`<button key=${g} class=${"fchip" + (tag === g ? " on" : "")} onClick=${() => setTag(tag === g ? null : g)}><${Icon} n="tag" />${g} <span class="mono">${n}</span></button>`)}
+        ${owners.length > 0 && html`<span class="vsep"></span>`}
+        ${owners.map(o => html`<button key=${o} class=${"fchip" + (owner === o ? " on" : "")} onClick=${() => setOwner(owner === o ? null : o)}><${Icon} n="user" />${o}</button>`)}
+      </div>
+      ${(filtered || list.length > 0) && html`<div class="row" style=${{ fontSize: 12.5 }}>
+        <span class="muted">${list.length} ${list.length === 1 ? "task" : "tasks"}${filtered ? " match" : ""}</span>
+        ${filtered && html`<button class="linkbtn" onClick=${() => { setQ(""); setTag(null); setOwner(null); setDueF(null); }}>Clear filters</button>`}
+        <span class="spacer"></span>
+        ${st.caps.downloads && list.length > 0 && html`<button class="linkbtn" onClick=${exportCsv}><${Icon} n="download" />Export these to CSV</button>`}
+      </div>`}
+    </div>
+    ${groups.map(([label, items]) => (items.length > 0 || (grouped && label === "Today" && !filtered)) && html`<div class="section" key=${label}>
+      <h3 class="h2" style=${label === "Overdue" ? { color: "var(--bad)" } : null}>${label} <span class="n">${items.length}</span></h3>
+      <div class="list">${sortTasks(items, sort).map(t => html`<${TaskRow} key=${t.id} t=${t} projects=${st.projects} showProject open=${openTask} />`)}
+        ${items.length === 0 && html`<div class="empty">Nothing due today.</div>`}</div>
+    </div>`)}
+    ${list.length === 0 && !grouped && html`<div class="empty">${filtered ? "No tasks match these filters." : tab === "archived" ? "Nothing archived yet." : "No tasks here yet."}</div>`}
+  </div>`;
+}
+
+/* ---------- checklist: every step across tasks ---------- */
+function ChecklistView({ st, openTask }) {
+  const t0 = today();
+  const [by, setBy] = useLS("workspace.clgroup", "task");
+  const [showDone, setShowDone] = useLS("workspace.cldone", false);
+  const [q, setQ] = useState("");
+  const [collapsed, setCollapsed] = useState({});
+  const items = [];
+  Object.values(st.tasks).filter(t => t.status !== "done" && !isArchived(t)).forEach(t => (t.subtasks || []).forEach(s => {
+    if (!showDone && s.done) return;
+    if (q && !(s.text + " " + t.title + " " + (t.tags || []).join(" ") + " " + t.assignee).toLowerCase().includes(q.toLowerCase())) return;
+    items.push({ t, s });
+  }));
+  const toggle = (t, s) => { const cur = S.tasks[t.id]; patch("tasks", t.id, { subtasks: cur.subtasks.map(x => x.id === s.id ? { ...x, done: !x.done } : x), updatedAt: Date.now() }); };
+  let groups;
+  if (by === "task") {
+    const m = new Map();
+    sortTasks([...new Set(items.map(i => i.t))]).forEach(t => m.set(t.id, { key: t.id, label: (fmtNum(t.num) ? fmtNum(t.num) + "  " : "") + (t.title || "Untitled"), task: t, items: [] }));
+    items.forEach(i => m.get(i.t.id).items.push(i));
+    groups = [...m.values()];
+  } else if (by === "due") {
+    const g = { late: [], today: [], week: [], later: [], none: [] };
+    items.forEach(i => { const d = i.s.due; g[!d ? "none" : d < t0 ? "late" : d === t0 ? "today" : d <= addDays(t0, 7) ? "week" : "later"].push(i); });
+    groups = [["late", "Late"], ["today", "Today"], ["week", "Next 7 days"], ["later", "Later"], ["none", "No date"]].map(([k, l]) => ({ key: k, label: l, items: g[k].sort((a, b) => (a.s.due || "").localeCompare(b.s.due || "")) })).filter(x => x.items.length);
+  } else {
+    groups = [{ key: "todo", label: "To do", items: items.filter(i => !i.s.done) }, { key: "done", label: "Done", items: items.filter(i => i.s.done) }].filter(x => x.items.length);
+  }
+  const total = items.length, done = items.filter(i => i.s.done).length;
+  return html`<div class="page">
+    <div><div class="crumb"><${Icon} n="steps" /> Every open task</div><h1 class="h1">Checklist</h1><p class="sub">Every checklist step from your open tasks in one place. Tick them off here without opening each task.</p></div>
+    <div class="row">
+      <div class="seg">${[["task", "By task"], ["due", "By date"], ["status", "By status"]].map(([k, l]) => html`<button key=${k} class=${by === k ? "on" : ""} onClick=${() => setBy(k)}>${l}</button>`)}</div>
+      <input class="input search-in" type="search" value=${q} onInput=${e => setQ(e.target.value)} placeholder="Search steps" aria-label="Search checklist steps" />
+      <label class="row muted" style=${{ gap: 6, fontSize: 13 }}><input type="checkbox" checked=${showDone} onChange=${e => setShowDone(e.target.checked)} />Show done steps</label>
+    </div>
+    ${groups.map(g => html`<div class="section" key=${g.key}>
+      <button class="h2 grp" onClick=${() => setCollapsed({ ...collapsed, [g.key]: !collapsed[g.key] })} aria-expanded=${!collapsed[g.key]}>
+        <span class="caret" style=${{ transform: collapsed[g.key] ? "none" : "rotate(90deg)" }}><${Icon} n="arrowR" /></span>
+        <span style=${g.key === "late" ? { color: "var(--bad)" } : null}>${g.label}</span><span class="n">${g.task ? stepsOf(g.task).done + "/" + stepsOf(g.task).total : g.items.length}</span>
+        ${g.task && html`<span class="linkbtn" onClick=${e => { e.stopPropagation(); openTask(g.task.id); }}>Open task</span>`}
+      </button>
+      ${!collapsed[g.key] && html`<div class="list">${g.items.map(({ t, s }) => html`<div key=${s.id} class=${"task step" + (s.done ? " done" : "")} onClick=${() => toggle(t, s)} role="button" tabIndex="0" onKeyDown=${e => (e.key === "Enter" || e.key === " ") && (e.preventDefault(), toggle(t, s))}>
+        <${Check} small on=${s.done} onClick=${() => toggle(t, s)} />
+        <span class="t">${s.text}</span>
+        <span class="meta">
+          ${by !== "task" && html`<button class="chip linkchip" onClick=${e => { e.stopPropagation(); openTask(t.id); }} title="Open task">${st.projects[t.projectId] && html`<span class="dot" style=${{ background: pcolor(st.projects[t.projectId]) }}></span>`}${fmtNum(t.num)} ${(t.title || "Untitled").slice(0, 32)}</button>`}
+          <${DateChip} d=${s.due} done=${s.done} />
+        </span>
+      </div>`)}</div>`}
+    </div>`)}
+    ${groups.length === 0 && html`<div class="empty">${q ? "No steps match." : "No open checklist steps. Add steps to a task from its panel."}</div>`}
+    ${total > 0 && html`<div class="muted mono" style=${{ fontSize: 12 }}>${done} of ${total} steps shown are done</div>`}
+  </div>`;
+}
+
+/* ---------- calendar ---------- */
+function CalendarView({ st, openTask }) {
+  const t0 = today();
+  const [cursor, setCursor] = useState(() => t0.slice(0, 7));
+  const [day, setDay] = useState(t0);
+  const [y, m] = cursor.split("-").map(Number);
+  const first = new Date(y, m - 1, 1);
+  const lead = (first.getDay() + 6) % 7;
+  const gridStart = addDays(fmtDate(first), -lead);
+  const daysInMonth = new Date(y, m, 0).getDate();
+  const weeks = Math.ceil((lead + daysInMonth) / 7);
+  const byDay = {};
+  const addTo = (d, item) => { (byDay[d] = byDay[d] || []).push(item); };
+  Object.values(st.tasks).filter(t => !isArchived(t)).forEach(t => {
+    if (t.due) addTo(t.due, { kind: "task", t });
+    else if (t.start) addTo(t.start, { kind: "start", t });
+    (t.subtasks || []).forEach(s => { if (s.due && !(t.status === "done")) addTo(s.due, { kind: "step", t, s }); });
+  });
+  const shift = n => { const d = new Date(y, m - 1 + n, 1); setCursor(fmtDate(d).slice(0, 7)); };
+  const dayItems = (byDay[day] || []);
+  return html`<div class="page wide cal-page">
+    <div><div class="crumb"><${Icon} n="grid" /> Every project</div><h1 class="h1">Calendar</h1><p class="sub">Tasks on their due dates, with checklist steps that have their own date.</p></div>
+    <div class="row">
+      <h2 class="h2" style=${{ fontSize: 16, color: "var(--fg)", minWidth: 150 }}>${first.toLocaleDateString([], { month: "long", year: "numeric" })}</h2>
+      <button class="icon-btn" aria-label="Previous month" onClick=${() => shift(-1)}><${Icon} n="arrowL" /></button>
+      <button class="btn" onClick=${() => { setCursor(t0.slice(0, 7)); setDay(t0); }}>Today</button>
+      <button class="icon-btn" aria-label="Next month" onClick=${() => shift(1)}><${Icon} n="arrowR" /></button>
+    </div>
+    <div class="cal-grid">
+      ${["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"].map(d => html`<div key=${d} class="cal-dow">${d}</div>`)}
+      ${Array.from({ length: weeks * 7 }, (_, i) => {
+        const ds = addDays(gridStart, i), d = parseDate(ds);
+        const items = byDay[ds] || [];
+        const tasks = items.filter(x => x.kind !== "step"), steps = items.filter(x => x.kind === "step");
+        const out = d.getMonth() !== m - 1;
+        const late = ds < t0 && items.some(x => x.kind === "step" ? !x.s.done : x.t.status !== "done");
+        return html`<div key=${ds} class=${"cal-cell" + (out ? " out" : "") + (ds === t0 ? " today" : "") + (ds === day ? " sel" : "")} onClick=${() => setDay(ds)} role="button" tabIndex="0" aria-label=${dueLabel(ds) + ", " + items.length + " items"} onKeyDown=${e => e.key === "Enter" && setDay(ds)}>
+          <div class="cal-d"><span class=${"cal-n" + (late ? " late" : "")}>${d.getDate()}</span>${items.length > 0 && html`<span class="cal-count mono">${items.length}</span>`}</div>
+          <div class="cal-items">
+            ${tasks.slice(0, 3).map(x => html`<button key=${x.t.id} class=${"cal-item" + (x.t.status === "done" ? " done" : "")} onClick=${e => { e.stopPropagation(); openTask(x.t.id); }} title=${x.t.title}>
+              <span class="dot" style=${{ background: st.projects[x.t.projectId] ? pcolor(st.projects[x.t.projectId]) : "var(--muted)" }}></span><span class="ct">${x.kind === "start" ? "Starts: " : ""}${x.t.title || "Untitled"}</span></button>`)}
+            ${tasks.length > 3 && html`<span class="cal-more">+${tasks.length - 3} more</span>`}
+            ${steps.length > 0 && html`<span class="cal-more"><${Icon} n="steps" />${steps.length} ${steps.length === 1 ? "step" : "steps"}</span>`}
+          </div>
+        </div>`;
+      })}
+    </div>
+    <div class="section">
+      <h3 class="h2">${parseDate(day).toLocaleDateString([], { weekday: "long", month: "long", day: "numeric" })} <span class="n">${dayItems.length}</span></h3>
+      <div class="list">
+        ${dayItems.filter(x => x.kind !== "step").map(x => html`<${TaskRow} key=${x.t.id} t=${x.t} projects=${st.projects} showProject open=${openTask} />`)}
+        ${dayItems.filter(x => x.kind === "step").map(x => html`<div key=${x.s.id} class=${"task step" + (x.s.done ? " done" : "")} onClick=${() => openTask(x.t.id)}>
+          <${Check} small on=${x.s.done} onClick=${() => { const cur = S.tasks[x.t.id]; patch("tasks", x.t.id, { subtasks: cur.subtasks.map(s => s.id === x.s.id ? { ...s, done: !s.done } : s), updatedAt: Date.now() }); }} />
+          <span class="t">${x.s.text}</span><span class="meta"><span class="chip">${fmtNum(x.t.num)} ${(x.t.title || "").slice(0, 30)}</span></span></div>`)}
+        ${dayItems.length === 0 && html`<div class="empty">Nothing on this day.</div>`}
+        <${QuickAdd} due=${day} projects=${st.projects} placeholder=${"Add a task for " + dueLabel(day)} />
+      </div>
+    </div>
+  </div>`;
+}
+
+/* ---------- project ---------- */
+function Board({ tasks, projectId, openTask }) {
+  const [over, setOver] = useState(null);
+  const [drag, setDrag] = useState(null);
+  return html`<div class="board">
+    ${STATUS.map(([key, label]) => {
+      const list = sortTasks(tasks.filter(t => t.status === key));
+      return html`<div key=${key} class=${"col" + (over === key ? " over" : "")}
+        onDragOver=${e => { e.preventDefault(); setOver(key); }} onDragLeave=${() => setOver(null)}
+        onDrop=${e => { e.preventDefault(); setOver(null); const id = e.dataTransfer.getData("text/plain"); const t = S.tasks[id]; if (t && t.status !== key) setStatus(t, key); }}>
+        <div class="col-h"><span class=${"chip" + (key === "doing" ? " s-doing" : key === "done" ? " s-done" : "")}>${label}</span><span class="n">${list.length}</span></div>
+        ${list.map(t => html`<div key=${t.id} class=${"card" + (t.status === "done" ? " done" : "") + (drag === t.id ? " dragging" : "")} draggable="true" tabIndex="0" role="button"
+          onDragStart=${e => { e.dataTransfer.setData("text/plain", t.id); e.dataTransfer.effectAllowed = "move"; setDrag(t.id); }} onDragEnd=${() => setDrag(null)}
+          onClick=${() => openTask(t.id)} onKeyDown=${e => e.key === "Enter" && openTask(t.id)}>
+          <span class="t">${t.num ? html`<span class="num">${fmtNum(t.num)}</span> ` : ""}${t.title || "Untitled"}</span>
+          <${TaskMeta} t=${t} compact />
+        </div>`)}
+        <${QuickAdd} projectId=${projectId} status=${key} compact />
+      </div>`;
+    })}
+  </div>`;
+}
+
+function ProjectView({ st, id, fresh, go, openTask }) {
+  const p = st.projects[id];
+  const [mode, setMode] = useState(() => { try { return localStorage.getItem("workspace.pview") || "board"; } catch (e) { return "board"; } });
+  const [name, setName] = useState(p ? p.name : "");
+  const [desc, setDesc] = useState(p ? p.description || "" : "");
+  const [menu, setMenu] = useState(false);
+  const [armed, setArmed] = useState(false);
+  useEffect(() => { if (p) { setName(p.name); setDesc(p.description || ""); } setArmed(false); setMenu(false); }, [id]);
+  useDebounced(name, v => patch("projects", id, { name: v }), 400);
+  useDebounced(desc, v => patch("projects", id, { description: v }), 500);
+  const setM = m => { setMode(m); try { localStorage.setItem("workspace.pview", m); } catch (e) {} };
+  if (!p) return html`<div class="page"><h1 class="h1">This project was deleted</h1><button class="btn" onClick=${() => go({ view: "dashboard" })}>Back to dashboard</button></div>`;
+  const tasks = Object.values(st.tasks).filter(t => t.projectId === id);
+  const live = tasks.filter(t => !isArchived(t));
+  const archivedN = tasks.length - live.length;
+  const notes = Object.values(st.notes).filter(n => n.projectId === id).sort((a, b) => b.updatedAt - a.updatedAt);
+  const done = tasks.filter(t => t.status === "done").length;
+  const pct = tasks.length ? Math.round(done / tasks.length * 100) : 0;
+  const dated = tasks.filter(t => t.start || t.due).flatMap(t => [t.start, t.due]).filter(Boolean).sort();
+  const delProject = () => {
+    if (!armed) { setArmed(true); return; }
+    tasks.forEach(t => remove("tasks", t.id));
+    notes.forEach(n => patch("notes", n.id, { projectId: null }));
+    remove("projects", id); go({ view: "dashboard" });
+  };
+  return html`<div class="page">
+    <div>
+      <div class="row" style=${{ position: "relative" }}>
+        <div class="crumb"><span class="dot" style=${{ background: pcolor(p) }}></span>Project${dated.length ? html` · <span class="mono">${dueLabel(dated[0])} to ${dueLabel(dated[dated.length - 1])}</span>` : ""}</div>
+        <span class="spacer"></span>
+        <button class="icon-btn" aria-label="Project settings" title="Project settings" onClick=${() => { setMenu(!menu); setArmed(false); }}><${Icon} n="dots" w="3" /></button>
+        ${menu && html`<div class="menu-pop">
+          <div class="h2">Color</div>
+          <div class="color-pick">${[0, 1, 2, 3, 4, 5, 6, 7].map(c => html`<button key=${c} aria-label=${"Color " + (c + 1)} class=${p.color === c ? "on" : ""} style=${{ background: `var(--c${c})` }} onClick=${() => patch("projects", id, { color: c })}></button>`)}</div>
+          <button class=${"btn danger" + (armed ? " armed" : "")} onClick=${delProject}><${Icon} n="trash" />${armed ? `Delete project and ${tasks.length} tasks` : "Delete project"}</button>
+          ${armed && html`<span class="muted" style=${{ fontSize: 12 }}>Notes in this project are kept. Click again to confirm.</span>`}
+        </div>`}
+      </div>
+      <input class="h1-input" value=${name} placeholder="Untitled project" aria-label="Project name" autoFocus=${!!fresh} onInput=${e => setName(e.target.value)} onKeyDown=${e => e.key === "Enter" && e.target.blur()} style=${{ marginTop: 4 }} />
+      <${AutoText} className="desc-input" value=${desc} onChange=${setDesc} placeholder="Add a description" />
+    </div>
+    <div class="row">
+      <div class="seg" role="tablist">
+        ${[["board", "Board", "board"], ["list", "List", "list"], ["notes", "Notes", "note"]].map(([k, l]) => html`<button key=${k} role="tab" aria-selected=${mode === k} class=${mode === k ? "on" : ""} onClick=${() => setM(k)}>${l}${k === "notes" && notes.length ? ` ${notes.length}` : ""}</button>`)}
+      </div>
+      <span class="spacer"></span>
+      <span class="mono muted" style=${{ fontSize: 12 }}>${done}/${tasks.length} done · ${pct}%</span>
+      <span class="bar" style=${{ width: 90, display: "inline-block" }}><i style=${{ width: pct + "%", background: pcolor(p) }}></i></span>
+    </div>
+    ${mode !== "notes" && html`<${TemplateRow} st=${st} extra=${{ projectId: id }} openTask=${openTask} />`}
+    ${mode === "board" && html`<${Board} tasks=${live} projectId=${id} openTask=${openTask} />`}
+    ${mode === "list" && html`<div class="list">
+      ${sortTasks(live).map(t => html`<${TaskRow} key=${t.id} t=${t} projects=${st.projects} open=${openTask} />`)}
+      <${QuickAdd} projectId=${id} />
+    </div>`}
+    ${mode !== "notes" && archivedN > 0 && html`<div class="muted" style=${{ fontSize: 12.5 }}>${archivedN} archived ${archivedN === 1 ? "task is" : "tasks are"} hidden. Find ${archivedN === 1 ? "it" : "them"} under Tasks, Archived.</div>`}
+    ${mode === "notes" && html`<div class="section">
+      <div class="row"><button class="btn" onClick=${() => { const n = newNote({ projectId: id }); go({ view: "notes", id: n.id }); }}><${Icon} n="plus" />New note</button></div>
+      <div class="note-cards">
+        ${notes.map(n => html`<button key=${n.id} class="note-card" onClick=${() => go({ view: "notes", id: n.id })}>
+          <span class="nt">${n.title || "Untitled"}</span><span class="np">${preview(n.body, 160) || "Empty note"}</span><span class="nm">Edited ${ago(n.updatedAt)}</span></button>`)}
+      </div>
+      ${notes.length === 0 && html`<div class="empty">No notes in this project yet.</div>`}
+    </div>`}
+  </div>`;
+}
+
+/* ---------- task panel ---------- */
+function Steps({ t }) {
+  const [txt, setTxt] = useState("");
+  const [due, setDue] = useState("");
+  const [armed, setArmed] = useState(null);
+  const steps = t.subtasks || [];
+  const save = subs => patch("tasks", t.id, { subtasks: subs, updatedAt: Date.now() });
+  const cur = () => S.tasks[t.id].subtasks || [];
+  const s = stepsOf(t);
+  const add = e => { e.preventDefault(); const text = txt.trim(); if (!text) return; save([...cur(), { id: uid(), text, done: false, due: due || null }]); setTxt(""); };
+  const move = (i, d) => { const a = cur().slice(); const j = i + d; if (j < 0 || j >= a.length) return; [a[i], a[j]] = [a[j], a[i]]; save(a); };
+  return html`<div class="section">
+    <div class="row"><h3 class="h2"><${Icon} n="steps" /> Checklist <span class="n">${s.done}/${s.total}</span></h3><span class="spacer"></span>
+      ${s.late > 0 && html`<span class="chip due-bad">${s.late} late</span>`}
+      ${s.total > 0 && html`<span class="bar" style=${{ width: 80, display: "inline-block" }}><i style=${{ width: Math.round(s.done / s.total * 100) + "%", background: "var(--good)" }}></i></span>`}</div>
+    <div class="steps">
+      ${steps.map((x, i) => html`<div key=${x.id} class=${"stepr" + (x.done ? " done" : "")}>
+        <${Check} small on=${x.done} onClick=${() => save(cur().map(y => y.id === x.id ? { ...y, done: !y.done } : y))} />
+        <input class="step-text" defaultValue=${x.text} aria-label="Step text" onBlur=${e => { const v = e.target.value.trim(); if (v && v !== x.text) save(cur().map(y => y.id === x.id ? { ...y, text: v } : y)); }} onKeyDown=${e => { if (e.key === "Enter") e.target.blur(); if (e.altKey && e.key === "ArrowUp") move(i, -1); if (e.altKey && e.key === "ArrowDown") move(i, 1); }} />
+        <input type="date" class=${"step-date" + (x.due ? "" : " empty") + (!x.done && x.due && x.due < today() ? " late" : "")} value=${x.due || ""} aria-label="Step due date" onChange=${e => save(cur().map(y => y.id === x.id ? { ...y, due: e.target.value || null } : y))} />
+        <button class=${"icon-btn" + (armed === x.id ? " armed" : "")} aria-label=${armed === x.id ? "Click again to remove" : "Remove step"} title=${armed === x.id ? "Click again to remove" : "Remove step"} onClick=${() => { if (armed !== x.id) return setArmed(x.id); save(cur().filter(y => y.id !== x.id)); setArmed(null); }}><${Icon} n=${armed === x.id ? "trash" : "x"} /></button>
+      </div>`)}
+      <form class="add" onSubmit=${add}><${Icon} n="plus" /><input value=${txt} onInput=${e => setTxt(e.target.value)} placeholder="Add a step, press Enter" aria-label="New checklist step" /><input type="date" class="step-date" value=${due} onChange=${e => setDue(e.target.value)} aria-label="New step due date" /></form>
+    </div>
+  </div>`;
+}
+
+async function resizeImage(file) {
+  const url = URL.createObjectURL(file);
+  try {
+    const img = await new Promise((res, rej) => { const i = new Image(); i.onload = () => res(i); i.onerror = () => rej(new Error("decode")); i.src = url; });
+    const MAX = STANDALONE ? 1024 : 1600; let { width: w, height: h } = img;
+    if (w > MAX || h > MAX) { const k = MAX / Math.max(w, h); w = Math.round(w * k); h = Math.round(h * k); }
+    const c = document.createElement("canvas"); c.width = w; c.height = h; c.getContext("2d").drawImage(img, 0, 0, w, h);
+    return await new Promise(res => c.toBlob(res, "image/jpeg", STANDALONE ? .72 : .85));
+  } finally { URL.revokeObjectURL(url); }
+}
+const blobToDataUrl = b => new Promise((res, rej) => { const r = new FileReader(); r.onload = () => res(r.result); r.onerror = () => rej(new Error("read")); r.readAsDataURL(b); });
+async function uploadImage(blob) {
+  if (STANDALONE) { const d = await blobToDataUrl(blob); return { id: d, url: d }; }
+  if (!ASSETS) throw { code: "unavailable" };
+  try { return await ASSETS.upload(blob, { type: "image/jpeg" }); }
+  catch (e) { if (e && e.code === "store_unavailable") { await sleep(800); return await ASSETS.upload(blob, { type: "image/jpeg" }); } throw e; }
+}
+const blobUrl = id => id && id.startsWith("data:") ? id : "/_blob/" + id;
+
+function Log({ t, st, onImage }) {
+  const [type, setType] = useState("note");
+  const [text, setText] = useState("");
+  const [staged, setStaged] = useState([]);
+  const [busy, setBusy] = useState(false);
+  const [filter, setFilter] = useState(null);
+  const [q, setQ] = useState("");
+  const [editing, setEditing] = useState(null);
+  const [editText, setEditText] = useState("");
+  const [armed, setArmed] = useState(null);
+  const [drag, setDrag] = useState(false);
+  const fileRef = useRef(null);
+  const entries = t.entries || [];
+  const cur = () => S.tasks[t.id].entries || [];
+  const save = list => patch("tasks", t.id, { entries: list, updatedAt: Date.now() });
+  const stage = async files => {
+    const imgs = [...files].filter(f => f.type && f.type.startsWith("image/"));
+    if (!imgs.length) return;
+    if (!ASSETS && !STANDALONE) { toast("Photos can't be added in this view."); return; }
+    setBusy(true);
+    try {
+      for (const f of imgs) { const b = await resizeImage(f); const r = await uploadImage(b); setStaged(s => [...s, { id: r.id, url: r.url }]); }
+    } catch (e) { toast(e && e.code === "quota_exceeded" ? "Photo storage is full. Delete some old photos first." : "A photo didn't upload. Try again."); }
+    setBusy(false);
+  };
+  const add = () => {
+    const tx = text.trim();
+    if (!tx && !staged.length) return;
+    save([...cur(), { id: uid(), at: Date.now(), type, text: tx, pinned: false, images: staged.map(s => s.id) }]);
+    setText(""); setStaged([]);
+  };
+  const copy = async e => {
+    const s = `[${ENTRY_LABEL[e.type] || "Note"}] ${new Date(e.at).toLocaleString()}\n${e.text}`;
+    try { await navigator.clipboard.writeText(s); toast("Copied entry."); } catch (_) { toast("Couldn't copy. Select the text and copy it instead."); }
+  };
+  const shown = entries.filter(e => (!filter || e.type === filter) && (!q || (e.text || "").toLowerCase().includes(q.toLowerCase())))
+    .sort((a, b) => (b.pinned ? 1 : 0) - (a.pinned ? 1 : 0) || b.at - a.at);
+  const typeCounts = {}; entries.forEach(e => typeCounts[e.type || "note"] = (typeCounts[e.type || "note"] || 0) + 1);
+  return html`<div class="section">
+    <div class="row"><h3 class="h2"><${Icon} n="log" /> Log <span class="n">${entries.length}</span></h3></div>
+    <div class=${"composer" + (drag ? " drag" : "")} onDragOver=${e => { if (ASSETS || STANDALONE) { e.preventDefault(); setDrag(true); } }} onDragLeave=${() => setDrag(false)} onDrop=${e => { e.preventDefault(); setDrag(false); stage(e.dataTransfer.files); }}>
+      <div class="type-pills">${ENTRY_TYPES.map(([k, l]) => html`<button key=${k} class=${"tpill t-" + k + (type === k ? " on" : "")} onClick=${() => setType(k)}><${Icon} n=${ENTRY_ICON[k]} />${l}</button>`)}</div>
+      <textarea class="composer-in" value=${text} onInput=${e => setText(e.target.value)} rows="3" aria-label="New log entry"
+        placeholder=${type === "measurement" ? "e.g. Vout 3.31 V at 25 °C, within spec" : type === "decision" ? "What was decided and why" : type === "call" ? "Who, what was agreed, next step" : type === "issue" ? "What failed, where, how to reproduce" : "Write an update. Paste or drop photos here."}
+        onPaste=${e => { const f = [...(e.clipboardData && e.clipboardData.files || [])]; if (f.length) { e.preventDefault(); stage(f); } }}
+        onKeyDown=${e => { if (e.key === "Enter" && (e.metaKey || e.ctrlKey)) { e.preventDefault(); add(); } }}></textarea>
+      ${(staged.length > 0 || busy) && html`<div class="thumbs">${staged.map(s => html`<span key=${s.id} class="thumb"><img src=${s.url} alt="Photo to attach" /><button aria-label="Remove photo" onClick=${() => { setStaged(staged.filter(x => x.id !== s.id)); ASSETS && ASSETS.delete(s.id).catch(() => {}); }}><${Icon} n="x" /></button></span>`)}${busy && html`<span class="thumb busy">Uploading</span>`}</div>`}
+      <div class="row">
+        ${st.caps.assets && html`<button class="btn ghost" onClick=${() => fileRef.current && fileRef.current.click()}><${Icon} n="camera" />Photo</button>
+          <input ref=${fileRef} type="file" accept="image/*" multiple hidden onChange=${e => { stage(e.target.files); e.target.value = ""; }} />`}
+        <span class="spacer"></span><span class="muted hide-sm" style=${{ fontSize: 12 }}>Ctrl + Enter</span>
+        <button class="btn primary" disabled=${busy || (!text.trim() && !staged.length)} onClick=${add}>Add ${ENTRY_LABEL[type].toLowerCase()}</button>
+      </div>
+    </div>
+    ${entries.length > 2 && html`<div class="row" style=${{ gap: 6 }}>
+      <button class=${"fchip" + (!filter ? " on" : "")} onClick=${() => setFilter(null)}>All <span class="mono">${entries.length}</span></button>
+      ${ENTRY_TYPES.filter(([k]) => typeCounts[k]).map(([k, l]) => html`<button key=${k} class=${"fchip" + (filter === k ? " on" : "")} onClick=${() => setFilter(filter === k ? null : k)}>${l} <span class="mono">${typeCounts[k]}</span></button>`)}
+      <input class="input" style=${{ flex: "1 1 140px", width: "auto", padding: "3px 8px" }} type="search" value=${q} onInput=${e => setQ(e.target.value)} placeholder="Search the log" aria-label="Search the log" />
+    </div>`}
+    <div class="entries">
+      ${shown.map(e => html`<div key=${e.id} class=${"entry t-" + (e.type || "note") + (e.pinned ? " pinned" : "")}>
+        <div class="entry-h">
+          <span class=${"tpill on t-" + (e.type || "note")}><${Icon} n=${ENTRY_ICON[e.type] || "note"} />${ENTRY_LABEL[e.type] || "Note"}</span>
+          <span class="muted mono" style=${{ fontSize: 11.5 }} title=${new Date(e.at).toLocaleString()}>${new Date(e.at).toLocaleString([], { month: "short", day: "numeric", hour: "numeric", minute: "2-digit" })}${e.editedAt ? " · edited" : ""}</span>
+          <span class="spacer"></span>
+          <button class="icon-btn" title=${e.pinned ? "Unpin" : "Pin to top"} aria-label=${e.pinned ? "Unpin entry" : "Pin entry"} style=${e.pinned ? { color: "var(--accent)" } : null} onClick=${() => save(cur().map(x => x.id === e.id ? { ...x, pinned: !x.pinned } : x))}><${Icon} n="pin" /></button>
+          <button class="icon-btn" title="Edit" aria-label="Edit entry" onClick=${() => { setEditing(e.id); setEditText(e.text); }}><${Icon} n="edit" /></button>
+          <button class="icon-btn" title="Copy" aria-label="Copy entry" onClick=${() => copy(e)}><${Icon} n="copy" /></button>
+          <button class=${"icon-btn" + (armed === e.id ? " armed" : "")} title=${armed === e.id ? "Click again to delete" : "Delete"} aria-label=${armed === e.id ? "Click again to delete" : "Delete entry"} onClick=${() => { if (armed !== e.id) return setArmed(e.id); save(cur().filter(x => x.id !== e.id)); (e.images || []).forEach(id => ASSETS && ASSETS.delete(id).catch(() => {})); setArmed(null); }}><${Icon} n="trash" /></button>
+        </div>
+        ${editing === e.id
+          ? html`<div class="section" style=${{ gap: 6 }}><textarea class="composer-in" rows="3" value=${editText} onInput=${ev => setEditText(ev.target.value)} aria-label="Edit entry" autoFocus></textarea>
+              <div class="row"><button class="btn primary" onClick=${() => { save(cur().map(x => x.id === e.id ? { ...x, text: editText.trim(), editedAt: Date.now() } : x)); setEditing(null); }}>Save</button><button class="btn ghost" onClick=${() => setEditing(null)}>Cancel</button></div></div>`
+          : e.text && html`<div class="entry-text">${e.text}</div>`}
+        ${(e.images || []).length > 0 && html`<div class="thumbs">${e.images.map(id => html`<button key=${id} class="thumb" onClick=${() => onImage(blobUrl(id))}><img src=${blobUrl(id)} alt="Attached photo" loading="lazy" /></button>`)}</div>`}
+      </div>`)}
+      ${entries.length === 0 && html`<div class="empty" style=${{ padding: "4px 0" }}>No entries yet. Log measurements, decisions, calls and issues as the work moves.</div>`}
+      ${entries.length > 0 && shown.length === 0 && html`<div class="empty">No entries match.</div>`}
+    </div>
+  </div>`;
+}
+
+function TaskPanel({ st, id, close, go, openTask }) {
+  const t = st.tasks[id];
+  const [title, setTitle] = useState(t ? t.title : "");
+  const [notes, setNotes] = useState(t ? t.notes || "" : "");
+  const [owner, setOwner] = useState(t ? t.assignee || "" : "");
+  const [armed, setArmed] = useState(false);
+  const [wide, setWide] = useLS("workspace.wide", false);
+  const [lightbox, setLightbox] = useState(null);
+  useDebounced(title, v => patch("tasks", id, { title: v, updatedAt: Date.now() }), 350);
+  useDebounced(notes, v => patch("tasks", id, { notes: v, updatedAt: Date.now() }), 500);
+  useDebounced(owner, v => patch("tasks", id, { assignee: v.trim(), updatedAt: Date.now() }), 500);
+  useEffect(() => { const k = e => { if (e.key === "Escape") { if (lightbox) setLightbox(null); else close(); } }; window.addEventListener("keydown", k); return () => window.removeEventListener("keydown", k); }, [lightbox]);
+  if (!t) return null;
+  const projects = Object.values(st.projects).sort((a, b) => a.createdAt - b.createdAt);
+  const set = f => patch("tasks", id, { ...f, updatedAt: Date.now() });
+  const p = st.projects[t.projectId];
+  const owners = [...new Set(Object.values(st.tasks).map(x => x.assignee).filter(Boolean))];
+  const archived = isArchived(t);
+  return html`<div>
+    <div class="peek-scrim" onClick=${close}></div>
+    <div class=${"peek" + (wide ? " wide" : "")} role="dialog" aria-label="Task details">
+      <div class="peek-bar">
+        ${p ? html`<button class="btn ghost" onClick=${() => { close(); go({ view: "project", id: p.id }); }}><span class="dot" style=${{ background: pcolor(p) }}></span>${p.name || "Untitled"}</button>` : html`<span style=${{ padding: "0 6px" }}>No project</span>`}
+        ${t.num && html`<span class="num">${fmtNum(t.num)}</span>`}
+        <span class="spacer"></span>
+        <button class=${"btn" + (t.status === "done" ? "" : " primary")} onClick=${() => setStatus(t, t.status === "done" ? "todo" : "done")}><${Icon} n="check" />${t.status === "done" ? "Reopen" : "Mark done"}</button>
+        <button class="icon-btn hide-sm" aria-label=${wide ? "Narrow panel" : "Widen panel"} title=${wide ? "Narrow panel" : "Widen panel"} onClick=${() => setWide(!wide)}><${Icon} n=${wide ? "shrink" : "expand"} /></button>
+        <button class="icon-btn" aria-label="Close" onClick=${close}><${Icon} n="x" /></button>
+      </div>
+      <div class="peek-body">
+        ${archived && html`<div class="banner"><${Icon} n="archive" />Archived. Closed more than ${ARCHIVE_DAYS} days ago.${t.archived && html` <button class="linkbtn" onClick=${() => set({ archived: false })}>Unarchive</button>`}</div>`}
+        <${AutoText} className="title-area" value=${title} onChange=${setTitle} placeholder="Untitled task" autoFocus=${!t.title} ariaLabel="Task title" />
+        <div class="props">
+          <span class="pk"><${Icon} n="status" />Status</span>
+          <div class="seg">${STATUS.map(([k, l]) => html`<button key=${k} class=${t.status === k ? "on" : ""} onClick=${() => setStatus(t, k)}>${l}</button>`)}</div>
+          <span class="pk"><${Icon} n="flag" />Priority</span>
+          <select value=${t.priority || "none"} onChange=${e => set({ priority: e.target.value })} aria-label="Priority">${PRIOS.map(([k, l]) => html`<option key=${k} value=${k}>${l}</option>`)}</select>
+          <span class="pk"><${Icon} n="folder" />Project</span>
+          <select value=${t.projectId || ""} onChange=${e => set({ projectId: e.target.value || null })} aria-label="Project"><option value="">No project</option>${projects.map(x => html`<option key=${x.id} value=${x.id}>${x.name || "Untitled"}</option>`)}</select>
+          <span class="pk"><${Icon} n="user" />Owner</span>
+          <span><input class="prop-in" value=${owner} onInput=${e => setOwner(e.target.value)} placeholder="Who's on it" list="owner-suggest" aria-label="Owner" />
+            <datalist id="owner-suggest">${owners.map(o => html`<option key=${o} value=${o} />`)}</datalist></span>
+          <span class="pk"><${Icon} n="tag" />Tags</span>
+          <${TagInput} tags=${t.tags} onChange=${tags => set({ tags })} suggestions=${allTags(st).map(x => x[0])} />
+          <span class="pk"><${Icon} n="timeline" />Start</span>
+          <div class="row" style=${{ gap: 4 }}><input type="date" value=${t.start || ""} aria-label="Start date" onChange=${e => { const v = e.target.value || null; set({ start: v, due: v && t.due && t.due < v ? v : t.due }); }} />${t.start && html`<button class="icon-btn" aria-label="Clear start date" onClick=${() => set({ start: null })}><${Icon} n="x" /></button>`}</div>
+          <span class="pk"><${Icon} n="cal" />Due</span>
+          <div class="row" style=${{ gap: 4 }}><input type="date" value=${t.due || ""} aria-label="Due date" onChange=${e => { const v = e.target.value || null; set({ due: v, start: v && t.start && t.start > v ? v : t.start }); }} />${t.due && html`<button class="icon-btn" aria-label="Clear due date" onClick=${() => set({ due: null })}><${Icon} n="x" /></button>`}
+            ${!t.due && html`<button class="btn ghost" onClick=${() => set({ due: today() })}>Today</button><button class="btn ghost" onClick=${() => set({ due: addDays(today(), 1) })}>Tomorrow</button>`}</div>
+          <span class="pk"><${Icon} n="repeat" />Repeat</span>
+          <span><select value=${t.recur || ""} onChange=${e => set({ recur: e.target.value, spawnedNext: null })} aria-label="Repeat">${RECUR.map(([k, l]) => html`<option key=${k} value=${k}>${l}</option>`)}</select>
+            ${t.recur && html`<span class="muted" style=${{ fontSize: 12 }}> A fresh copy is created when you mark it done.</span>`}</span>
+        </div>
+        <${Steps} t=${t} />
+        <div class="section">
+          <h3 class="h2"><${Icon} n="note" /> Description</h3>
+          <textarea class="notes-area" value=${notes} onInput=${e => setNotes(e.target.value)} placeholder="Scope, links, acceptance criteria…" aria-label="Task description"></textarea>
+        </div>
+        <${Log} t=${t} st=${st} onImage=${setLightbox} />
+        <div class="peek-foot">
+          <span>Created ${new Date(t.createdAt).toLocaleString([], { dateStyle: "medium", timeStyle: "short" })}</span>
+          ${t.completedAt && html`<span>Closed ${new Date(t.completedAt).toLocaleString([], { dateStyle: "medium", timeStyle: "short" })}</span>`}
+        </div>
+        <div class="row">
+          <button class="btn" onClick=${() => { const n = duplicateTask(S.tasks[id]); openTask(n.id); toast("Duplicated. You're now editing the copy."); }}><${Icon} n="copy" />Duplicate</button>
+          <button class="btn" onClick=${() => saveTemplate(S.tasks[id])}><${Icon} n="template" />Save as template</button>
+          ${t.status === "done" && !t.archived && !archived && html`<button class="btn" onClick=${() => { set({ archived: true }); close(); toast("Archived."); }}><${Icon} n="archive" />Archive</button>`}
+          <span class="spacer"></span>
+          <button class=${"btn danger" + (armed ? " armed" : "")} onClick=${() => { if (!armed) return setArmed(true); const snapT = S.tasks[id]; remove("tasks", id); close(); toast(`Deleted “${snapT.title || "task"}”.`, "info", () => put("tasks", snapT)); }}><${Icon} n="trash" />${armed ? "Click again to delete" : "Delete"}</button>
+        </div>
+      </div>
+    </div>
+    ${lightbox && html`<div class="lightbox" onClick=${() => setLightbox(null)} role="dialog" aria-label="Photo"><img src=${lightbox} alt="Attached photo" /><button class="icon-btn" aria-label="Close photo"><${Icon} n="x" /></button></div>`}
+  </div>`;
+}
+
+/* ---------- backup, CSV and import ---------- */
+function csvCell(v) { const s = v == null ? "" : String(v); return /[",\r\n]/.test(s) ? '"' + s.replace(/"/g, '""') + '"' : s; }
+async function saveFile(filename, data) {
+  if (STANDALONE) {
+    const url = URL.createObjectURL(new Blob([data], { type: filename.endsWith(".csv") ? "text/csv;charset=utf-8" : "application/json" }));
+    const a = document.createElement("a"); a.href = url; a.download = filename; document.body.appendChild(a); a.click(); a.remove();
+    setTimeout(() => URL.revokeObjectURL(url), 1000); return true;
+  }
+  if (!DOWNLOADS) { toast("Saving files isn't available in this view."); return false; }
+  try { await DOWNLOADS.save({ filename, data }); return true; }
+  catch (e) { if (e && e.code !== "declined") toast("The file wasn't saved. Try again."); return false; }
+}
+function exportTasksCsv(list, st) {
+  const t0 = today();
+  const head = ["ID", "Title", "Project", "Status", "Priority", "Owner", "Start", "Due", "Days late", "Steps done", "Steps total", "Repeat", "Tags", "Log entries", "Created", "Closed"];
+  const lines = [head.map(csvCell).join(",")];
+  list.forEach(t => {
+    const s = stepsOf(t);
+    const late = t.status !== "done" && t.due && t.due < t0 ? diffDays(t.due, t0) : "";
+    lines.push([fmtNum(t.num), t.title, (st.projects[t.projectId] || {}).name || "", isArchived(t) ? "Archived" : (STATUS.find(x => x[0] === t.status) || [, ""])[1], (PRIOS.find(x => x[0] === t.priority) || [, ""])[1], t.assignee, t.start || "", t.due || "", late, s.done, s.total, t.recur ? RECUR_LABEL[t.recur] : "", (t.tags || []).join("; "), (t.entries || []).length, fmtDate(new Date(t.createdAt)), t.completedAt ? fmtDate(new Date(t.completedAt)) : ""].map(csvCell).join(","));
+  });
+  return saveFile(`tasks-${t0}.csv`, "﻿" + lines.join("\r\n")).then(ok => ok && toast(`Exported ${list.length} ${list.length === 1 ? "task" : "tasks"} to CSV.`));
+}
+function dataUrlToBlob(u) {
+  const m = /^data:([^;,]+)?(;base64)?,(.*)$/s.exec(u || ""); if (!m) return null;
+  const raw = m[2] ? atob(m[3]) : decodeURIComponent(m[3]);
+  const a = new Uint8Array(raw.length); for (let i = 0; i < raw.length; i++) a[i] = raw.charCodeAt(i);
+  return new Blob([a], { type: m[1] || "image/jpeg" });
+}
+
+function DataModal({ st, close }) {
+  const [progress, setProgress] = useState(null);
+  const [result, setResult] = useState(null);
+  const fileRef = useRef(null);
+  const counts = { tasks: Object.keys(st.tasks).length, projects: Object.keys(st.projects).length, notes: Object.keys(st.notes).length, templates: Object.keys(st.templates).length };
+  const backup = () => {
+    const data = { app: "rodolfo-workspace", version: 2, exportedAt: new Date().toISOString(), projects: Object.values(S.projects), tasks: Object.values(S.tasks), notes: Object.values(S.notes), templates: Object.values(S.templates) };
+    saveFile(`workspace-backup-${today()}.json`, JSON.stringify(data, null, 2)).then(ok => ok && toast("Backup saved."));
+  };
+  const run = async file => {
+    setResult(null);
+    let parsed;
+    try { parsed = JSON.parse(await file.text()); } catch (e) { setResult({ error: "That file isn't valid JSON, so nothing was changed." }); return; }
+    const writes = [];
+    let skippedImages = 0, uploaded = 0;
+    if (parsed && parsed.app === "rodolfo-workspace") {
+      ["projects", "notes", "templates", "tasks"].forEach(c => (parsed[c] || []).forEach(o => o && o.id && writes.push([c, o])));
+    } else if (parsed && Array.isArray(parsed.tickets)) {
+      // a backup from the old Work Order app
+      let proj = Object.values(S.projects).find(p => p.name === "Work Order");
+      if (!proj) { proj = { id: uid(), name: "Work Order", description: "Tickets imported from the Work Order app.", color: 5, createdAt: Date.now() }; writes.push(["projects", proj]); }
+      const used = new Set(Object.values(S.tasks).map(t => t.num));
+      let n = nextNum();
+      const prio = { low: "low", med: "medium", medium: "medium", high: "high" };
+      for (const tk of parsed.tickets) {
+        const num = tk.id && !used.has(tk.id) ? tk.id : n++;
+        used.add(num);
+        const entries = (tk.entries || []).map(e => ({ id: uid(), at: e.at || tk.createdAt || Date.now(), type: e.type || "note", text: e.text || "", pinned: !!e.pinned, editedAt: e.editedAt || null, images: e.images || [] }));
+        if (tk.notes && tk.notes.trim() && !entries.length) entries.push({ id: uid(), at: tk.createdAt || Date.now(), type: "note", text: tk.notes, pinned: false, images: [] });
+        writes.push(["tasks", normTask({
+          id: uid(), num, title: tk.title || "Untitled", projectId: proj.id, status: tk.done ? "done" : "todo", priority: prio[tk.priority] || "none",
+          start: tk.start || null, due: tk.due || null, assignee: tk.assignee || "", recur: tk.recur || "", tags: tk.tags || [], notes: "",
+          subtasks: (tk.subtasks || []).map(s => ({ id: uid(), text: s.text || "", done: !!s.done, due: s.due || null })),
+          entries, archived: !!tk.archived, createdAt: tk.createdAt || Date.now(), updatedAt: Date.now(), completedAt: tk.done ? (tk.closedAt || tk.createdAt || Date.now()) : null,
+        })]);
+      }
+      (parsed.templates || []).forEach(tp => writes.push(["templates", { id: uid(), name: tp.name || "Template", priority: prio[tp.priority] || "none", tags: tp.tags || [], subtasks: tp.subtasks || [], notes: "", createdAt: Date.now() }]));
+    } else { setResult({ error: "This doesn't look like a backup from this workspace or from the Work Order app, so nothing was changed." }); return; }
+    // photos stored inside the old file move to this workspace's photo storage
+    const photoJobs = [];
+    writes.forEach(([c, o]) => c === "tasks" && (o.entries || []).forEach(e => (e.images || []).forEach((im, i) => { if (im && typeof im === "object" && im.dataUrl) photoJobs.push([e, i, im.dataUrl]); })));
+    let step = 0; const total = writes.length + photoJobs.length;
+    for (const [e, i, du] of photoJobs) {
+      setProgress({ step: ++step, total, what: "Moving photos" });
+      if (STANDALONE) { e.images[i] = du; uploaded++; continue; }
+      if (!ASSETS) { e.images[i] = null; skippedImages++; continue; }
+      try { const b = dataUrlToBlob(du); const r = await ASSETS.upload(b, { type: b.type === "image/png" ? "image/png" : b.type === "image/webp" ? "image/webp" : "image/jpeg" }); e.images[i] = r.id; uploaded++; }
+      catch (err) { e.images[i] = null; skippedImages++; }
+    }
+    writes.forEach(([c, o]) => { if (c === "tasks") (o.entries || []).forEach(e => e.images = (e.images || []).filter(x => typeof x === "string")); });
+    for (const [c, o] of writes) {
+      setProgress({ step: ++step, total, what: "Saving" });
+      await put(c, o);
+      if (S.mode === "db") await sleep(25);
+    }
+    setProgress(null);
+    const tasksN = writes.filter(w => w[0] === "tasks").length;
+    setResult({ ok: `Imported ${tasksN} ${tasksN === 1 ? "task" : "tasks"}${uploaded ? ` and ${uploaded} photos` : ""}. Nothing you already had was removed.${skippedImages ? ` ${skippedImages} photos couldn't be moved.` : ""}` });
+  };
+  return html`<div class="pal-scrim" onMouseDown=${e => e.target === e.currentTarget && !progress && close()}>
+    <div class="pal modal" role="dialog" aria-label="Backup and import">
+      <div class="row" style=${{ padding: "14px 16px", borderBottom: "1px solid var(--line)" }}><h2 class="h2" style=${{ fontSize: 15, color: "var(--fg)" }}>Backup and import</h2><span class="spacer"></span><button class="icon-btn" aria-label="Close" onClick=${close} disabled=${!!progress}><${Icon} n="x" /></button></div>
+      <div class="modal-body">
+        <p class="muted" style=${{ margin: 0 }}>${st.mode === "db" ? "Your workspace saves to your account automatically and follows you to any device. A backup file is an extra copy you keep." : "Your workspace is only saved in this browser right now. Keep a backup file."}</p>
+        <div class="mono muted" style=${{ fontSize: 12 }}>${counts.projects} projects · ${counts.tasks} tasks · ${counts.notes} notes · ${counts.templates} templates${st.mode === "local" ? ` · about ${(JSON.stringify({ a: st.projects, b: st.tasks, c: st.notes, d: st.templates }).length / 1048576).toFixed(1)} MB of roughly 5 MB browser storage` : ""}</div>
+        <div class="data-grid">
+          <button class="data-btn" onClick=${backup} disabled=${!st.caps.downloads}><${Icon} n="download" /><b>Save a backup</b><span>Everything, as a .json file</span></button>
+          <button class="data-btn" onClick=${() => exportTasksCsv(sortTasks(Object.values(S.tasks), "due"), S)} disabled=${!st.caps.downloads}><${Icon} n="list" /><b>Export tasks to CSV</b><span>Opens in Excel or Sheets</span></button>
+          <button class="data-btn" onClick=${() => fileRef.current && fileRef.current.click()} disabled=${!!progress}><${Icon} n="upload" /><b>Import a backup</b><span>From this workspace or your Work Order app</span></button>
+        </div>
+        <input ref=${fileRef} type="file" accept="application/json,.json" hidden onChange=${e => { const f = e.target.files[0]; e.target.value = ""; if (f) run(f); }} />
+        ${!st.caps.downloads && html`<p class="muted" style=${{ margin: 0, fontSize: 12.5 }}>Saving files isn't available in this view.</p>`}
+        ${progress && html`<div class="section" style=${{ gap: 6 }}><span>${progress.what}… <span class="mono">${progress.step}/${progress.total}</span></span><span class="bar"><i style=${{ width: (progress.step / progress.total * 100) + "%", background: "var(--accent)" }}></i></span></div>`}
+        ${result && html`<div class=${"banner" + (result.error ? " bad" : " good")}>${result.error || result.ok}</div>`}
+        <p class="muted" style=${{ margin: 0, fontSize: 12.5 }}>Importing adds to what you have. Work Order tickets go into a project called “Work Order” and keep their numbers, tags, owners, checklists, log entries and photos.</p>
+      </div>
+    </div>
+  </div>`;
+}
+
+/* ---------- notes ---------- */
+function esc(s) { return s.replace(/[&<>"]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c])); }
+function inline(s) {
+  return esc(s)
+    .replace(/`([^`]+)`/g, "<code>$1</code>")
+    .replace(/\*\*([^*]+)\*\*/g, "<strong>$1</strong>")
+    .replace(/(^|[\s(])_([^_]+)_(?=[\s).,!?]|$)/g, "$1<em>$2</em>")
+    .replace(/\[([^\]]+)\]\((https?:\/\/[^\s)]+)\)/g, '<a href="$2" target="_blank" rel="noopener">$1</a>')
+    .replace(/(^|\s)(https?:\/\/[^\s<]+)/g, '$1<a href="$2" target="_blank" rel="noopener">$2</a>');
+}
+function md(src) {
+  const lines = (src || "").split("\n"); let out = "", inList = false, para = [];
+  const flush = () => { if (para.length) { out += "<p>" + para.map(inline).join("<br>") + "</p>"; para = []; } };
+  const endList = () => { if (inList) { out += "</ul>"; inList = false; } };
+  for (const raw of lines) {
+    const l = raw.trimEnd();
+    let m;
+    if (!l.trim()) { flush(); endList(); continue; }
+    if ((m = l.match(/^(#{1,3})\s+(.*)/))) { flush(); endList(); out += `<h${m[1].length}>${inline(m[2])}</h${m[1].length}>`; continue; }
+    if (/^---+$/.test(l)) { flush(); endList(); out += "<hr>"; continue; }
+    if ((m = l.match(/^>\s?(.*)/))) { flush(); endList(); out += `<blockquote>${inline(m[1])}</blockquote>`; continue; }
+    if ((m = l.match(/^\s*[-*]\s+\[( |x|X)\]\s+(.*)/))) { flush(); if (!inList) { out += "<ul>"; inList = true; } const on = m[1] !== " "; out += `<li class="todo${on ? " done" : ""}"><span class="check${on ? " on" : ""}">${on ? '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M5 12.5 10 17 19 7"/></svg>' : ""}</span><span>${inline(m[2])}</span></li>`; continue; }
+    if ((m = l.match(/^\s*[-*]\s+(.*)/))) { flush(); if (!inList) { out += "<ul>"; inList = true; } out += `<li>${inline(m[1])}</li>`; continue; }
+    endList(); para.push(l);
+  }
+  flush(); endList();
+  return out;
+}
+
+function NoteEditor({ note, st, go }) {
+  const [title, setTitle] = useState(note.title);
+  const [body, setBody] = useState(note.body || "");
+  const [read, setRead] = useState(!!(note.body && note.body.length > 0));
+  const [armed, setArmed] = useState(false);
+  useDebounced(title, v => patch("notes", note.id, { title: v, updatedAt: Date.now() }), 400);
+  useDebounced(body, v => patch("notes", note.id, { body: v, updatedAt: Date.now() }), 600);
+  const projects = Object.values(st.projects).sort((a, b) => a.createdAt - b.createdAt);
+  const words = body.trim() ? body.trim().split(/\s+/).length : 0;
+  return html`<div class="page">
+    <div class="row">
+      <button class="btn ghost" style=${{ marginLeft: -10 }} onClick=${() => go({ view: "notes" })} aria-label="All notes"><${Icon} n="arrowL" />Notes</button>
+      <span class="spacer"></span>
+      <div class="seg"><button class=${!read ? "on" : ""} onClick=${() => setRead(false)}>Write</button><button class=${read ? "on" : ""} onClick=${() => setRead(true)}>Read</button></div>
+      <button class="icon-btn" title=${note.pinned ? "Unpin" : "Pin to top"} aria-label=${note.pinned ? "Unpin note" : "Pin note"} style=${note.pinned ? { color: "var(--accent)" } : null} onClick=${() => patch("notes", note.id, { pinned: !note.pinned })}><${Icon} n="pin" /></button>
+    </div>
+    <input class="h1-input" value=${title} placeholder="Untitled" aria-label="Note title" autoFocus=${!note.title} onInput=${e => setTitle(e.target.value)} onKeyDown=${e => { if (e.key === "Enter") { e.preventDefault(); setRead(false); } }} />
+    <div class="props" style=${{ gridTemplateColumns: "96px minmax(0,1fr)" }}>
+      <span class="pk"><${Icon} n="folder" />Project</span>
+      <select value=${note.projectId || ""} onChange=${e => patch("notes", note.id, { projectId: e.target.value || null, updatedAt: Date.now() })} aria-label="Note project"><option value="">No project</option>${projects.map(x => html`<option key=${x.id} value=${x.id}>${x.name || "Untitled"}</option>`)}</select>
+      <span class="pk"><${Icon} n="edit" />Edited</span><span class="muted">${new Date(note.updatedAt).toLocaleString([], { dateStyle: "medium", timeStyle: "short" })} · <span class="mono">${words}</span> words</span>
+    </div>
+    <hr style=${{ border: 0, borderTop: "1px solid var(--line)", margin: 0, width: "100%" }} />
+    ${read
+      ? html`<div class="md" onDoubleClick=${() => setRead(false)} dangerouslySetInnerHTML=${{ __html: md(body) || '<p class="muted">Empty note. Switch to Write to start.</p>' }}></div>`
+      : html`<${AutoText} className="body-area" value=${body} onChange=${setBody} placeholder="Start writing. Use # for headings, - for bullets, - [ ] for checklists, **bold**." ariaLabel="Note body" />`}
+    <div><button class=${"btn danger" + (armed ? " armed" : "")} onClick=${() => { if (!armed) return setArmed(true); remove("notes", note.id); go({ view: "notes" }); }}><${Icon} n="trash" />${armed ? "Click again to delete" : "Delete note"}</button></div>
+  </div>`;
+}
+
+function NotesView({ st, id, go }) {
+  const [q, setQ] = useState("");
+  const notes = Object.values(st.notes).filter(n => !q || (n.title + " " + n.body).toLowerCase().includes(q.toLowerCase()))
+    .sort((a, b) => (b.pinned ? 1 : 0) - (a.pinned ? 1 : 0) || b.updatedAt - a.updatedAt);
+  const note = id && st.notes[id];
+  return html`<div class=${"notes-wrap" + (note ? " has-note" : "")}>
+    <div class="notes-list">
+      <div class="row" style=${{ padding: "0 4px 8px" }}><h1 class="h1" style=${{ fontSize: 24 }}>Notes</h1><span class="spacer"></span>
+        <button class="btn" onClick=${() => { const n = newNote({}); go({ view: "notes", id: n.id }); }}><${Icon} n="plus" />New</button></div>
+      <div class="search"><input class="input" value=${q} onInput=${e => setQ(e.target.value)} placeholder="Search notes" aria-label="Search notes" /></div>
+      ${notes.map(n => {
+        const p = st.projects[n.projectId];
+        return html`<button key=${n.id} class=${"note-item" + (note && note.id === n.id ? " on" : "")} onClick=${() => go({ view: "notes", id: n.id })}>
+          <span class="nt">${n.pinned ? "· " : ""}${n.title || "Untitled"}</span>
+          <span class="np">${preview(n.body, 80) || "Empty note"}</span>
+          <span class="nm">${p && html`<span class="dot" style=${{ background: pcolor(p) }}></span>`}${p ? p.name : ""}${p ? " · " : ""}${ago(n.updatedAt)}</span>
+        </button>`;
+      })}
+      ${notes.length === 0 && html`<div class="empty">${q ? "No notes match." : "No notes yet. Write one for meeting notes, ideas or plans."}</div>`}
+    </div>
+    <div class="note-ed">
+      ${note ? html`<${NoteEditor} key=${note.id} note=${note} st=${st} go=${go} />`
+        : html`<div class="loading"><div style=${{ textAlign: "center", display: "grid", gap: 10, justifyItems: "center" }}><span>Pick a note or start a new one.</span>
+          <button class="btn primary" onClick=${() => { const n = newNote({}); go({ view: "notes", id: n.id }); }}><${Icon} n="plus" />New note</button></div></div>`}
+    </div>
+  </div>`;
+}
+
+/* ---------- timeline ---------- */
+function TimelineView({ st, openTask }) {
+  const [zoom, setZoom] = useState(() => { try { return localStorage.getItem("workspace.zoom") || "month"; } catch (e) { return "month"; } });
+  const [anchor, setAnchor] = useState(today());
+  const [drag, setDrag] = useState(null);
+  const [hideDone, setHideDone] = useState(false);
+  const wrapRef = useRef(null);
+  const narrow = typeof window !== "undefined" && window.innerWidth < 760;
+  const cfg = { week: { days: 21, w: 52, back: 3 }, month: { days: 49, w: 30, back: 7 }, quarter: { days: 105, w: 13, back: 14 } }[zoom];
+  const start = addDays(anchor, -cfg.back);
+  const dayW = cfg.w, LW = narrow ? 150 : 240, W = cfg.days * dayW;
+  const t0 = today();
+  const setZ = z => { setZoom(z); try { localStorage.setItem("workspace.zoom", z); } catch (e) {} };
+  const projects = Object.values(st.projects).sort((a, b) => a.createdAt - b.createdAt);
+  const tasks = Object.values(st.tasks).filter(t => !isArchived(t) && !(hideDone && t.status === "done"));
+  const span = t => {
+    let s = t.start || t.due, e = t.due || t.start;
+    if (drag && drag.id === t.id) { s = drag.s; e = drag.e; }
+    return [s, e];
+  };
+  const groups = [...projects.map(p => ({ p, list: tasks.filter(t => t.projectId === p.id && (t.start || t.due)) })), { p: null, list: tasks.filter(t => !t.projectId && (t.start || t.due)) }]
+    .filter(g => g.list.length || g.p).map(g => ({ ...g, list: g.list.slice().sort((a, b) => (span(a)[0] < span(b)[0] ? -1 : span(a)[0] > span(b)[0] ? 1 : 0)) }));
+  const undated = Object.values(st.tasks).filter(t => t.status !== "done" && !t.start && !t.due);
+
+  const onDown = (e, t, kind) => {
+    e.stopPropagation(); e.preventDefault();
+    const [s, en] = span(t);
+    const x0 = e.clientX;
+    const el = e.currentTarget; try { el.setPointerCapture(e.pointerId); } catch (_) {}
+    let moved = false, cur = { id: t.id, s, e: en };
+    const move = ev => {
+      const d = Math.round((ev.clientX - x0) / dayW);
+      if (Math.abs(ev.clientX - x0) > 3) moved = true;
+      if (kind === "move") cur = { id: t.id, s: addDays(s, d), e: addDays(en, d) };
+      else if (kind === "l") { const ns = addDays(s, d); cur = { id: t.id, s: ns > en ? en : ns, e: en }; }
+      else { const ne = addDays(en, d); cur = { id: t.id, s, e: ne < s ? s : ne }; }
+      setDrag(cur);
+    };
+    const up = () => {
+      el.removeEventListener("pointermove", move); el.removeEventListener("pointerup", up); el.removeEventListener("pointercancel", up);
+      setDrag(null);
+      if (!moved) { openTask(t.id); return; }
+      if (cur.s !== s || cur.e !== en) {
+        const single = !t.start || !t.due;
+        if (single && cur.s === cur.e) patch("tasks", t.id, t.due ? { due: cur.e, start: t.start ? cur.s : null, updatedAt: Date.now() } : { start: cur.s, updatedAt: Date.now() });
+        else patch("tasks", t.id, { start: cur.s, due: cur.e, updatedAt: Date.now() });
+      }
+    };
+    el.addEventListener("pointermove", move); el.addEventListener("pointerup", up); el.addEventListener("pointercancel", up);
+  };
+
+  useEffect(() => {
+    const el = wrapRef.current; if (!el) return;
+    el.scrollLeft = 0;
+  }, [zoom, anchor]);
+
+  const months = [];
+  for (let i = 0; i < cfg.days; i++) { const d = parseDate(addDays(start, i)); if (i === 0 || d.getDate() === 1) months.push({ i, label: MON[d.getMonth()] + " " + d.getFullYear() }); }
+  const dayLabels = [];
+  for (let i = 0; i < cfg.days; i++) {
+    const ds = addDays(start, i), d = parseDate(ds);
+    const show = zoom === "quarter" ? d.getDay() === 1 : zoom === "month" ? true : true;
+    if (show) dayLabels.push({ i, label: zoom === "week" ? DOW[d.getDay()].slice(0, 2) + " " + d.getDate() : d.getDate(), today: ds === t0 });
+  }
+  const weekends = [];
+  for (let i = 0; i < cfg.days; i++) { const g = parseDate(addDays(start, i)).getDay(); if (g === 0 || g === 6) weekends.push(i); }
+  const todayX = diffDays(start, t0) * dayW;
+
+  const bar = (t, p) => {
+    const [s, e] = span(t);
+    const x = diffDays(start, s) * dayW, w = (diffDays(s, e) + 1) * dayW;
+    if (x + w < 0 || x > W) return null;
+    const col = p ? pcolor(p) : "var(--muted)";
+    const isMile = s === e && w < 40;
+    const dragging = drag && drag.id === t.id;
+    if (isMile) return html`<div class="tl-milestone" style=${{ left: x + dayW / 2 - 7, background: col, opacity: t.status === "done" ? .45 : 1 }} title=${(t.title || "Untitled") + " · " + dueLabel(s)} onPointerDown=${ev => onDown(ev, t, "move")}></div>`;
+    return html`<div class=${"tl-bar" + (t.status === "done" ? " done" : "") + (dragging ? " dragging" : "")} style=${{ left: x + 1, width: w - 2, background: col }} title=${`${t.title || "Untitled"} · ${dueLabel(s)} to ${dueLabel(e)}`} onPointerDown=${ev => onDown(ev, t, "move")}>
+      <span class="h l" onPointerDown=${ev => onDown(ev, t, "l")}></span>
+      ${w > 60 ? (t.title || "Untitled") : ""}
+      <span class="h r" onPointerDown=${ev => onDown(ev, t, "r")}></span>
+    </div>`;
+  };
+
+  const bgLayer = html`<div class="tl-bg" style=${{ left: 0, width: W }}>
+    ${weekends.map(i => html`<div key=${i} class="tl-we" style=${{ left: i * dayW, width: dayW }}></div>`)}
+  </div>`;
+
+  return html`<div class="page wide">
+    <div><div class="crumb"><${Icon} n="timeline" /> Every project</div><h1 class="h1">Timeline</h1><p class="sub">Drag a bar to move it, drag its edges to change the dates. Tasks with only a due date show as a diamond.</p></div>
+    <div class="row">
+      <div class="seg">${[["week", "Weeks"], ["month", "Month"], ["quarter", "Quarter"]].map(([k, l]) => html`<button key=${k} class=${zoom === k ? "on" : ""} onClick=${() => setZ(k)}>${l}</button>`)}</div>
+      <button class="icon-btn" aria-label="Earlier" onClick=${() => setAnchor(addDays(anchor, -Math.round(cfg.days / 3)))}><${Icon} n="arrowL" /></button>
+      <button class="btn" onClick=${() => setAnchor(today())}>Today</button>
+      <button class="icon-btn" aria-label="Later" onClick=${() => setAnchor(addDays(anchor, Math.round(cfg.days / 3)))}><${Icon} n="arrowR" /></button>
+      <span class="spacer"></span>
+      <label class="row muted" style=${{ gap: 6, fontSize: 13 }}><input type="checkbox" checked=${hideDone} onChange=${e => setHideDone(e.target.checked)} />Hide done</label>
+    </div>
+    <div class="tl-wrap" ref=${wrapRef}>
+      <div class="tl" style=${{ width: LW + W }}>
+        <div class="tl-head">
+          <div class="tl-row" style=${{ height: 44 }}>
+            <div class="tl-label" style=${{ width: LW }}>${projects.length} projects</div>
+            <div style=${{ width: W, position: "relative" }}>
+              <div class="tl-months">${months.map(m => html`<span key=${m.i} style=${{ left: m.i * dayW }}>${m.label}</span>`)}</div>
+              <div class="tl-days">${dayLabels.map(d => html`<span key=${d.i} class=${d.today ? "today" : ""} style=${{ left: d.i * dayW, width: zoom === "quarter" ? dayW * 3 : dayW, textAlign: zoom === "quarter" ? "left" : "center" }}>${d.label}</span>`)}</div>
+            </div>
+          </div>
+        </div>
+        ${groups.map(g => {
+          const sp = g.list.length ? [g.list.map(t => span(t)[0]).sort()[0], g.list.map(t => span(t)[1]).sort().slice(-1)[0]] : null;
+          return html`<div key=${g.p ? g.p.id : "none"}>
+            <div class="tl-row proj">
+              <div class="tl-label" style=${{ width: LW }}><span class="dot" style=${{ background: g.p ? pcolor(g.p) : "var(--muted)" }}></span><span class="t">${g.p ? (g.p.name || "Untitled") : "No project"}</span><span class="muted mono" style=${{ fontSize: 11, fontWeight: 400 }}>${g.list.length}</span></div>
+              <div class="tl-track" style=${{ width: W }}>${bgLayer}
+                ${sp && html`<div class="tl-span" style=${{ left: diffDays(start, sp[0]) * dayW, width: (diffDays(sp[0], sp[1]) + 1) * dayW, background: g.p ? pcolor(g.p) : "var(--muted)" }}></div>`}
+              </div>
+            </div>
+            ${g.list.map(t => html`<div key=${t.id} class="tl-row">
+              <div class="tl-label" style=${{ width: LW }} onClick=${() => openTask(t.id)}><span class="t" style=${t.status === "done" ? { color: "var(--muted)", textDecoration: "line-through" } : null}>${t.title || "Untitled"}</span></div>
+              <div class="tl-track" style=${{ width: W }}>${bgLayer}${bar(t, g.p)}</div>
+            </div>`)}
+            ${g.p && g.list.length === 0 && html`<div class="tl-row"><div class="tl-label muted" style=${{ width: LW, fontSize: 12.5 }}>No dated tasks</div><div class="tl-track" style=${{ width: W }}>${bgLayer}</div></div>`}
+          </div>`;
+        })}
+        ${todayX >= 0 && todayX <= W && html`<div class="tl-today" style=${{ left: LW + todayX + dayW / 2 - 1 }}></div>`}
+      </div>
+    </div>
+    ${groups.length === 0 && html`<div class="empty">Create a project and give its tasks start or due dates to see them here.</div>`}
+    ${undated.length > 0 && html`<div class="section">
+      <h3 class="h2">Not scheduled <span class="n">${undated.length}</span></h3>
+      <div class="list">${sortTasks(undated).slice(0, 12).map(t => html`<div key=${t.id} class="task" onClick=${() => openTask(t.id)}>
+        <span class="dot" style=${{ background: st.projects[t.projectId] ? pcolor(st.projects[t.projectId]) : "var(--muted)" }}></span>
+        <span class="t">${t.title || "Untitled"}</span>
+        <button class="btn" onClick=${e => { e.stopPropagation(); patch("tasks", t.id, { start: today(), due: addDays(today(), 2), updatedAt: Date.now() }); }}>Schedule from today</button>
+      </div>`)}</div>
+    </div>`}
+  </div>`;
+}
+
+/* ---------- search palette ---------- */
+function Palette({ st, close, go, openTask }) {
+  const [q, setQ] = useState("");
+  const [sel, setSel] = useState(0);
+  const ql = q.trim().toLowerCase();
+  const items = [];
+  if (ql) {
+    Object.values(st.projects).forEach(p => (p.name || "").toLowerCase().includes(ql) && items.push({ k: "Project", icon: "folder", label: p.name, act: () => go({ view: "project", id: p.id }) }));
+    sortTasks(Object.values(st.tasks)).forEach(t => matchesSearch(t, ql, st) && items.push({ k: isArchived(t) ? "Archived" : t.status === "done" ? "Done task" : "Task", icon: t.status === "done" ? "done" : "check", label: (t.num ? fmtNum(t.num) + "  " : "") + (t.title || "Untitled"), act: () => openTask(t.id) }));
+    Object.values(st.notes).forEach(n => ((n.title || "") + " " + (n.body || "")).toLowerCase().includes(ql) && items.push({ k: "Note", icon: "note", label: n.title || "Untitled", act: () => go({ view: "notes", id: n.id }) }));
+    items.push({ k: "Create", icon: "plus", label: `New task “${q.trim()}”`, act: () => openTask(newTask({ title: q.trim() }).id) });
+  } else {
+    items.push({ k: "Create", icon: "plus", label: "New task", act: () => openTask(newTask({}).id) });
+    items.push({ k: "Create", icon: "note", label: "New note", act: () => go({ view: "notes", id: newNote({}).id }) });
+    items.push({ k: "Create", icon: "folder", label: "New project", act: () => go({ view: "project", id: newProject({}).id, fresh: true }) });
+    items.push({ k: "Go to", icon: "home", label: "Dashboard", act: () => go({ view: "dashboard" }) });
+    items.push({ k: "Go to", icon: "sun", label: "Tasks", act: () => go({ view: "today" }) });
+    items.push({ k: "Go to", icon: "steps", label: "Checklist", act: () => go({ view: "checklist" }) });
+    items.push({ k: "Go to", icon: "grid", label: "Calendar", act: () => go({ view: "calendar" }) });
+    items.push({ k: "Go to", icon: "timeline", label: "Timeline", act: () => go({ view: "timeline" }) });
+  }
+  const list = items.slice(0, 40);
+  const run = it => { close(); it.act(); };
+  return html`<div class="pal-scrim" onMouseDown=${e => e.target === e.currentTarget && close()}>
+    <div class="pal" role="dialog" aria-label="Search">
+      <input autoFocus value=${q} placeholder="Search tasks, notes and projects" aria-label="Search" onInput=${e => { setQ(e.target.value); setSel(0); }}
+        onKeyDown=${e => {
+          if (e.key === "Escape") close();
+          else if (e.key === "ArrowDown") { e.preventDefault(); setSel(Math.min(list.length - 1, sel + 1)); }
+          else if (e.key === "ArrowUp") { e.preventDefault(); setSel(Math.max(0, sel - 1)); }
+          else if (e.key === "Enter" && list[sel]) run(list[sel]);
+        }} />
+      <div class="pal-res">${list.map((it, i) => html`<button key=${i} class=${"pal-item" + (i === sel ? " on" : "")} onMouseEnter=${() => setSel(i)} onClick=${() => run(it)}><${Icon} n=${it.icon} /><span>${it.label}</span><span class="k">${it.k}</span></button>`)}</div>
+    </div>
+  </div>`;
+}
+
+/* ---------- app ---------- */
+function App() {
+  const st = useStore();
+  const [route, setRoute] = useState(() => { try { const r = JSON.parse(localStorage.getItem("workspace.route") || "null"); if (r && r.view) return { ...r, fresh: false }; } catch (e) {} return { view: "dashboard" }; });
+  const [taskId, setTaskId] = useState(null);
+  const [side, setSide] = useState(false);
+  const [pal, setPal] = useState(false);
+  const [data, setData] = useState(false);
+  const mainRef = useRef(null);
+  const go = useCallback(r => { setRoute(r); setSide(false); setTaskId(null); try { localStorage.setItem("workspace.route", JSON.stringify(r)); } catch (e) {} if (mainRef.current) mainRef.current.scrollTop = 0; }, []);
+  const openTask = useCallback(id => { setTaskId(id); setSide(false); }, []);
+  useEffect(() => {
+    const k = e => {
+      const tag = (e.target.tagName || "").toLowerCase();
+      const typing = tag === "input" || tag === "textarea" || tag === "select" || e.target.isContentEditable;
+      if ((e.key === "k" && (e.metaKey || e.ctrlKey)) || (e.key === "/" && !typing)) { e.preventDefault(); setPal(true); }
+    };
+    window.addEventListener("keydown", k); return () => window.removeEventListener("keydown", k);
+  }, []);
+  if (st.mode === "loading") return html`<div class="loading"><div style=${{ display: "grid", gap: 10, justifyItems: "center" }}><div class="skel"></div><div class="skel" style=${{ width: 160 }}></div><div>Opening your workspace</div></div></div>`;
+  const view = route.view === "project" && !st.projects[route.id] && !route.fresh ? "dashboard" : route.view;
+  const titles = { dashboard: "Dashboard", today: "Tasks", checklist: "Checklist", calendar: "Calendar", timeline: "Timeline", notes: "Notes", project: (st.projects[route.id] || {}).name || "Project" };
+  return html`<div class="shell">
+    <${Sidebar} st=${st} route=${{ ...route, view }} go=${go} open=${side} onSearch=${() => { setSide(false); setPal(true); }} onData=${() => { setSide(false); setData(true); }} />
+    <div class=${"scrim" + (side ? " open" : "")} onClick=${() => setSide(false)}></div>
+    <main class="main" ref=${mainRef}>
+      <div class="topbar"><button class="icon-btn" aria-label="Open menu" onClick=${() => setSide(true)}><${Icon} n="menu" /></button><b style=${{ fontWeight: 600 }}>${titles[view] || ""}</b><span class="spacer"></span><button class="icon-btn" aria-label="Search" onClick=${() => setPal(true)}><${Icon} n="search" /></button></div>
+      ${view === "dashboard" && html`<${Dashboard} st=${st} go=${go} openTask=${openTask} />`}
+      ${view === "today" && html`<${TasksView} st=${st} openTask=${openTask} />`}
+      ${view === "checklist" && html`<${ChecklistView} st=${st} openTask=${openTask} />`}
+      ${view === "calendar" && html`<${CalendarView} st=${st} openTask=${openTask} />`}
+      ${view === "project" && html`<${ProjectView} key=${route.id} st=${st} id=${route.id} fresh=${route.fresh} go=${go} openTask=${openTask} />`}
+      ${view === "notes" && html`<${NotesView} st=${st} id=${route.id} go=${go} />`}
+      ${view === "timeline" && html`<${TimelineView} st=${st} openTask=${openTask} />`}
+    </main>
+    ${taskId && st.tasks[taskId] && html`<${TaskPanel} key=${taskId} st=${st} id=${taskId} close=${() => setTaskId(null)} go=${go} openTask=${openTask} />`}
+    ${pal && html`<${Palette} st=${st} close=${() => setPal(false)} go=${go} openTask=${openTask} />`}
+    ${data && html`<${DataModal} st=${st} close=${() => setData(false)} />`}
+    ${st.toast && html`<div class=${"toast" + (st.toast.kind === "error" ? " err" : "")} role="status">${st.toast.text}
+      ${st.toast.undo && html`<button onClick=${() => { const u = st.toast.undo; toast(null); u(); }}>Undo</button>`}
+      <button onClick=${() => toast(null)}>${st.toast.kind === "error" ? "Dismiss" : "OK"}</button></div>`}
+  </div>`;
+}
+
+ReactDOM.createRoot(document.getElementById("root")).render(html`<${App} />`);
+</script>
+
+<script>
+if ("serviceWorker" in navigator && location.protocol !== "file:") {
+  window.addEventListener("load", function () {
+    navigator.serviceWorker.register("service-worker.js").catch(function (err) { console.error("Offline support didn't start", err); });
+  });
+}
+</script>
+</body>
+</html>
