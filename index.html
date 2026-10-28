@@ -495,7 +495,8 @@ button.tile:hover { border-color: var(--line-2); }
 .clock-big { font-size: 22px; font-weight: 600; letter-spacing: -.01em; line-height: 1.1; }
 
 /* plan */
-.plan-modal { width: min(600px, 100%); max-height: calc(100vh - 40px); display: flex; flex-direction: column; }
+.plan-modal { width: min(600px, 100%); max-height: calc(88vh - 24px); max-height: calc(100dvh - 12vh - 24px); display: flex; flex-direction: column; }
+.plan-modal .modal-body { min-height: 0; }
 .plan-modal .modal-body { overflow-y: auto; }
 .wrap-sum { background: var(--hover); border-radius: 9px; padding: 10px 12px; display: flex; flex-direction: column; gap: 4px; font-size: 13px; color: var(--fg-2); }
 .slots, .plan-list { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 6px; }
@@ -661,6 +662,19 @@ button.tt-row:hover { background: var(--hover); }
 .handle:hover { background: var(--hover); color: var(--fg-2); }
 .d-comfy .handle { width: 28px; }
 @media (max-width: 760px) { .handle { color: var(--muted); width: 30px; } .rank-row > .task > .meta { padding-left: 0; } }
+
+/* quick delete, dashboard clock */
+.row-del { opacity: 0; flex: none; }
+.task:hover .row-del, .card:hover .row-del, .row-del:focus-visible { opacity: 1; }
+.row-del:hover { color: var(--bad); background: var(--bad-soft); }
+.card-foot { display: flex; align-items: center; gap: 6px; }
+.card-foot .meta { flex: 1; min-width: 0; }
+.dclock { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; border: 1px solid var(--line); background: var(--card); border-radius: 12px; padding: 10px 14px; margin-top: -12px; }
+.dclock.on { border-color: var(--good); background: linear-gradient(var(--good-soft), var(--good-soft)), var(--card); }
+.dclock.on .pulse { background: var(--good); }
+.dclock.on .btn { margin-left: auto; }
+.dclock.warn { color: var(--bad); border-color: var(--bad); background: var(--bad-soft); font-weight: 500; text-align: left; }
+@media (hover: none) { .row-del { opacity: .6; } }
 
 @media (prefers-reduced-motion: reduce) { * { animation: none !important; transition: none !important; } }
 
@@ -1380,6 +1394,7 @@ function TaskRow({ t, projects, showProject, open }) {
     <${Weight} size=${t.size} />
     <span class="t">${t.title || html`<span class="muted">Untitled</span>`}</span>
     <${TaskMeta} t=${t} projects=${projects} showProject=${showProject} />
+    <button class="icon-btn row-del" aria-label=${"Delete " + (t.title || "task")} title="Delete (you can undo)" onClick=${e => { e.stopPropagation(); deleteTask(t); }}><${Icon} n="trash" /></button>
   </div>`;
 }
 
@@ -1450,34 +1465,47 @@ function TagInput({ tags, onChange, suggestions }) {
 }
 
 
-/* ---------- rank: your own order of open tasks within a project ---------- */
-const samePid = (a, b) => (a || null) === (b || null);
-function rankedOpen(all, projectId) {
-  const open = all.filter(t => samePid(t.projectId, projectId) && t.status !== "done" && !isArchived(t));
+/* ---------- rank: your own order of open tasks, one order across every project ---------- */
+function rankedOpen(all) {
+  const open = all.filter(t => t.status !== "done" && !isArchived(t));
   const pos = new Map(sortTasks(open).map((t, i) => [t.id, i]));
   return open.sort((a, b) => ((a.rank == null) - (b.rank == null)) || ((a.rank || 0) - (b.rank || 0)) || (pos.get(a.id) - pos.get(b.id)));
 }
 let RK = { v: -1, m: new Map() };
 function rankOf(id) {
   if (RK.v !== S.v) {
-    const all = Object.values(S.tasks), m = new Map();
-    new Set(all.map(t => t.projectId || null)).forEach(pid => rankedOpen(all, pid).forEach((t, i) => m.set(t.id, i + 1)));
+    const m = new Map();
+    rankedOpen(Object.values(S.tasks)).forEach((t, i) => m.set(t.id, i + 1));
     RK = { v: S.v, m };
   }
   return RK.m.get(id) || 0;
 }
-function moveRank(projectId, id, toIndex) {
-  const t = S.tasks[id]; if (!t) return;
-  const list = rankedOpen(Object.values(S.tasks), projectId).filter(x => x.id !== id);
-  list.splice(Math.max(0, Math.min(toIndex, list.length)), 0, S.tasks[id]);
+// Put task `id` just before `beforeId` in the overall order (or after `afterId`, or last).
+function placeTask(id, beforeId, afterId) {
+  if (!S.tasks[id]) return;
+  const list = rankedOpen(Object.values(S.tasks)).filter(x => x.id !== id);
+  let at = beforeId ? list.findIndex(x => x.id === beforeId) : afterId ? list.findIndex(x => x.id === afterId) + 1 : list.length;
+  if (at < 0) at = list.length;
+  list.splice(at, 0, S.tasks[id]);
   list.forEach((x, i) => { const r = (i + 1) * 1000; if (x.rank !== r) patch("tasks", x.id, { rank: r }); });
+}
+// Move a task to position `to` within a list the user is looking at (a project, or filtered tasks).
+function moveInView(view, id, to) {
+  const rest = view.filter(x => x.id !== id);
+  if (to < rest.length) placeTask(id, rest[Math.max(0, to)].id);
+  else placeTask(id, null, rest.length ? rest[rest.length - 1].id : null);
+}
+function deleteTask(t) {
+  const snapT = S.tasks[t.id]; if (!snapT) return;
+  remove("tasks", t.id);
+  toast(`Deleted “${snapT.title || "task"}”.`, "info", () => put("tasks", snapT));
 }
 function RankBadge({ t }) {
   const r = t.status !== "done" && !isArchived(t) ? rankOf(t.id) : 0;
   if (!r) return t.num ? html`<span class="num">${fmtNum(t.num)}</span>` : null;
-  return html`<span class=${"rank" + (r === 1 ? " first" : "")} title=${`Number ${r} in this project's order${t.num ? ` (task ${fmtNum(t.num)})` : ""}`}>${r}</span>`;
+  return html`<span class=${"rank" + (r === 1 ? " first" : "")} title=${`Number ${r} in your order${t.num ? ` (task ${fmtNum(t.num)})` : ""}`}>${r}</span>`;
 }
-function RankList({ list, projects, openTask, projectId }) {
+function RankList({ list, projects, openTask, showProject }) {
   const [drag, setDrag] = useState(null);
   const box = useRef(null);
   const start = (e, id) => {
@@ -1499,19 +1527,19 @@ function RankList({ list, projects, openTask, projectId }) {
       el.removeEventListener("pointermove", move); el.removeEventListener("pointerup", up); el.removeEventListener("pointercancel", up);
       setDrag(null);
       const to = over > from ? over - 1 : over;
-      if (to !== from) moveRank(projectId, id, to);
+      if (to !== from) moveInView(list, id, to);
     };
     el.addEventListener("pointermove", move); el.addEventListener("pointerup", up); el.addEventListener("pointercancel", up);
   };
   const keys = (e, i, id) => {
-    if (e.key === "ArrowUp" && i > 0) { e.preventDefault(); moveRank(projectId, id, i - 1); }
-    else if (e.key === "ArrowDown" && i < list.length - 1) { e.preventDefault(); moveRank(projectId, id, i + 1); }
+    if (e.key === "ArrowUp" && i > 0) { e.preventDefault(); moveInView(list, id, i - 1); }
+    else if (e.key === "ArrowDown" && i < list.length - 1) { e.preventDefault(); moveInView(list, id, i + 1); }
   };
   const showAt = i => drag && i !== list.findIndex(t => t.id === drag.id) && i !== list.findIndex(t => t.id === drag.id) + 1 && drag.over === i;
   return html`<div class=${"rank-list" + (drag ? " dragging-on" : "")} ref=${box}>
     ${list.map((t, i) => html`<div key=${t.id} data-rid=${t.id} class=${"rank-row" + (drag && drag.id === t.id ? " dragging" : "") + (showAt(i) ? " drop-before" : "")}>
       <button class="handle" aria-label=${"Reorder " + (t.title || "Untitled") + ". Drag, or use the arrow keys."} title="Drag to reorder" onPointerDown=${e => start(e, t.id)} onKeyDown=${e => keys(e, i, t.id)} onClick=${e => e.stopPropagation()}><${Icon} n="grip" w="3" /></button>
-      <${TaskRow} t=${t} projects=${projects} open=${openTask} />
+      <${TaskRow} t=${t} projects=${projects} showProject=${showProject} open=${openTask} />
     </div>`)}
     ${showAt(list.length) && html`<div class="drop-end"></div>`}
   </div>`;
@@ -1990,6 +2018,14 @@ function NowBar({ st, onFocus, openTask }) {
   </div>`;
 }
 
+function DashClock({ st, onClockOut, go }) {
+  useTick(30000);
+  const o = openSession(st.days), t0 = today(), ms = dayMs(st.days[t0]);
+  if (o && o.day.id !== t0) return html`<button class="dclock warn" onClick=${() => go({ view: "time", focus: o.day.id })}><${Icon} n="clock" />Still clocked in from ${dueLabel(o.day.id).toLowerCase()}. Set when you left</button>`;
+  if (o) return html`<div class="dclock on"><span class="pulse"></span><span>On the clock since ${fmtTime(o.s.in)} · <b class="mono">${fmtDur(ms)}</b></span><button class="btn" onClick=${onClockOut}><${Icon} n="out" />Clock out</button></div>`;
+  return html`<div class="dclock">${ms > 0 ? html`<span class="muted">Today so far <b class="mono">${fmtDur(ms)}</b></span>` : html`<span class="muted">You're not clocked in.</span>`}<button class="linkbtn" onClick=${() => go({ view: "time" })}>Time log</button><button class="btn primary" style=${{ marginLeft: "auto" }} onClick=${clockIn}><${Icon} n="in" />Clock in</button></div>`;
+}
+
 /* ---------- sidebar ---------- */
 function Sidebar({ st, route, go, open, onSearch, onData, onClockOut, onPlan, density, setDensity }) {
   const projects = Object.values(st.projects).sort((a, b) => a.createdAt - b.createdAt);
@@ -2086,7 +2122,7 @@ function deriveEvents(st) {
   return ev.filter(e => e.at).sort((a, b) => b.at - a.at);
 }
 
-function Dashboard({ st, go, openTask, onPlan, onFocus }) {
+function Dashboard({ st, go, openTask, onPlan, onFocus, onClockOut }) {
   const [more, setMore] = useLS("workspace.dashMore", false);
   const t0 = today();
   const tasks = Object.values(st.tasks);
@@ -2111,6 +2147,7 @@ function Dashboard({ st, go, openTask, onPlan, onFocus }) {
       <h1 class="h1" style=${{ marginTop: 4 }}>${greet}, ${OWNER}</h1>
       <p class="sub">${open.length === 0 ? "Nothing open. Add a task or start a project to get going." : `You have ${dueToday.length} ${dueToday.length === 1 ? "task" : "tasks"} due today${overdue.length ? ` and ${overdue.length} running late` : ""}.`}</p>
     </div>
+    <${DashClock} st=${st} onClockOut=${onClockOut} go=${go} />
     <${TodayPlan} st=${st} openTask=${openTask} onPlan=${onPlan} onFocus=${onFocus} />
     ${projects.length === 0 && tasks.length === 0 ? html`<div class="welcome">
       <h2 class="h2" style=${{ fontSize: 16, color: "var(--fg)" }}>Set up your workspace</h2>
@@ -2191,7 +2228,7 @@ function Dashboard({ st, go, openTask, onPlan, onFocus }) {
 function TasksView({ st, openTask }) {
   const t0 = today();
   const [tab, setTab] = useLS("workspace.tab", "open");
-  const [sort, setSort] = useLS("workspace.sort", "due");
+  const [sort, setSort] = useLS("workspace.sort2", "rank");
   const [q, setQ] = useState("");
   const [tag, setTag] = useState(null);
   const [owner, setOwner] = useState(null);
@@ -2213,7 +2250,8 @@ function TasksView({ st, openTask }) {
     ["No date", list.filter(t => !t.due)],
   ] : [[tab === "archived" ? "Archived" : tab === "done" ? "Closed" : tab === "all" ? "All tasks" : "Open", list]];
   const filtered = q || tag || owner || dueF || quick;
-  const exportCsv = () => exportTasksCsv(sortTasks(list, sort), st);
+  const exportCsv = () => exportTasksCsv(sort === "rank" ? [...rankedOpen(list), ...sortTasks(list.filter(t => t.status === "done" || isArchived(t)))] : sortTasks(list, sort), st);
+  const ranking = sort === "rank" && tab === "open";
   return html`<div class="page">
     <div><div class="crumb"><${Icon} n="sun" /> Every project</div><h1 class="h1">Tasks</h1><p class="sub">Everything across your projects. Closed tasks move to Archived after ${ARCHIVE_DAYS} days.</p></div>
     <div class="section">
@@ -2225,7 +2263,7 @@ function TasksView({ st, openTask }) {
         <div class="seg">${[["open", "Open"], ["done", "Closed"], ["archived", "Archived"], ["all", "All"]].map(([k, l]) => html`<button key=${k} class=${tab === k ? "on" : ""} onClick=${() => setTab(k)}>${l}</button>`)}</div>
         <input class="input search-in" type="search" value=${q} onInput=${e => setQ(e.target.value)} placeholder="Search titles, notes, tags, checklist, log" aria-label="Search tasks" />
         <select class="input sort-in" value=${sort} onChange=${e => setSort(e.target.value)} aria-label="Sort order">
-          <option value="due">Sort by due date</option><option value="priority">Sort by priority</option><option value="newest">Newest first</option>
+          <option value="rank">My order (drag to rank)</option><option value="due">Sort by due date</option><option value="priority">Sort by priority</option><option value="newest">Newest first</option>
         </select>
       </div>
       <div class="row chips-row">
@@ -2244,12 +2282,16 @@ function TasksView({ st, openTask }) {
         ${st.caps.downloads && list.length > 0 && html`<button class="linkbtn" onClick=${exportCsv}><${Icon} n="download" />Export these to CSV</button>`}
       </div>`}
     </div>
-    ${groups.map(([label, items]) => (items.length > 0 || (grouped && label === "Today" && !filtered)) && html`<div class="section" key=${label}>
+    ${ranking && list.length > 0 && html`<div class="section">
+      <h3 class="h2">My order <span class="n">${list.length}</span><span class="muted" style=${{ fontWeight: 400, fontSize: 12.5 }}>Drag the dots to reorder. 1 is the most important.</span></h3>
+      <div class="list"><${RankList} list=${rankedOpen(list)} projects=${st.projects} openTask=${openTask} showProject /></div>
+    </div>`}
+    ${!ranking && groups.map(([label, items]) => (items.length > 0 || (grouped && label === "Today" && !filtered)) && html`<div class="section" key=${label}>
       <h3 class="h2" style=${label === "Overdue" ? { color: "var(--bad)" } : null}>${label} <span class="n">${items.length}</span></h3>
-      <div class="list">${sortTasks(items, sort).map(t => html`<${TaskRow} key=${t.id} t=${t} projects=${st.projects} showProject open=${openTask} />`)}
+      <div class="list">${sortTasks(items, sort === "rank" ? "due" : sort).map(t => html`<${TaskRow} key=${t.id} t=${t} projects=${st.projects} showProject open=${openTask} />`)}
         ${items.length === 0 && html`<div class="empty">Nothing due today.</div>`}</div>
     </div>`)}
-    ${list.length === 0 && !grouped && html`<div class="empty">${filtered ? "No tasks match these filters." : tab === "archived" ? "Nothing archived yet." : "No tasks here yet."}</div>`}
+    ${list.length === 0 && (!grouped || ranking) && html`<div class="empty">${filtered ? "No tasks match these filters." : tab === "archived" ? "Nothing archived yet." : "No tasks here yet."}</div>`}
   </div>`;
 }
 
@@ -2375,14 +2417,13 @@ function Board({ tasks, projectId, openTask }) {
   const [drag, setDrag] = useState(null);
   return html`<div class="board">
     ${STATUS.map(([key, label]) => {
-      const list = key === "done" ? sortTasks(tasks.filter(t => t.status === key)) : rankedOpen(tasks, projectId).filter(t => t.status === key);
+      const list = key === "done" ? sortTasks(tasks.filter(t => t.status === key)) : rankedOpen(tasks).filter(t => t.status === key);
       const dropOn = (e, target) => {
         e.preventDefault(); e.stopPropagation(); setOver(null); setDrag(null);
         const id = e.dataTransfer.getData("text/plain"); const t = S.tasks[id]; if (!t || id === target.id) return;
         if (t.status !== key) setStatus(t, key);
         if (key === "done") return;
-        const order = rankedOpen(Object.values(S.tasks), projectId).filter(x => x.id !== id);
-        moveRank(projectId, id, Math.max(0, order.findIndex(x => x.id === target.id)));
+        placeTask(id, target.id);
       };
       return html`<div key=${key} class=${"col" + (over === key ? " over" : "")}
         onDragOver=${e => { e.preventDefault(); setOver(key); }} onDragLeave=${() => setOver(null)}
@@ -2395,7 +2436,7 @@ function Board({ tasks, projectId, openTask }) {
           ${(t.size || key !== "done") && html`<span class="card-top"><${RankBadge} t=${t} /><span class="spacer"></span>${t.size && html`<${Weight} size=${t.size} label />`}</span>`}
           <span class="t">${t.title || "Untitled"}</span>
           ${isBig(t) && t.status !== "done" && nextStepOf(t) && html`<span class="next-step">Next: ${nextStepOf(t).text}</span>`}
-          <${TaskMeta} t=${t} compact />
+          <span class="card-foot"><${TaskMeta} t=${t} compact /><button class="icon-btn row-del" aria-label=${"Delete " + (t.title || "task")} title="Delete (you can undo)" draggable="false" onClick=${e => { e.stopPropagation(); deleteTask(t); }}><${Icon} n="trash" /></button></span>
         </div>`)}
         <${QuickAdd} projectId=${projectId} status=${key} compact />
       </div>`;
@@ -2460,7 +2501,7 @@ function ProjectView({ st, id, fresh, go, openTask }) {
     ${mode !== "notes" && html`<${TemplateRow} st=${st} extra=${{ projectId: id }} openTask=${openTask} />`}
     ${mode === "board" && html`<${Board} tasks=${live} projectId=${id} openTask=${openTask} />`}
     ${mode === "list" && html`<div class="list">
-      ${(() => { const ranked = rankedOpen(live, id); return ranked.length > 1 ? html`<div class="rank-hint muted">Drag the dots to put tasks in your order. The number is each task's place.</div><${RankList} list=${ranked} projects=${st.projects} openTask=${openTask} projectId=${id} />` : html`<${RankList} list=${ranked} projects=${st.projects} openTask=${openTask} projectId=${id} />`; })()}
+      ${(() => { const ranked = rankedOpen(live); return html`${ranked.length > 1 && html`<div class="rank-hint muted">Drag the dots to reorder. The number is the task's place across all your projects.</div>`}<${RankList} list=${ranked} projects=${st.projects} openTask=${openTask} />`; })()}
       ${sortTasks(live.filter(t => t.status === "done")).map(t => html`<${TaskRow} key=${t.id} t=${t} projects=${st.projects} open=${openTask} />`)}
       <${QuickAdd} projectId=${id} />
     </div>`}
@@ -3106,7 +3147,7 @@ function App() {
     <main class="main" ref=${mainRef}>
       <div class="topbar"><button class="icon-btn" aria-label="Open menu" onClick=${() => setSide(true)}><${Icon} n="menu" /></button><b style=${{ fontWeight: 600 }}>${titles[view] || ""}</b><span class="spacer"></span><button class="icon-btn" aria-label="Search" onClick=${() => setPal(true)}><${Icon} n="search" /></button></div>
       ${(view !== "dashboard" || TM) && html`<${NowBar} st=${st} onFocus=${onFocus} openTask=${openTask} />`}
-      ${view === "dashboard" && html`<${Dashboard} st=${st} go=${go} openTask=${openTask} onPlan=${onPlan} onFocus=${onFocus} />`}
+      ${view === "dashboard" && html`<${Dashboard} st=${st} go=${go} openTask=${openTask} onPlan=${onPlan} onFocus=${onFocus} onClockOut=${onClockOut} />`}
       ${view === "time" && html`<${TimeView} key=${route.focus || "w"} st=${st} focus=${route.focus} />`}
       ${view === "today" && html`<${TasksView} st=${st} openTask=${openTask} />`}
       ${view === "checklist" && html`<${ChecklistView} st=${st} openTask=${openTask} />`}

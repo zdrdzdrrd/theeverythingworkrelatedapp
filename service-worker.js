@@ -4,7 +4,7 @@
  * is served from the cache and refreshed in the background.
  * build-pages.py bumps VERSION on every build so old caches get cleared.
  */
-const VERSION = "ws-20261028-170551";
+const VERSION = "ws-20261028-172441";
 const CACHE = "workspace-" + VERSION;
 const SHELL = [
   "./",
