@@ -641,6 +641,27 @@ button.tt-row:hover { background: var(--hover); }
   .task .t { flex: 1 1 120px; }
 }
 
+/* rank */
+.rank { min-width: 21px; height: 21px; padding: 0 5px; border-radius: 999px; background: var(--hover); color: var(--fg-2); font: 700 11.5px/21px var(--f-mono); text-align: center; flex: none; font-variant-numeric: tabular-nums; }
+.rank.first { background: var(--accent); color: var(--accent-ink); }
+.d-comfy .rank { min-width: 24px; height: 24px; line-height: 24px; font-size: 12.5px; }
+.card-top { display: flex; align-items: center; gap: 6px; }
+.rank-hint { font-size: 12.5px; padding: 0 8px 4px; }
+.rank-list { display: flex; flex-direction: column; }
+.rank-row { display: flex; align-items: center; position: relative; border-radius: 6px; }
+.rank-row + .rank-row, .rank-list + .task { border-top: 1px solid var(--line); }
+.rank-row > .task { flex: 1; min-width: 0; border-top: 0 !important; padding-left: 2px; }
+.rank-row.dragging { opacity: .45; background: var(--hover); }
+.rank-row.drop-before::before, .drop-end { content: ""; position: absolute; left: 0; right: 0; top: -2px; height: 3px; border-radius: 2px; background: var(--accent); z-index: 2; }
+.drop-end { position: relative; top: -2px; }
+.dragging-on, .dragging-on * { cursor: grabbing !important; user-select: none; }
+.handle { width: 22px; align-self: stretch; display: grid; place-items: center; color: var(--line-2); cursor: grab; touch-action: none; flex: none; border-radius: 5px; }
+.handle svg { width: 16px; height: 16px; }
+.rank-row:hover .handle, .handle:focus-visible { color: var(--muted); }
+.handle:hover { background: var(--hover); color: var(--fg-2); }
+.d-comfy .handle { width: 28px; }
+@media (max-width: 760px) { .handle { color: var(--muted); width: 30px; } .rank-row > .task > .meta { padding-left: 0; } }
+
 @media (prefers-reduced-motion: reduce) { * { animation: none !important; transition: none !important; } }
 
 @media (max-width: 900px) {
@@ -1301,6 +1322,7 @@ const P = {
   focus: "M12 3a9 9 0 1 0 0 18 9 9 0 1 0 0-18M12 8a4 4 0 1 0 0 8 4 4 0 1 0 0-8M12 11.5v1",
   play: "M7 4.5v15l12-7.5z",
   pause: "M8 5v14M16 5v14",
+  grip: "M9 6h.01M15 6h.01M9 12h.01M15 12h.01M9 18h.01M15 18h.01",
   textsize: "M3 7V5h11v2M8.5 5v14M6.5 19h4M14 13v-1.5h7V13M17.5 11.5V19M16 19h3",
 };
 const ENTRY_ICON = { note: "note", measurement: "measure", decision: "decision", call: "call", issue: "issue" };
@@ -1354,7 +1376,7 @@ function TaskMeta({ t, projects, showProject, compact }) {
 function TaskRow({ t, projects, showProject, open }) {
   return html`<div class=${"task" + (t.status === "done" ? " done" : "")} onClick=${() => open(t.id)} role="button" tabIndex="0" onKeyDown=${e => e.key === "Enter" && open(t.id)}>
     <${Check} on=${t.status === "done"} onClick=${() => setStatus(t, t.status === "done" ? "todo" : "done")} />
-    ${t.num && html`<span class="num">${fmtNum(t.num)}</span>`}
+    <${RankBadge} t=${t} />
     <${Weight} size=${t.size} />
     <span class="t">${t.title || html`<span class="muted">Untitled</span>`}</span>
     <${TaskMeta} t=${t} projects=${projects} showProject=${showProject} />
@@ -1424,6 +1446,74 @@ function TagInput({ tags, onChange, suggestions }) {
       onKeyDown=${e => { if (e.key === "Enter") { e.preventDefault(); add(v); } else if (e.key === "Backspace" && !v && tags && tags.length) onChange(tags.slice(0, -1)); }}
       onBlur=${() => add(v)} />
     <datalist id="tag-suggest">${(suggestions || []).filter(g => !(tags || []).includes(g)).map(g => html`<option key=${g} value=${g} />`)}</datalist>
+  </div>`;
+}
+
+
+/* ---------- rank: your own order of open tasks within a project ---------- */
+const samePid = (a, b) => (a || null) === (b || null);
+function rankedOpen(all, projectId) {
+  const open = all.filter(t => samePid(t.projectId, projectId) && t.status !== "done" && !isArchived(t));
+  const pos = new Map(sortTasks(open).map((t, i) => [t.id, i]));
+  return open.sort((a, b) => ((a.rank == null) - (b.rank == null)) || ((a.rank || 0) - (b.rank || 0)) || (pos.get(a.id) - pos.get(b.id)));
+}
+let RK = { v: -1, m: new Map() };
+function rankOf(id) {
+  if (RK.v !== S.v) {
+    const all = Object.values(S.tasks), m = new Map();
+    new Set(all.map(t => t.projectId || null)).forEach(pid => rankedOpen(all, pid).forEach((t, i) => m.set(t.id, i + 1)));
+    RK = { v: S.v, m };
+  }
+  return RK.m.get(id) || 0;
+}
+function moveRank(projectId, id, toIndex) {
+  const t = S.tasks[id]; if (!t) return;
+  const list = rankedOpen(Object.values(S.tasks), projectId).filter(x => x.id !== id);
+  list.splice(Math.max(0, Math.min(toIndex, list.length)), 0, S.tasks[id]);
+  list.forEach((x, i) => { const r = (i + 1) * 1000; if (x.rank !== r) patch("tasks", x.id, { rank: r }); });
+}
+function RankBadge({ t }) {
+  const r = t.status !== "done" && !isArchived(t) ? rankOf(t.id) : 0;
+  if (!r) return t.num ? html`<span class="num">${fmtNum(t.num)}</span>` : null;
+  return html`<span class=${"rank" + (r === 1 ? " first" : "")} title=${`Number ${r} in this project's order${t.num ? ` (task ${fmtNum(t.num)})` : ""}`}>${r}</span>`;
+}
+function RankList({ list, projects, openTask, projectId }) {
+  const [drag, setDrag] = useState(null);
+  const box = useRef(null);
+  const start = (e, id) => {
+    if (e.button > 0) return;
+    e.preventDefault(); e.stopPropagation();
+    const el = e.currentTarget;
+    try { el.setPointerCapture(e.pointerId); } catch (x) {}
+    const from = list.findIndex(t => t.id === id);
+    let over = from;
+    setDrag({ id, over });
+    const move = ev => {
+      const rows = [...box.current.querySelectorAll("[data-rid]")];
+      let i = rows.findIndex(r => { const b = r.getBoundingClientRect(); return ev.clientY < b.top + b.height / 2; });
+      if (i < 0) i = rows.length;
+      if (i !== over) { over = i; setDrag({ id, over }); }
+      const m = box.current.closest(".main"); if (m) { const b = m.getBoundingClientRect(); if (ev.clientY < b.top + 50) m.scrollTop -= 12; else if (ev.clientY > b.bottom - 50) m.scrollTop += 12; }
+    };
+    const up = () => {
+      el.removeEventListener("pointermove", move); el.removeEventListener("pointerup", up); el.removeEventListener("pointercancel", up);
+      setDrag(null);
+      const to = over > from ? over - 1 : over;
+      if (to !== from) moveRank(projectId, id, to);
+    };
+    el.addEventListener("pointermove", move); el.addEventListener("pointerup", up); el.addEventListener("pointercancel", up);
+  };
+  const keys = (e, i, id) => {
+    if (e.key === "ArrowUp" && i > 0) { e.preventDefault(); moveRank(projectId, id, i - 1); }
+    else if (e.key === "ArrowDown" && i < list.length - 1) { e.preventDefault(); moveRank(projectId, id, i + 1); }
+  };
+  const showAt = i => drag && i !== list.findIndex(t => t.id === drag.id) && i !== list.findIndex(t => t.id === drag.id) + 1 && drag.over === i;
+  return html`<div class=${"rank-list" + (drag ? " dragging-on" : "")} ref=${box}>
+    ${list.map((t, i) => html`<div key=${t.id} data-rid=${t.id} class=${"rank-row" + (drag && drag.id === t.id ? " dragging" : "") + (showAt(i) ? " drop-before" : "")}>
+      <button class="handle" aria-label=${"Reorder " + (t.title || "Untitled") + ". Drag, or use the arrow keys."} title="Drag to reorder" onPointerDown=${e => start(e, t.id)} onKeyDown=${e => keys(e, i, t.id)} onClick=${e => e.stopPropagation()}><${Icon} n="grip" w="3" /></button>
+      <${TaskRow} t=${t} projects=${projects} open=${openTask} />
+    </div>`)}
+    ${showAt(list.length) && html`<div class="drop-end"></div>`}
   </div>`;
 }
 
@@ -2285,16 +2375,25 @@ function Board({ tasks, projectId, openTask }) {
   const [drag, setDrag] = useState(null);
   return html`<div class="board">
     ${STATUS.map(([key, label]) => {
-      const list = sortTasks(tasks.filter(t => t.status === key));
+      const list = key === "done" ? sortTasks(tasks.filter(t => t.status === key)) : rankedOpen(tasks, projectId).filter(t => t.status === key);
+      const dropOn = (e, target) => {
+        e.preventDefault(); e.stopPropagation(); setOver(null); setDrag(null);
+        const id = e.dataTransfer.getData("text/plain"); const t = S.tasks[id]; if (!t || id === target.id) return;
+        if (t.status !== key) setStatus(t, key);
+        if (key === "done") return;
+        const order = rankedOpen(Object.values(S.tasks), projectId).filter(x => x.id !== id);
+        moveRank(projectId, id, Math.max(0, order.findIndex(x => x.id === target.id)));
+      };
       return html`<div key=${key} class=${"col" + (over === key ? " over" : "")}
         onDragOver=${e => { e.preventDefault(); setOver(key); }} onDragLeave=${() => setOver(null)}
-        onDrop=${e => { e.preventDefault(); setOver(null); const id = e.dataTransfer.getData("text/plain"); const t = S.tasks[id]; if (t && t.status !== key) setStatus(t, key); }}>
+        onDrop=${e => { e.preventDefault(); setOver(null); setDrag(null); const id = e.dataTransfer.getData("text/plain"); const t = S.tasks[id]; if (t && t.status !== key) setStatus(t, key); }}>
         <div class="col-h"><span class=${"chip" + (key === "doing" ? " s-doing" : key === "done" ? " s-done" : "")}>${label}</span><span class="n">${list.length}</span></div>
         ${list.map(t => html`<div key=${t.id} class=${"card" + (t.size ? " sz-" + t.size : "") + (t.status === "done" ? " done" : "") + (drag === t.id ? " dragging" : "")} draggable="true" tabIndex="0" role="button"
           onDragStart=${e => { e.dataTransfer.setData("text/plain", t.id); e.dataTransfer.effectAllowed = "move"; setDrag(t.id); }} onDragEnd=${() => setDrag(null)}
+          onDragOver=${e => { e.preventDefault(); setOver(key); }} onDrop=${e => dropOn(e, t)}
           onClick=${() => openTask(t.id)} onKeyDown=${e => e.key === "Enter" && openTask(t.id)}>
-          ${t.size && html`<${Weight} size=${t.size} label />`}
-          <span class="t">${t.num ? html`<span class="num">${fmtNum(t.num)}</span> ` : ""}${t.title || "Untitled"}</span>
+          ${(t.size || key !== "done") && html`<span class="card-top"><${RankBadge} t=${t} /><span class="spacer"></span>${t.size && html`<${Weight} size=${t.size} label />`}</span>`}
+          <span class="t">${t.title || "Untitled"}</span>
           ${isBig(t) && t.status !== "done" && nextStepOf(t) && html`<span class="next-step">Next: ${nextStepOf(t).text}</span>`}
           <${TaskMeta} t=${t} compact />
         </div>`)}
@@ -2361,7 +2460,8 @@ function ProjectView({ st, id, fresh, go, openTask }) {
     ${mode !== "notes" && html`<${TemplateRow} st=${st} extra=${{ projectId: id }} openTask=${openTask} />`}
     ${mode === "board" && html`<${Board} tasks=${live} projectId=${id} openTask=${openTask} />`}
     ${mode === "list" && html`<div class="list">
-      ${sortTasks(live).map(t => html`<${TaskRow} key=${t.id} t=${t} projects=${st.projects} open=${openTask} />`)}
+      ${(() => { const ranked = rankedOpen(live, id); return ranked.length > 1 ? html`<div class="rank-hint muted">Drag the dots to put tasks in your order. The number is each task's place.</div><${RankList} list=${ranked} projects=${st.projects} openTask=${openTask} projectId=${id} />` : html`<${RankList} list=${ranked} projects=${st.projects} openTask=${openTask} projectId=${id} />`; })()}
+      ${sortTasks(live.filter(t => t.status === "done")).map(t => html`<${TaskRow} key=${t.id} t=${t} projects=${st.projects} open=${openTask} />`)}
       <${QuickAdd} projectId=${id} />
     </div>`}
     ${mode !== "notes" && archivedN > 0 && html`<div class="muted" style=${{ fontSize: 12.5 }}>${archivedN} archived ${archivedN === 1 ? "task is" : "tasks are"} hidden. Find ${archivedN === 1 ? "it" : "them"} under Tasks, Archived.</div>`}
