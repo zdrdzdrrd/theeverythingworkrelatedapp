@@ -458,6 +458,189 @@ button.tile:hover { border-color: var(--line-2); }
   .task > .meta:empty { display: none; }
 }
 
+.pal.modal .input { border: 1px solid var(--line-2); padding: 6px 10px; font-size: 14px; border-radius: 6px; background: var(--card); }
+.pal.modal .input:focus { border-color: var(--accent); }
+.task .t { min-width: 96px; }
+.task > .meta { min-width: 0; flex-wrap: wrap; justify-content: flex-end; row-gap: 4px; }
+@media (min-width: 761px) { .task > .meta { flex: 0 1 auto; } }
+/* task weight */
+.weight { display: inline-flex; align-items: center; gap: 5px; font-size: 12px; font-weight: 500; color: var(--wc); flex: none; --wc: var(--muted); }
+.weight .bars { display: inline-flex; align-items: flex-end; gap: 2px; height: 14px; }
+.weight .bars i { width: 4px; border-radius: 1.5px; background: var(--line-2); }
+.weight .bars i:nth-child(1) { height: 5px; } .weight .bars i:nth-child(2) { height: 8px; }
+.weight .bars i:nth-child(3) { height: 11px; } .weight .bars i:nth-child(4) { height: 14px; }
+.weight .bars i.on { background: var(--wc); }
+.w-quick { --wc: var(--good); } .w-medium { --wc: var(--accent); } .w-heavy { --wc: var(--warn); } .w-huge { --wc: var(--bad); }
+.card.sz-medium { box-shadow: 0 3px 0 -1px var(--card), 0 3px 0 0 var(--line-2); margin-bottom: 3px; }
+.card.sz-heavy { box-shadow: 0 3px 0 -1px var(--card), 0 3px 0 0 var(--line-2), 0 6px 0 -1px var(--card), 0 6px 0 0 var(--line-2); margin-bottom: 6px; border-left: 3px solid var(--warn); }
+.card.sz-huge { box-shadow: 0 3px 0 -1px var(--card), 0 3px 0 0 var(--line-2), 0 6px 0 -1px var(--card), 0 6px 0 0 var(--line-2), 0 9px 0 -1px var(--card), 0 9px 0 0 var(--line-2); margin-bottom: 9px; border-left: 3px solid var(--bad); }
+.card.sz-quick { border-left: 3px solid var(--good); }
+.next-step { display: block; font-size: 12px; color: var(--fg-2); overflow-wrap: anywhere; }
+.next-step::before { content: "→ "; color: var(--muted); }
+.size-seg button { display: inline-flex; align-items: center; gap: 6px; }
+.first-step { border: 1px dashed var(--warn); background: var(--warn-soft); border-radius: 9px; padding: 10px 12px; display: flex; flex-direction: column; gap: 6px; font-size: 13px; }
+.quickf .weight { --wc: var(--good); }
+.fchip.quickf:not(.on) { color: var(--good); border-color: var(--good-soft); }
+
+/* time clock */
+.clock { border: 1px solid var(--line); border-radius: 9px; background: var(--card); padding: 9px 10px; display: flex; flex-direction: column; gap: 7px; margin: 4px 0 8px; font-size: 12.5px; }
+.clock .btn { justify-content: center; }
+.clock.on { border-color: var(--good); background: linear-gradient(var(--good-soft), var(--good-soft)), var(--card); }
+.clock.warn { border-color: var(--bad); background: linear-gradient(var(--bad-soft), var(--bad-soft)), var(--card); color: var(--bad); }
+.clock-line { display: flex; align-items: center; gap: 7px; flex-wrap: wrap; }
+.clock-line b { color: var(--fg); }
+.pulse { width: 8px; height: 8px; border-radius: 50%; background: currentColor; flex: none; animation: pulse 1.6s ease-in-out infinite; }
+.clock.on .pulse { background: var(--good); }
+@keyframes pulse { 50% { opacity: .35; } }
+.clock-big { font-size: 22px; font-weight: 600; letter-spacing: -.01em; line-height: 1.1; }
+
+/* plan */
+.plan-modal { width: min(600px, 100%); max-height: calc(100vh - 40px); display: flex; flex-direction: column; }
+.plan-modal .modal-body { overflow-y: auto; }
+.wrap-sum { background: var(--hover); border-radius: 9px; padding: 10px 12px; display: flex; flex-direction: column; gap: 4px; font-size: 13px; color: var(--fg-2); }
+.slots, .plan-list { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 6px; }
+.slot { display: flex; align-items: center; gap: 8px; border: 1px solid var(--line-2); border-radius: 9px; padding: 7px 8px 7px 10px; min-height: 42px; background: var(--card); }
+.slot.empty { border-style: dashed; background: transparent; font-size: 13px; }
+.slot-n { width: 22px; height: 22px; border-radius: 50%; background: var(--hover); color: var(--fg-2); display: grid; place-items: center; font: 600 12px var(--f-mono); flex: none; }
+.slot:first-child:not(.empty) .slot-n, .plan-item.start .slot-n { background: var(--accent); color: var(--accent-ink); }
+.slot-t { flex: 1; min-width: 0; font-weight: 500; overflow-wrap: anywhere; cursor: pointer; }
+.cands { display: flex; flex-direction: column; border: 1px solid var(--line); border-radius: 9px; overflow: hidden; }
+.cand { display: flex; align-items: center; gap: 8px; padding: 7px 10px; text-align: left; border-bottom: 1px solid var(--line); flex-wrap: wrap; }
+.cand:last-child { border-bottom: 0; }
+.cand:hover { background: var(--hover); }
+.cand > svg { color: var(--muted); }
+.cand .ct { flex: 1 1 180px; min-width: 0; overflow-wrap: anywhere; }
+.cand .meta { display: inline-flex; align-items: center; gap: 6px; }
+.cand.new .ct { color: var(--accent); font-weight: 500; }
+.today-plan { border: 1px solid var(--line); border-radius: 12px; background: var(--card); padding: 14px 16px; display: flex; flex-direction: column; gap: 10px; }
+.plan-note { margin: 0; border-left: 3px solid var(--accent); padding: 4px 0 4px 10px; font-size: 13.5px; white-space: pre-wrap; overflow-wrap: anywhere; }
+.plan-item { display: flex; align-items: center; gap: 10px; padding: 8px 10px; border-radius: 9px; border: 1px solid var(--line); cursor: pointer; }
+.plan-item:hover { background: var(--hover); }
+.plan-item.start { border-color: var(--accent); box-shadow: inset 0 0 0 1px var(--accent); background: var(--accent-soft); }
+.plan-item.done .t { color: var(--muted); text-decoration: line-through; }
+.plan-item.done .slot-n { opacity: .5; }
+.pt { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 1px; }
+.pt .t { font-weight: 500; overflow-wrap: anywhere; }
+.start-badge { font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: .05em; background: var(--accent); color: var(--accent-ink); padding: 2px 7px; border-radius: 999px; flex: none; }
+.plan-empty { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; justify-content: space-between; color: var(--fg-2); font-size: 13.5px; }
+.tile .v.sm { font-size: 22px; padding-top: 6px; }
+
+/* time log */
+.time-table { border: 1px solid var(--line); border-radius: 10px; background: var(--card); overflow: hidden; }
+.tt-row { display: grid; grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr) minmax(0, 1fr) minmax(0, 1fr); gap: 8px; align-items: center; padding: 9px 14px; width: 100%; text-align: left; border-bottom: 1px solid var(--line); font-size: 13.5px; }
+button.tt-row:hover { background: var(--hover); }
+.tt-row.today { box-shadow: inset 3px 0 0 var(--accent); }
+.tt-row.open { background: var(--hover); }
+.tt-head { font-size: 11.5px; font-weight: 600; color: var(--muted); text-transform: uppercase; letter-spacing: .04em; padding-block: 7px; }
+.tt-foot { border-bottom: 0; font-weight: 600; background: var(--bg); }
+.tt-row .r { text-align: right; }
+.live { color: var(--good); font-weight: 500; font-family: var(--f-body); }
+.tt-edit { padding: 10px 14px 12px; display: flex; flex-direction: column; gap: 8px; border-bottom: 1px solid var(--line); background: var(--bg); font-size: 13px; }
+.tin { width: auto; padding-block: 3px; }
+@media (max-width: 760px) {
+  .tt-row { padding-inline: 10px; font-size: 12.5px; gap: 4px; }
+  .plan-item { flex-wrap: wrap; }
+  .plan-item .pt { flex: 1 1 calc(100% - 90px); }
+  .plan-item .weight { order: 4; margin-left: 62px; }
+  .plan-item .start-badge { display: none; }
+}
+
+/* project marks, rewards */
+.pemoji { font-size: 14px; line-height: 1; width: 18px; text-align: center; flex: none; }
+.emoji-pick { display: grid; grid-template-columns: repeat(7, 1fr); gap: 4px; }
+.emoji-pick button { height: 28px; border-radius: 6px; font-size: 16px; display: grid; place-items: center; border: 2px solid transparent; }
+.emoji-pick button:hover { background: var(--hover); }
+.emoji-pick button.on { border-color: var(--fg); }
+.spark, .spark-ring { position: fixed; pointer-events: none; z-index: 100; border-radius: 50%; }
+.spark { width: 6px; height: 6px; transform: translate(-50%, -50%); animation: spark .6s cubic-bezier(.2, .7, .3, 1) forwards; }
+@keyframes spark { to { transform: translate(calc(-50% + var(--dx)), calc(-50% + var(--dy))) scale(.3); opacity: 0; } }
+.spark-ring { width: 12px; height: 12px; border: 2px solid var(--good); transform: translate(-50%, -50%); animation: sring .5s ease-out forwards; }
+@keyframes sring { to { width: 46px; height: 46px; opacity: 0; } }
+.ring { position: relative; display: inline-grid; place-items: center; flex: none; }
+.ring svg { position: absolute; inset: 0; width: 100%; height: 100%; }
+.ring-c { position: relative; display: flex; flex-direction: column; align-items: center; line-height: 1.1; }
+
+/* now bar */
+.nowbar { position: sticky; top: 0; z-index: 19; display: flex; align-items: center; gap: 10px; padding: 8px 20px; background: color-mix(in srgb, var(--bg) 88%, transparent); backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); border-bottom: 1px solid var(--line); }
+.now-lab { font-size: 11px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: var(--accent-ink); background: var(--accent); padding: 2px 7px; border-radius: 5px; flex: none; }
+.now-t { flex: 1; min-width: 0; display: flex; align-items: baseline; gap: 10px; text-align: left; overflow: hidden; }
+.now-t .t { font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; min-width: 0; }
+.now-step { color: var(--muted); font-size: 12.5px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; min-width: 0; flex: 1; }
+.now-step::before { content: "→ "; }
+.now-t:hover .t { text-decoration: underline; text-decoration-color: var(--line-2); }
+.timer-pill { display: inline-flex; align-items: center; gap: 5px; font: 600 12.5px var(--f-mono); padding: 3px 9px; border-radius: 999px; background: var(--hover); color: var(--fg-2); flex: none; }
+.timer-pill.run { background: var(--accent-soft); color: var(--accent); }
+.timer-pill.fin { background: var(--good-soft); color: var(--good); font-family: var(--f-body); }
+.timer-pill svg { width: 13px; height: 13px; }
+.now-go { flex: none; }
+
+/* focus mode */
+.focus { position: fixed; inset: 0; z-index: 70; background: var(--bg); display: flex; flex-direction: column; overflow-y: auto; padding: env(safe-area-inset-top, 0px) 0 env(safe-area-inset-bottom, 0px); animation: fadein .18s ease-out; }
+@keyframes fadein { from { opacity: 0; } }
+.focus-top { display: flex; align-items: center; gap: 12px; padding: 14px 20px; }
+.focus-body { width: min(680px, 100%); margin: 0 auto; padding: 4vh 20px 48px; display: flex; flex-direction: column; gap: 28px; align-items: center; text-align: center; flex: 1; }
+.focus-kicker { font-size: 12.5px; font-weight: 600; letter-spacing: .06em; text-transform: uppercase; color: var(--muted); display: inline-flex; align-items: center; gap: 10px; justify-content: center; }
+.focus-kicker .weight { text-transform: none; letter-spacing: 0; }
+.focus-title { font: 700 clamp(28px, 5vw, 44px)/1.15 var(--f-display); letter-spacing: -.015em; margin: -12px 0 0; text-wrap: balance; overflow-wrap: anywhere; }
+.focus-step { width: 100%; display: flex; flex-direction: column; gap: 10px; }
+.fs-row { display: flex; align-items: center; gap: 14px; text-align: left; border: 1px solid var(--line-2); background: var(--card); border-radius: 12px; padding: 16px 18px; font-size: 18px; font-weight: 500; overflow-wrap: anywhere; animation: fadein .25s ease-out; }
+.check.big { width: 28px; height: 28px; border-radius: 8px; border-width: 2px; }
+.ftimer { display: flex; flex-direction: column; align-items: center; gap: 14px; }
+.ft-time { font-size: 36px; font-weight: 600; letter-spacing: -.02em; }
+.ft-lab { font-size: 12px; color: var(--muted); font-weight: 500; }
+.focus-donebtn { min-height: 44px; padding: 8px 20px; font-size: 15px; }
+.focus-done { display: flex; flex-direction: column; align-items: center; gap: 16px; padding-top: 4vh; }
+.focus-done .focus-title { margin: 0; }
+.big-check { width: 72px; height: 72px; border-radius: 50%; background: var(--good); color: #fff; display: grid; place-items: center; animation: popin .35s cubic-bezier(.3, 1.6, .5, 1); }
+.big-check svg { width: 38px; height: 38px; }
+@keyframes popin { from { transform: scale(.4); opacity: 0; } }
+.focus-next { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; justify-content: center; border: 1px solid var(--line-2); background: var(--card); border-radius: 12px; padding: 14px 16px; font-size: 16px; font-weight: 500; }
+.focus-next:hover { border-color: var(--accent); }
+
+/* calm dashboard */
+.more-toggle { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; padding: 10px 12px; border-radius: 10px; border: 1px dashed var(--line-2); color: var(--fg-2); font-weight: 500; text-align: left; }
+.more-toggle:hover { background: var(--hover); color: var(--fg); }
+.more-toggle.on { border-style: solid; border-color: transparent; padding-inline: 4px; }
+.more-sum { display: inline-flex; gap: 6px; flex-wrap: wrap; margin-left: auto; }
+.plan-focus { padding: 3px 10px; min-height: 28px; }
+
+/* larger text and icons */
+.d-comfy { font-size: 15px; }
+.d-comfy .nav { min-height: 38px; padding: 7px 10px; gap: 11px; font-size: 14.5px; }
+.d-comfy .nav svg { width: 20px; height: 20px; }
+.d-comfy .nav .pemoji { font-size: 17px; width: 20px; }
+.d-comfy .nav .dot { width: 11px; height: 11px; margin-inline: 4px; }
+.d-comfy .btn { min-height: 36px; padding: 6px 13px; font-size: 14px; }
+.d-comfy .btn svg { width: 17px; height: 17px; }
+.d-comfy .icon-btn { width: 32px; height: 32px; }
+.d-comfy .icon-btn svg { width: 19px; height: 19px; }
+.d-comfy .task { min-height: 48px; padding: 9px 10px; gap: 12px; }
+.d-comfy .check { width: 22px; height: 22px; border-radius: 6px; border-width: 2px; }
+.d-comfy .check svg { width: 15px; height: 15px; }
+.d-comfy .check.sm { width: 19px; height: 19px; }
+.d-comfy .check.big { width: 30px; height: 30px; }
+.d-comfy .chip { font-size: 12.5px; }
+.d-comfy .h2 { font-size: 14px; }
+.d-comfy .card { padding: 12px; gap: 9px; }
+.d-comfy .card .t { font-size: 15.5px; }
+.d-comfy .plan-item { padding: 12px 14px; font-size: 16px; gap: 12px; }
+.d-comfy .slot-n { width: 26px; height: 26px; font-size: 13px; }
+.d-comfy .weight .bars { height: 16px; }
+.d-comfy .weight .bars i { width: 5px; }
+.d-comfy .weight .bars i:nth-child(1) { height: 6px; } .d-comfy .weight .bars i:nth-child(2) { height: 9px; }
+.d-comfy .weight .bars i:nth-child(3) { height: 12.5px; } .d-comfy .weight .bars i:nth-child(4) { height: 16px; }
+.d-comfy .nowbar { padding-block: 10px; }
+.d-comfy .page { gap: 32px; }
+@media (max-width: 760px) {
+  .nowbar { position: static; padding: 8px 16px; gap: 8px; }
+  .now-go span { display: none; }
+  .focus-top { padding: 10px 16px; }
+  .focus-body { gap: 22px; padding-inline: 16px; }
+  .fs-row { font-size: 16px; padding: 14px; }
+  .plan-item .plan-focus { order: 5; margin-left: auto; }
+  .task .t { flex: 1 1 120px; }
+}
+
 @media (prefers-reduced-motion: reduce) { * { animation: none !important; transition: none !important; } }
 
 @media (max-width: 900px) {
@@ -862,9 +1045,9 @@ const uid = () => (crypto.randomUUID ? crypto.randomUUID() : Date.now().toString
 const sleep = ms => new Promise(r => setTimeout(r, ms));
 
 /* ---------- storage: your account's database when the viewer provides it, this browser otherwise ---------- */
-const COLS = ["projects", "tasks", "notes", "templates"];
+const COLS = ["projects", "tasks", "notes", "templates", "days"];
 const LS_KEY = "workspace.data.v1";
-const S = { mode: "loading", projects: {}, tasks: {}, notes: {}, templates: {}, toast: null, caps: { assets: false, downloads: false }, v: 0 };
+const S = { mode: "loading", projects: {}, tasks: {}, notes: {}, templates: {}, days: {}, toast: null, caps: { assets: false, downloads: false }, v: 0 };
 let snap = { ...S };
 const subs = new Set();
 let DB = null, ASSETS = null, DOWNLOADS = null;
@@ -872,12 +1055,12 @@ let DB = null, ASSETS = null, DOWNLOADS = null;
 const STANDALONE = !(window.claude && window.claude.use);
 let storageFull = false;
 const queued = {}, inflight = {};
-function normTask(t) { return { tags: [], subtasks: [], entries: [], assignee: "", recur: "", notes: "", priority: "none", status: "todo", ...t }; }
-function norm(col, o) { return col === "tasks" ? normTask(o) : o; }
+function normTask(t) { return { tags: [], subtasks: [], entries: [], assignee: "", recur: "", notes: "", priority: "none", status: "todo", size: null, ...t }; }
+function norm(col, o) { return col === "tasks" ? normTask(o) : col === "days" ? { sessions: [], plan: [], note: "", ...o } : o; }
 function commit() {
   S.v++; snap = { ...S }; subs.forEach(f => f());
   if (S.mode === "local") {
-    try { localStorage.setItem(LS_KEY, JSON.stringify({ projects: S.projects, tasks: S.tasks, notes: S.notes, templates: S.templates })); storageFull = false; }
+    try { localStorage.setItem(LS_KEY, JSON.stringify({ projects: S.projects, tasks: S.tasks, notes: S.notes, templates: S.templates, days: S.days })); storageFull = false; }
     catch (e) {
       if (!storageFull) { storageFull = true; S.toast = { text: "This browser's storage is full, so your latest changes aren't saved. Delete some photos or old tasks, and save a backup.", kind: "error" }; S.v++; snap = { ...S }; subs.forEach(f => f()); }
     }
@@ -1019,7 +1202,7 @@ function setStatus(t, status) {
   if (status === "done" && !wasDone && t.recur && !t.spawnedNext) {
     const base = t.due || t.start ? null : today();
     const nt = newTask({
-      title: t.title, projectId: t.projectId, priority: t.priority, assignee: t.assignee, tags: [...(t.tags || [])], recur: t.recur, notes: t.notes,
+      title: t.title, projectId: t.projectId, priority: t.priority, size: t.size, assignee: t.assignee, tags: [...(t.tags || [])], recur: t.recur, notes: t.notes,
       start: t.start ? nextRecur(t.start, t.recur) : null, due: t.due ? nextRecur(t.due, t.recur) : (base ? nextRecur(base, t.recur) : null),
       subtasks: (t.subtasks || []).map(s => ({ id: uid(), text: s.text, done: false, due: s.due ? nextRecur(s.due, t.recur) : null })),
     });
@@ -1029,15 +1212,15 @@ function setStatus(t, status) {
   patch("tasks", t.id, fields);
 }
 function duplicateTask(t) {
-  return newTask({ title: t.title + " (copy)", projectId: t.projectId, priority: t.priority, assignee: t.assignee, tags: [...(t.tags || [])], notes: t.notes,
+  return newTask({ title: t.title + " (copy)", projectId: t.projectId, priority: t.priority, size: t.size, assignee: t.assignee, tags: [...(t.tags || [])], notes: t.notes,
     subtasks: (t.subtasks || []).map(s => ({ id: uid(), text: s.text, done: false, due: s.due || null })) });
 }
 function saveTemplate(t) {
-  const tp = { id: uid(), name: (t.title || "Untitled").slice(0, 60), priority: t.priority, tags: [...(t.tags || [])], subtasks: (t.subtasks || []).map(s => s.text), notes: t.notes || "", createdAt: Date.now() };
+  const tp = { id: uid(), name: (t.title || "Untitled").slice(0, 60), priority: t.priority, size: t.size || null, tags: [...(t.tags || [])], subtasks: (t.subtasks || []).map(s => s.text), notes: t.notes || "", createdAt: Date.now() };
   put("templates", tp); toast(`Saved “${tp.name}” as a template.`);
 }
 function fromTemplate(tp, extra) {
-  return newTask({ title: tp.name, priority: tp.priority || "none", tags: [...(tp.tags || [])], notes: tp.notes || "", subtasks: (tp.subtasks || []).map(text => ({ id: uid(), text, done: false, due: null })), ...extra });
+  return newTask({ title: tp.name, priority: tp.priority || "none", size: tp.size || null, tags: [...(tp.tags || [])], notes: tp.notes || "", subtasks: (tp.subtasks || []).map(text => ({ id: uid(), text, done: false, due: null })), ...extra });
 }
 function newProject(fields) {
   const n = Object.keys(S.projects).length;
@@ -1050,13 +1233,15 @@ function newNote(fields) {
   put("notes", n); return n;
 }
 function parseQuick(s) {
-  const tags = []; let assignee = "", priority = null;
+  const tags = []; let assignee = "", priority = null, size = null;
+  const SZ = { q: "quick", quick: "quick", m: "medium", med: "medium", medium: "medium", h: "heavy", heavy: "heavy", xl: "huge", huge: "huge" };
   const title = s
+    .replace(/(^|\s)~(quick|q|medium|med|m|heavy|h|huge|xl)\b/gi, (m, a, b) => { size = SZ[b.toLowerCase()]; return a; })
     .replace(/(^|\s)#([^\s#@!]+)/g, (m, a, b) => { tags.push(b); return a; })
     .replace(/(^|\s)@([^\s#@!]+)/g, (m, a, b) => { assignee = b; return a; })
     .replace(/(^|\s)!(high|medium|med|low)\b/gi, (m, a, b) => { b = b.toLowerCase(); priority = b === "med" ? "medium" : b; return a; })
     .replace(/\s+/g, " ").trim();
-  return { title, tags, assignee, priority };
+  return { title, tags, assignee, priority, size };
 }
 function allTags(st) {
   const c = {};
@@ -1107,6 +1292,16 @@ const P = {
   decision: "M12 3v18M5 8h14l-3 4 3 4H5",
   call: "M5 4h4l2 5-3 2a11 11 0 0 0 5 5l2-3 5 2v4a2 2 0 0 1-2 2A17 17 0 0 1 3 6a2 2 0 0 1 2-2",
   issue: "M12 3 2 21h20zM12 10v5M12 18h.01",
+  clock: "M12 21a9 9 0 1 0 0-18 9 9 0 0 0 0 18zM12 7v5l3 2",
+  in: "M10 17l5-5-5-5M15 12H3M14 4h5v16h-5",
+  out: "M14 17l5-5-5-5M19 12H7M10 4H5v16h5",
+  sunset: "M3 18h18M6 14a6 6 0 0 1 12 0M12 4v3M4.9 8.9l1.4 1.4M19.1 8.9l-1.4 1.4M8 21h8",
+  up: "M6 15l6-6 6 6",
+  bolt: "M13 3 5 14h6l-1 7 8-11h-6z",
+  focus: "M12 3a9 9 0 1 0 0 18 9 9 0 1 0 0-18M12 8a4 4 0 1 0 0 8 4 4 0 1 0 0-8M12 11.5v1",
+  play: "M7 4.5v15l12-7.5z",
+  pause: "M8 5v14M16 5v14",
+  textsize: "M3 7V5h11v2M8.5 5v14M6.5 19h4M14 13v-1.5h7V13M17.5 11.5V19M16 19h3",
 };
 const ENTRY_ICON = { note: "note", measurement: "measure", decision: "decision", call: "call", issue: "issue" };
 const Icon = ({ n, w = 1.8 }) => html`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width=${w} stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d=${P[n]} /></svg>`;
@@ -1118,7 +1313,7 @@ function useLS(key, init) {
   return [v, set];
 }
 function Check({ on, onClick, label, small }) {
-  return html`<button class=${"check" + (on ? " on" : "") + (small ? " sm" : "")} aria-label=${label || (on ? "Mark as not done" : "Mark as done")} onClick=${e => { e.stopPropagation(); onClick(); }}>${on && html`<${Icon} n="check" w="3" />`}</button>`;
+  return html`<button class=${"check" + (on ? " on" : "") + (small ? " sm" : "")} aria-label=${label || (on ? "Mark as not done" : "Mark as done")} onClick=${e => { e.stopPropagation(); if (!on) burst(e.currentTarget); onClick(); }}>${on && html`<${Icon} n="check" w="3" />`}</button>`;
 }
 function DateChip({ d, done }) {
   if (!d) return null;
@@ -1133,7 +1328,7 @@ function PrioChip({ p }) {
 }
 function ProjTag({ p }) {
   if (!p) return null;
-  return html`<span class="chip hide-sm"><span class="dot" style=${{ background: pcolor(p) }}></span>${p.name || "Untitled"}</span>`;
+  return html`<span class="chip hide-sm"><${PMark} p=${p} />${p.name || "Untitled"}</span>`;
 }
 function Avatar({ name }) {
   if (!name) return null;
@@ -1160,6 +1355,7 @@ function TaskRow({ t, projects, showProject, open }) {
   return html`<div class=${"task" + (t.status === "done" ? " done" : "")} onClick=${() => open(t.id)} role="button" tabIndex="0" onKeyDown=${e => e.key === "Enter" && open(t.id)}>
     <${Check} on=${t.status === "done"} onClick=${() => setStatus(t, t.status === "done" ? "todo" : "done")} />
     ${t.num && html`<span class="num">${fmtNum(t.num)}</span>`}
+    <${Weight} size=${t.size} />
     <span class="t">${t.title || html`<span class="muted">Untitled</span>`}</span>
     <${TaskMeta} t=${t} projects=${projects} showProject=${showProject} />
   </div>`;
@@ -1172,12 +1368,12 @@ function QuickAdd({ projectId, due, status, projects, placeholder, compact }) {
   const submit = e => {
     e.preventDefault();
     const q = parseQuick(v); if (!q.title) return;
-    newTask({ title: q.title, tags: q.tags, assignee: q.assignee, priority: q.priority || "none", projectId: projectId || pid || null, due: due || null, status: status || "todo" });
+    newTask({ title: q.title, tags: q.tags, assignee: q.assignee, priority: q.priority || "none", size: q.size, projectId: projectId || pid || null, due: due || null, status: status || "todo" });
     setV("");
   };
   return html`<form class="add" onSubmit=${submit}>
     <${Icon} n="plus" />
-    <input value=${v} onInput=${e => setV(e.target.value)} placeholder=${placeholder || (compact ? "New" : "Add a task  ·  #tag  @owner  !high")} aria-label="New task title" />
+    <input value=${v} onInput=${e => setV(e.target.value)} placeholder=${placeholder || (compact ? "New" : "Add a task  ·  #tag  @owner  !high  ~quick")} aria-label="New task title" />
     ${!projectId && projects && plist.length > 0 && html`<select value=${pid} onChange=${e => setPid(e.target.value)} aria-label="Project for new task">
       <option value="">No project</option>
       ${plist.map(p => html`<option key=${p.id} value=${p.id}>${p.name || "Untitled"}</option>`)}
@@ -1231,8 +1427,481 @@ function TagInput({ tags, onChange, suggestions }) {
   </div>`;
 }
 
+/* ---------- task size ---------- */
+const SIZES = [["quick", "Quick", "15 min or less"], ["medium", "Medium", "About an hour"], ["heavy", "Heavy", "Half a day"], ["huge", "Huge", "A day or more"]];
+const SIZE_LABEL = Object.fromEntries(SIZES.map(s => [s[0], s[1]]));
+const SIZE_HINT = Object.fromEntries(SIZES.map(s => [s[0], s[2]]));
+const SIZE_LEVEL = { quick: 1, medium: 2, heavy: 3, huge: 4 };
+const isBig = t => t.size === "heavy" || t.size === "huge";
+const nextStepOf = t => (t.subtasks || []).find(s => !s.done);
+function Weight({ size, label }) {
+  if (!size) return null;
+  const lv = SIZE_LEVEL[size] || 0;
+  return html`<span class=${"weight w-" + size} title=${SIZE_LABEL[size] + ": " + SIZE_HINT[size].toLowerCase()}>
+    <span class="bars" aria-hidden="true">${[1, 2, 3, 4].map(i => html`<i key=${i} class=${i <= lv ? "on" : ""}></i>`)}</span>${label && html`<span>${SIZE_LABEL[size]}</span>`}</span>`;
+}
+function SizePicker({ t, set }) {
+  return html`<div class="seg size-seg">
+    ${SIZES.map(([k, l, hint]) => html`<button key=${k} class=${t.size === k ? "on" : ""} title=${hint} onClick=${() => set({ size: t.size === k ? null : k })}><${Weight} size=${k} />${l}</button>`)}
+  </div>`;
+}
+function FirstStep({ t }) {
+  const [v, setV] = useState("");
+  if (!isBig(t) || t.status === "done" || nextStepOf(t)) return null;
+  const add = e => {
+    e.preventDefault(); const text = v.trim(); if (!text) return;
+    const cur = S.tasks[t.id].subtasks || [];
+    patch("tasks", t.id, { subtasks: [{ id: uid(), text, done: false, due: null }, ...cur], updatedAt: Date.now() }); setV("");
+  };
+  return html`<form class="first-step" onSubmit=${add}>
+    <b>${SIZE_LABEL[t.size]} tasks are easier to start with one tiny step.</b>
+    <span class="muted">What could you do in the first 10 minutes?</span>
+    <div class="row"><input class="input" value=${v} onInput=${e => setV(e.target.value)} placeholder="e.g. Open the test report template" aria-label="First tiny step" style=${{ flex: 1, width: "auto" }} /><button class="btn primary">Add step</button></div>
+  </form>`;
+}
+
+/* ---------- time clock ---------- */
+const WEEKDAY = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+function dayDoc(d) { return S.days[d] || { id: d, date: d, sessions: [], plan: [], note: "" }; }
+function openSession(days) {
+  for (const d of Object.values(days || S.days).sort((a, b) => b.id.localeCompare(a.id))) {
+    const i = (d.sessions || []).findIndex(s => !s.out);
+    if (i >= 0) return { day: d, i, s: d.sessions[i] };
+  }
+  return null;
+}
+function clockIn() {
+  if (openSession()) return;
+  const d = dayDoc(today());
+  put("days", { ...d, sessions: [...(d.sessions || []), { in: Date.now(), out: null }] });
+}
+function clockOut(at) {
+  const o = openSession(); if (!o) return null;
+  const out = Math.max(at || Date.now(), o.s.in + 60000);
+  put("days", { ...o.day, sessions: o.day.sessions.map((s, j) => j === o.i ? { ...s, out } : s) });
+  return out;
+}
+const dayMs = (d, now) => (d && d.sessions || []).reduce((n, s) => n + Math.max(0, (s.out || now || Date.now()) - s.in), 0);
+const fmtDur = ms => { const m = Math.round(ms / 60000); return Math.floor(m / 60) + "h " + pad(m % 60) + "m"; };
+const fmtTime = ms => new Date(ms).toLocaleTimeString([], { hour: "numeric", minute: "2-digit" });
+const toTimeInput = ms => { const d = new Date(ms); return pad(d.getHours()) + ":" + pad(d.getMinutes()); };
+const fromTimeInput = (date, v) => { const [h, m] = v.split(":").map(Number); const d = parseDate(date); d.setHours(h, m, 0, 0); return d.getTime(); };
+function nextWorkday(s) { let d = addDays(s, 1); while ([0, 6].includes(parseDate(d).getDay())) d = addDays(d, 1); return d; }
+const weekStart = s => addDays(s, -((parseDate(s).getDay() + 6) % 7));
+function useTick(ms) { const [, setN] = useState(0); useEffect(() => { const i = setInterval(() => setN(n => n + 1), ms); return () => clearInterval(i); }, []); }
+
+function ClockWidget({ st, onClockOut, go }) {
+  useTick(30000);
+  const o = openSession(st.days);
+  const t0 = today();
+  const todayMs = dayMs(st.days[t0]);
+  if (o && o.day.id !== t0) return html`<div class="clock warn">
+    <div class="clock-line"><span class="pulse"></span><span>Still clocked in from ${dueLabel(o.day.id).toLowerCase() === "yesterday" ? "yesterday" : dueLabel(o.day.id)}, ${fmtTime(o.s.in)}</span></div>
+    <button class="btn" onClick=${() => go({ view: "time", focus: o.day.id })}>Set when you left</button>
+  </div>`;
+  if (o) return html`<div class="clock on">
+    <div class="clock-line"><span class="pulse"></span><span>On the clock since ${fmtTime(o.s.in)}</span></div>
+    <div class="clock-big mono">${fmtDur(todayMs)}</div>
+    <button class="btn" onClick=${onClockOut}><${Icon} n="out" />Clock out</button>
+  </div>`;
+  return html`<div class="clock">
+    ${todayMs > 0 ? html`<div class="clock-line muted">Today so far <b class="mono">${fmtDur(todayMs)}</b></div>` : html`<div class="clock-line muted">Not clocked in</div>`}
+    <button class="btn primary" onClick=${clockIn}><${Icon} n="in" />Clock in</button>
+  </div>`;
+}
+
+/* ---------- daily plan ---------- */
+function planCandidates(st, target, chosen, q) {
+  const rank = t => (t.due && t.due < target ? 0 : t.due === target ? 1 : t.status === "doing" ? 2 : t.due && t.due <= addDays(target, 3) ? 3 : 4) * 10 + PRANK[t.priority || "none"];
+  return Object.values(st.tasks)
+    .filter(t => t.status !== "done" && !chosen.includes(t.id) && matchesSearch(t, q, st))
+    .sort((a, b) => rank(a) - rank(b) || (a.due || "9").localeCompare(b.due || "9"));
+}
+function PlanModal({ st, close, initial, clockedOutAt, openTask }) {
+  const t0 = today();
+  const [target, setTarget] = useState(initial || nextWorkday(t0));
+  const existing = st.days[target] || {};
+  const [plan, setPlan] = useState(() => (existing.plan || []).filter(id => st.tasks[id]));
+  const [note, setNote] = useState(existing.note || "");
+  const [q, setQ] = useState("");
+  const loadedFor = useRef(target);
+  useEffect(() => {
+    if (loadedFor.current === target) return;
+    loadedFor.current = target;
+    const d = S.days[target] || {}; setPlan((d.plan || []).filter(id => S.tasks[id])); setNote(d.note || "");
+  }, [target]);
+  const doneToday = Object.values(st.tasks).filter(t => t.completedAt && fmtDate(new Date(t.completedAt)) === t0);
+  const worked = dayMs(st.days[t0]);
+  const cands = planCandidates(st, target, plan, q).slice(0, 8);
+  const full = plan.length >= 3;
+  const add = id => { if (!full && !plan.includes(id)) setPlan([...plan, id]); };
+  const move = (i, d) => { const a = plan.slice(); const j = i + d; if (j < 0 || j >= a.length) return; [a[i], a[j]] = [a[j], a[i]]; setPlan(a); };
+  const createFromQuery = () => { const p = parseQuick(q); if (!p.title || full) return; const t = newTask({ title: p.title, tags: p.tags, assignee: p.assignee, priority: p.priority || "none", size: p.size || null }); add(t.id); setQ(""); };
+  const save = () => {
+    const d = dayDoc(target);
+    put("days", { ...d, plan, note: note.trim(), plannedAt: Date.now() });
+    toast(plan.length ? `Plan saved for ${dueLabel(target).toLowerCase() === "tomorrow" ? "tomorrow" : WEEKDAY[parseDate(target).getDay()]}. It'll be waiting on your dashboard.` : "Plan saved.");
+    close();
+  };
+  const isToday = target === t0;
+  return html`<div class="pal-scrim" onMouseDown=${e => e.target === e.currentTarget && close()}>
+    <div class="pal modal plan-modal" role="dialog" aria-label=${isToday ? "Plan today" : "Plan tomorrow"}>
+      <div class="row" style=${{ padding: "14px 16px", borderBottom: "1px solid var(--line)" }}>
+        <h2 class="h2" style=${{ fontSize: 15, color: "var(--fg)" }}><${Icon} n="sunset" />${isToday ? "Plan today" : "Wrap up and plan ahead"}</h2>
+        <span class="spacer"></span><button class="icon-btn" aria-label="Close" onClick=${close}><${Icon} n="x" /></button>
+      </div>
+      <div class="modal-body">
+        ${!isToday && html`<div class="wrap-sum">
+          ${clockedOutAt && html`<div><b>Clocked out at ${fmtTime(clockedOutAt)}.</b> You worked <b class="mono">${fmtDur(worked)}</b> today.</div>`}
+          <div>${doneToday.length ? html`You finished <b>${doneToday.length}</b> ${doneToday.length === 1 ? "task" : "tasks"} today: ${doneToday.slice(0, 5).map(t => t.title || "Untitled").join(", ")}${doneToday.length > 5 ? ", and more" : ""}.` : "No tasks closed today. Planning tomorrow still counts."}</div>
+        </div>`}
+        <div class="row">
+          <span class="h2" style=${{ color: "var(--fg)" }}>Top 3 for</span>
+          <input type="date" class="input" style=${{ width: "auto" }} value=${target} onChange=${e => e.target.value && setTarget(e.target.value)} aria-label="Plan for date" />
+          <span class="muted" style=${{ fontSize: 12.5 }}>${WEEKDAY[parseDate(target).getDay()]}</span>
+        </div>
+        <ol class="slots">
+          ${[0, 1, 2].map(i => {
+            const t = st.tasks[plan[i]];
+            return html`<li key=${i} class=${"slot" + (t ? "" : " empty")}>
+              <span class="slot-n">${i + 1}</span>
+              ${t ? html`<span class="slot-t" onClick=${() => openTask && openTask(t.id)}>${t.title || "Untitled"}</span>
+                <${Weight} size=${t.size} />
+                <button class="icon-btn" aria-label="Move up" disabled=${i === 0} onClick=${() => move(i, -1)}><${Icon} n="up" /></button>
+                <button class="icon-btn" aria-label="Remove from plan" onClick=${() => setPlan(plan.filter(x => x !== t.id))}><${Icon} n="x" /></button>`
+              : html`<span class="muted">${i === 0 ? "The one thing to start with" : "Pick from the list below"}</span>`}
+            </li>`;
+          })}
+        </ol>
+        <div class="section" style=${{ gap: 6 }}>
+          <input class="input" value=${q} onInput=${e => setQ(e.target.value)} placeholder=${full ? "Remove one to pick another" : "Search your tasks, or type a new one and press Enter"} aria-label="Find or add a task for the plan" disabled=${full}
+            onKeyDown=${e => { if (e.key === "Enter") { e.preventDefault(); if (cands.length && q && !e.shiftKey && cands[0].title.toLowerCase() === q.trim().toLowerCase()) add(cands[0].id); else createFromQuery(); } }} />
+          ${!full && html`<div class="cands">
+            ${cands.map(t => html`<button key=${t.id} class="cand" onClick=${() => add(t.id)}>
+              <${Icon} n="plus" /><span class="ct">${t.title || "Untitled"}</span>
+              <span class="meta"><${Weight} size=${t.size} /><${PrioChip} p=${t.priority} /><${DueChip} t=${t} /></span></button>`)}
+            ${q.trim() && html`<button class="cand new" onClick=${createFromQuery}><${Icon} n="plus" /><span class="ct">New task: “${parseQuick(q).title}”</span></button>`}
+            ${!cands.length && !q.trim() && html`<div class="empty" style=${{ padding: 4 }}>No open tasks. Type one above.</div>`}
+          </div>`}
+        </div>
+        <label class="section" style=${{ gap: 6 }}><span class="h2">Note for ${isToday ? "today" : "tomorrow morning"}</span>
+          <textarea class="notes-area" style=${{ minHeight: 70 }} value=${note} onInput=${e => setNote(e.target.value)} placeholder="e.g. Do the FCT report before opening email."></textarea></label>
+        <div class="row"><span class="spacer"></span><button class="btn ghost" onClick=${close}>Skip</button><button class="btn primary" onClick=${save}><${Icon} n="check" />Save plan</button></div>
+      </div>
+    </div>
+  </div>`;
+}
+
+function TodayPlan({ st, openTask, onPlan, onFocus }) {
+  const t0 = today();
+  const d = st.days[t0];
+  const plan = ((d && d.plan) || []).map(id => st.tasks[id]).filter(Boolean);
+  const h = new Date().getHours();
+  const next = nextWorkday(t0);
+  const tomorrowPlanned = !!(st.days[next] && st.days[next].plannedAt);
+  const evening = h >= 16 && !tomorrowPlanned;
+  const startIdx = plan.findIndex(t => t.status !== "done");
+  const allDone = plan.length > 0 && startIdx === -1;
+  return html`<div class="today-plan">
+    <div class="row">
+      ${plan.length > 0 ? html`<${Ring} pct=${plan.filter(t => t.status === "done").length / plan.length} size=${34} stroke=${4} color=${allDone ? "var(--good)" : "var(--accent)"} label=${plan.filter(t => t.status === "done").length + " of " + plan.length + " done"}><span class="mono" style=${{ fontSize: 10.5, fontWeight: 600 }}>${plan.filter(t => t.status === "done").length}/${plan.length}</span><//>` : html`<${Icon} n="sun" />`}
+      <h2 class="h2" style=${{ fontSize: 15, color: "var(--fg)" }}>Today's plan</h2>
+      <span class="spacer"></span>
+      ${plan.length > 0 && html`<button class="linkbtn" onClick=${() => onPlan(t0)}>Edit</button>`}
+    </div>
+    ${d && d.note && html`<blockquote class="plan-note"><span class="muted">Note from ${d.plannedAt && fmtDate(new Date(d.plannedAt)) !== t0 ? "last time" : "earlier"}:</span> ${d.note}</blockquote>`}
+    ${plan.length > 0 ? html`<ol class="plan-list">
+      ${plan.map((t, i) => html`<li key=${t.id} class=${"plan-item" + (t.status === "done" ? " done" : "") + (i === startIdx ? " start" : "")} onClick=${() => openTask(t.id)}>
+        <span class="slot-n">${i + 1}</span>
+        <${Check} on=${t.status === "done"} onClick=${() => setStatus(t, t.status === "done" ? "todo" : "done")} />
+        <span class="pt"><span class="t">${t.title || "Untitled"}</span>
+          ${i === startIdx && isBig(t) && nextStepOf(t) && html`<span class="next-step">First step: ${nextStepOf(t).text}</span>`}</span>
+        ${i === startIdx && html`<span class="start-badge">Start here</span>`}
+        ${i === startIdx && onFocus && html`<button class="btn primary plan-focus" onClick=${e => { e.stopPropagation(); onFocus(t.id); }}><${Icon} n="focus" />Focus</button>`}
+        <${Weight} size=${t.size} label />
+      </li>`)}
+    </ol>` : html`<div class="plan-empty"><span>No plan for today yet. Picking your top 3 tells you where to start.</span><button class="btn primary" onClick=${() => onPlan(t0)}>Pick today's 3</button></div>`}
+    ${allDone && html`<div class="banner good"><${Icon} n="done" />All of today's plan is done. Anything else is a bonus.</div>`}
+    ${evening ? html`<div class="banner"><${Icon} n="sunset" />Before you leave, plan ${next === addDays(t0, 1) ? "tomorrow" : WEEKDAY[parseDate(next).getDay()]}. <button class="linkbtn" onClick=${() => onPlan(next)}>Plan it now</button></div>`
+      : tomorrowPlanned && html`<div class="muted" style=${{ fontSize: 12.5 }}>${next === addDays(t0, 1) ? "Tomorrow" : WEEKDAY[parseDate(next).getDay()]} is already planned. <button class="linkbtn" onClick=${() => onPlan(next)}>Review</button></div>`}
+  </div>`;
+}
+
+/* ---------- time log page ---------- */
+function HoursChart({ days }) {
+  const box = useRef(null);
+  const [W, setW] = useState(560);
+  useEffect(() => {
+    const el = box.current; if (!el || !window.ResizeObserver) return;
+    const ro = new ResizeObserver(() => setW(Math.max(280, Math.round(el.clientWidth))));
+    ro.observe(el); return () => ro.disconnect();
+  }, []);
+  const H = 170, L = 30, B = 22, T = 10;
+  const max = Math.max(10, ...days.map(d => d.ms / 36e5));
+  const top = Math.ceil(max / 2) * 2;
+  const y = v => T + (H - T - B) * (1 - v / top);
+  const cw = (W - L) / 7, bw = Math.min(30, cw * .5);
+  const ticks = [0, top / 2, top];
+  return html`<div class="chart" ref=${box}><svg viewBox=${`0 0 ${W} ${H}`} role="img" aria-label="Hours worked per day this week">
+    ${ticks.map(v => html`<g key=${v}><line x1=${L} x2=${W} y1=${y(v)} y2=${y(v)} stroke="var(--line)" /><text x=${L - 8} y=${y(v) + 4} text-anchor="end" font-size="10.5" fill="var(--muted)" font-family="var(--f-mono)">${v}h</text></g>`)}
+    <line x1=${L} x2=${W} y1=${y(8)} y2=${y(8)} stroke="var(--muted)" stroke-dasharray="3 4" />
+    <text x=${W} y=${y(8) - 4} text-anchor="end" font-size="10" fill="var(--muted)">8h</text>
+    ${days.map((d, i) => {
+      const cx = L + cw * i + cw / 2, v = d.ms / 36e5, h = y(0) - y(v), r = Math.min(4, h / 2);
+      const x0 = cx - bw / 2, x1 = cx + bw / 2, yt = y(v);
+      return html`<g key=${d.date}>
+        ${h > 0 && html`<path d=${`M${x0},${y(0)} V${yt + r} Q${x0},${yt} ${x0 + r},${yt} H${x1 - r} Q${x1},${yt} ${x1},${yt + r} V${y(0)} Z`} fill=${d.open ? "var(--good)" : "var(--accent)"}><title>${WEEKDAY[parseDate(d.date).getDay()]}: ${fmtDur(d.ms)}</title></path>`}
+        <text x=${cx} y=${H - 6} text-anchor="middle" font-size="10.5" fill=${d.today ? "var(--fg)" : "var(--muted)"} font-weight=${d.today ? 600 : 400}>${WEEKDAY[parseDate(d.date).getDay()].slice(0, 3)}</text>
+      </g>`;
+    })}
+    <line x1=${L} x2=${W} y1=${y(0)} y2=${y(0)} stroke="var(--line-2)" />
+  </svg></div>`;
+}
+
+function TimeView({ st, focus }) {
+  useTick(30000);
+  const t0 = today();
+  const [ws, setWs] = useState(() => weekStart(focus || t0));
+  const [openDay, setOpenDay] = useState(focus || null);
+  const days = Array.from({ length: 7 }, (_, i) => {
+    const date = addDays(ws, i), d = st.days[date];
+    const ss = (d && d.sessions || []).slice().sort((a, b) => a.in - b.in);
+    return { date, d, ss, ms: dayMs(d), open: ss.some(s => !s.out), today: date === t0, first: ss[0] && ss[0].in, last: ss.length && ss.every(s => s.out) ? Math.max(...ss.map(s => s.out)) : null };
+  });
+  const worked = days.filter(x => x.ms > 0);
+  const total = days.reduce((n, x) => n + x.ms, 0);
+  const avgClock = list => { if (!list.length) return "–"; const mins = list.map(ms => { const d = new Date(ms); return d.getHours() * 60 + d.getMinutes(); }); const a = Math.round(mins.reduce((x, y) => x + y, 0) / mins.length); const d = new Date(); d.setHours(Math.floor(a / 60), a % 60); return fmtTime(d.getTime()); };
+  const setSessions = (date, sessions) => put("days", { ...dayDoc(date), sessions });
+  const exportCsv = () => {
+    const rows = [["Date", "Day", "Clock in", "Clock out", "Hours"].map(csvCell).join(",")];
+    Object.values(S.days).sort((a, b) => a.id.localeCompare(b.id)).forEach(d => (d.sessions || []).forEach(s => rows.push([d.id, WEEKDAY[parseDate(d.id).getDay()], fmtTime(s.in), s.out ? fmtTime(s.out) : "", s.out ? ((s.out - s.in) / 36e5).toFixed(2) : ""].map(csvCell).join(","))));
+    saveFile(`time-log-${t0}.csv`, "﻿" + rows.join("\r\n")).then(ok => ok && toast("Time log exported."));
+  };
+  const o = openSession(st.days);
+  return html`<div class="page">
+    <div><div class="crumb"><${Icon} n="clock" /> Time clock</div><h1 class="h1">Time log</h1><p class="sub">When you got in, when you left, and how long you worked. Click a day to fix a time.</p></div>
+    <div class="row">
+      <button class="icon-btn" aria-label="Previous week" onClick=${() => setWs(addDays(ws, -7))}><${Icon} n="arrowL" /></button>
+      <button class="btn" onClick=${() => setWs(weekStart(t0))}>This week</button>
+      <button class="icon-btn" aria-label="Next week" onClick=${() => setWs(addDays(ws, 7))}><${Icon} n="arrowR" /></button>
+      <span class="h2" style=${{ color: "var(--fg)" }}>${(d => d.getDate() + " " + MON[d.getMonth()])(parseDate(ws))} to ${(d => d.getDate() + " " + MON[d.getMonth()])(parseDate(addDays(ws, 6)))}</span>
+      <span class="spacer"></span>
+      ${st.caps.downloads && Object.keys(st.days).length > 0 && html`<button class="linkbtn" onClick=${exportCsv}><${Icon} n="download" />Export to CSV</button>`}
+    </div>
+    <div class="tiles">
+      <div class="tile"><span class="k">Hours this week</span><span class="v">${(total / 36e5).toFixed(1)}</span><span class="hint">${worked.length} ${worked.length === 1 ? "day" : "days"} worked</span></div>
+      <div class="tile"><span class="k">Average per day</span><span class="v">${worked.length ? (total / worked.length / 36e5).toFixed(1) : "–"}</span><span class="hint">On days you worked</span></div>
+      <div class="tile"><span class="k">Usual arrival</span><span class="v sm">${avgClock(worked.map(x => x.first).filter(Boolean))}</span><span class="hint">Average first clock-in</span></div>
+      <div class="tile"><span class="k">Usual departure</span><span class="v sm">${avgClock(worked.map(x => x.last).filter(Boolean))}</span><span class="hint">Average last clock-out</span></div>
+    </div>
+    <div class="panel-box"><${HoursChart} days=${days} /></div>
+    <div class="time-table">
+      <div class="tt-row tt-head"><span>Day</span><span>In</span><span>Out</span><span class="r">Hours</span></div>
+      ${days.map(x => html`<div key=${x.date}>
+        <button class=${"tt-row" + (x.today ? " today" : "") + (openDay === x.date ? " open" : "")} onClick=${() => setOpenDay(openDay === x.date ? null : x.date)} aria-expanded=${openDay === x.date}>
+          <span>${WEEKDAY[parseDate(x.date).getDay()].slice(0, 3)} <span class="muted">${parseDate(x.date).getDate()} ${MON[parseDate(x.date).getMonth()]}</span></span>
+          <span class="mono">${x.first ? fmtTime(x.first) : html`<span class="muted">–</span>`}</span>
+          <span class="mono">${x.open ? html`<span class="live">${x.today ? "Working" : "Not clocked out"}</span>` : x.last ? fmtTime(x.last) : html`<span class="muted">–</span>`}</span>
+          <span class="mono r">${x.ms ? fmtDur(x.ms) : ""}${x.ss.length > 1 ? html`<span class="muted"> · ${x.ss.length}</span>` : ""}</span>
+        </button>
+        ${openDay === x.date && html`<div class="tt-edit">
+          ${x.ss.map(s => {
+            const idx = (x.d.sessions || []).indexOf(s);
+            const upd = f => setSessions(x.date, x.d.sessions.map((y, j) => j === idx ? { ...y, ...f } : y));
+            return html`<div key=${s.in} class="row">
+              <label class="row" style=${{ gap: 6 }}>In <input type="time" class="input tin" value=${toTimeInput(s.in)} onChange=${e => e.target.value && upd({ in: fromTimeInput(x.date, e.target.value) })} /></label>
+              <label class="row" style=${{ gap: 6 }}>Out <input type="time" class="input tin" value=${s.out ? toTimeInput(s.out) : ""} onChange=${e => e.target.value && upd({ out: Math.max(fromTimeInput(x.date, e.target.value), s.in + 60000) })} /></label>
+              ${!s.out && x.date !== t0 && html`<span class="chip due-bad">Set the time you left</span>`}
+              <span class="spacer"></span>
+              <button class="icon-btn" aria-label="Delete this session" onClick=${() => setSessions(x.date, x.d.sessions.filter((_, j) => j !== idx))}><${Icon} n="trash" /></button>
+            </div>`;
+          })}
+          <div class="row">
+            <button class="btn" onClick=${() => { const base = fromTimeInput(x.date, "09:00"); setSessions(x.date, [...(x.d ? x.d.sessions : []), { in: base, out: fromTimeInput(x.date, "17:00") }]); }}><${Icon} n="plus" />Add a session</button>
+            ${!x.ss.length && html`<span class="muted" style=${{ fontSize: 12.5 }}>Adds 9:00 to 17:00. Change the times after.</span>`}
+          </div>
+        </div>`}
+      </div>`)}
+      <div class="tt-row tt-foot"><span>Week total</span><span></span><span></span><span class="mono r">${fmtDur(total)}</span></div>
+    </div>
+    ${o && o.day.id !== t0 && html`<div class="banner bad">You're still clocked in from ${dueLabel(o.day.id)}. Open that day above and set the time you left.</div>`}
+  </div>`;
+}
+
+/* ---------- project marks, rewards ---------- */
+const EMOJI = ["🔧", "⚡", "🧪", "🔬", "📐", "🛠️", "🔌", "📊", "📦", "🏭", "🧰", "🖥️", "📋", "📝", "💡", "🎯", "🚀", "🏠", "💰", "🛒", "❤️", "🌱", "📚", "✈️"];
+function PMark({ p }) {
+  if (!p) return null;
+  return p.emoji ? html`<span class="pemoji" aria-hidden="true">${p.emoji}</span>` : html`<span class="dot" style=${{ background: pcolor(p) }}></span>`;
+}
+function burst(el) {
+  try { if (matchMedia("(prefers-reduced-motion: reduce)").matches || !el) return; } catch (e) { return; }
+  const r = el.getBoundingClientRect(), cx = r.left + r.width / 2, cy = r.top + r.height / 2;
+  const colors = ["var(--accent)", "var(--good)", "var(--warn)", "var(--c4)", "var(--c6)"];
+  const ring = document.createElement("i"); ring.className = "spark-ring"; ring.style.cssText = `left:${cx}px;top:${cy}px`;
+  document.body.appendChild(ring); setTimeout(() => ring.remove(), 600);
+  for (let i = 0; i < 12; i++) {
+    const s = document.createElement("i"), a = i / 12 * Math.PI * 2 + Math.random() * .4, d = 18 + Math.random() * 18;
+    s.className = "spark"; s.style.cssText = `left:${cx}px;top:${cy}px;background:${colors[i % 5]};--dx:${(Math.cos(a) * d).toFixed(1)}px;--dy:${(Math.sin(a) * d).toFixed(1)}px`;
+    document.body.appendChild(s); setTimeout(() => s.remove(), 650);
+  }
+}
+function Ring({ pct, size, stroke, color, children, label }) {
+  const r = (size - stroke) / 2, c = 2 * Math.PI * r;
+  return html`<span class="ring" style=${{ width: size, height: size }} role=${label ? "img" : null} aria-label=${label}>
+    <svg viewBox=${`0 0 ${size} ${size}`} width=${size} height=${size}>
+      <circle cx=${size / 2} cy=${size / 2} r=${r} fill="none" stroke="var(--line)" stroke-width=${stroke} />
+      <circle cx=${size / 2} cy=${size / 2} r=${r} fill="none" stroke=${color || "var(--accent)"} stroke-width=${stroke} stroke-linecap="round"
+        stroke-dasharray=${c} stroke-dashoffset=${c * (1 - Math.max(0, Math.min(1, pct)))} transform=${`rotate(-90 ${size / 2} ${size / 2})`} style=${{ transition: "stroke-dashoffset .5s ease" }} />
+    </svg><span class="ring-c">${children}</span></span>`;
+}
+
+/* ---------- now task and focus timer ---------- */
+function nowTask(st) {
+  const t0 = today(), d = st.days[t0] || {};
+  const ok = t => t && t.status !== "done" && !isArchived(t);
+  if (d.now && ok(st.tasks[d.now])) return st.tasks[d.now];
+  const p = (d.plan || []).map(id => st.tasks[id]).find(ok);
+  if (p) return p;
+  return sortTasks(Object.values(st.tasks).filter(t => t.status === "doing" && ok(t)))[0] || null;
+}
+const TIMER_KEY = "workspace.timer";
+let TM = (() => { try { return JSON.parse(localStorage.getItem(TIMER_KEY) || "null"); } catch (e) { return null; } })();
+const tmSubs = new Set();
+function setTimer(x) { TM = x; try { x ? localStorage.setItem(TIMER_KEY, JSON.stringify(x)) : localStorage.removeItem(TIMER_KEY); } catch (e) {} tmSubs.forEach(f => f()); }
+function useTimer() { return useSyncExternalStore(f => { tmSubs.add(f); return () => tmSubs.delete(f); }, () => TM); }
+const timerLeft = tm => !tm ? 0 : tm.endsAt ? Math.max(0, tm.endsAt - Date.now()) : tm.left || 0;
+const fmtClock = ms => { const s = Math.ceil(ms / 1000); return Math.floor(s / 60) + ":" + pad(s % 60); };
+const BASE_TITLE = document.title;
+function chime() {
+  try {
+    const A = window.AudioContext || window.webkitAudioContext; const c = new A();
+    [660, 880, 990].forEach((f, i) => {
+      const o = c.createOscillator(), g = c.createGain(), t = c.currentTime + i * .18;
+      o.frequency.value = f; g.gain.setValueAtTime(.0001, t); g.gain.exponentialRampToValueAtTime(.18, t + .02); g.gain.exponentialRampToValueAtTime(.0001, t + .3);
+      o.connect(g); g.connect(c.destination); o.start(t); o.stop(t + .32);
+    });
+    setTimeout(() => c.close(), 1200);
+  } catch (e) {}
+}
+function TimerWatcher() {
+  const tm = useTimer();
+  const running = !!(tm && tm.endsAt);
+  useEffect(() => {
+    if (!running) { document.title = BASE_TITLE; return; }
+    const step = () => {
+      const l = timerLeft(TM);
+      document.title = fmtClock(l) + " · Focus";
+      if (l <= 0) { setTimer({ mins: TM.mins, left: 0, finished: true }); chime(); toast("Focus block done. Stand up, stretch for 5 minutes, then keep going."); }
+    };
+    step(); const i = setInterval(step, 1000); return () => clearInterval(i);
+  }, [running]);
+  return null;
+}
+function TimerPill({ onClick }) {
+  const tm = useTimer(); useTick(1000);
+  if (!tm) return null;
+  return html`<button class=${"timer-pill" + (tm.endsAt ? " run" : "") + (tm.finished ? " fin" : "")} onClick=${onClick} title="Focus timer">
+    <${Icon} n=${tm.finished ? "done" : tm.endsAt ? "clock" : "pause"} />${tm.finished ? "Break time" : fmtClock(timerLeft(tm))}</button>`;
+}
+function FocusTimer() {
+  const tm = useTimer(); useTick(1000);
+  const [mins, setMins] = useLS("workspace.focusMins", 25);
+  const total = (tm ? tm.mins : mins) * 60000;
+  const left = tm ? timerLeft(tm) : total;
+  const start = m => setTimer({ mins: m, endsAt: Date.now() + m * 60000 });
+  const state = !tm ? "idle" : tm.finished ? "fin" : tm.endsAt ? "run" : "pause";
+  return html`<div class="ftimer">
+    <${Ring} pct=${state === "fin" ? 1 : 1 - left / total} size=${168} stroke=${8} color=${state === "fin" ? "var(--good)" : state === "pause" ? "var(--muted)" : "var(--accent)"}>
+      <span class="ft-time mono">${state === "fin" ? "0:00" : fmtClock(left)}</span>
+      <span class="ft-lab">${state === "idle" ? "Ready" : state === "run" ? "Focusing" : state === "pause" ? "Paused" : "Take a break"}</span>
+    <//>
+    <div class="row" style=${{ justifyContent: "center" }}>
+      ${state === "idle" && html`<div class="seg">${[15, 25, 45].map(m => html`<button key=${m} class=${mins === m ? "on" : ""} onClick=${() => setMins(m)}>${m} min</button>`)}</div>
+        <button class="btn primary" onClick=${() => start(mins)}><${Icon} n="play" />Start</button>`}
+      ${state === "run" && html`<button class="btn" onClick=${() => setTimer({ mins: tm.mins, left: timerLeft(tm) })}><${Icon} n="pause" />Pause</button>`}
+      ${state === "pause" && html`<button class="btn primary" onClick=${() => setTimer({ mins: tm.mins, endsAt: Date.now() + tm.left })}><${Icon} n="play" />Resume</button>`}
+      ${state === "fin" && html`<button class="btn primary" onClick=${() => start(tm.mins)}><${Icon} n="play" />Another ${tm.mins} min</button>`}
+      ${state !== "idle" && html`<button class="btn ghost" onClick=${() => setTimer(null)}>${state === "fin" ? "Done" : "Stop"}</button>`}
+    </div>
+  </div>`;
+}
+
+/* ---------- focus mode ---------- */
+function FocusMode({ st, id, close, openTask, onFocus }) {
+  const t = st.tasks[id];
+  const [finished, setFinished] = useState(null);
+  const [step, setStep] = useState("");
+  const doneRef = useRef(null);
+  useEffect(() => {
+    const k = e => { if (e.key === "Escape" && !(e.target.tagName === "INPUT" && e.target.value)) close(); };
+    window.addEventListener("keydown", k); return () => window.removeEventListener("keydown", k);
+  }, [close]);
+  if (!t) return null;
+  const p = st.projects[t.projectId];
+  const subs = t.subtasks || [];
+  const next = nextStepOf(t);
+  const doneN = subs.filter(s => s.done).length;
+  const tickStep = (s, el) => { burst(el); patch("tasks", t.id, { subtasks: S.tasks[t.id].subtasks.map(x => x.id === s.id ? { ...x, done: true } : x), updatedAt: Date.now() }); };
+  const addStep = e => {
+    e.preventDefault(); const text = step.trim(); if (!text) return;
+    patch("tasks", t.id, { subtasks: [...(S.tasks[t.id].subtasks || []), { id: uid(), text, done: false, due: null }], updatedAt: Date.now() }); setStep("");
+  };
+  const markDone = () => { burst(doneRef.current); setStatus(t, "done"); setFinished(t.title || "Untitled"); };
+  const upNext = finished ? nowTask(st) : null;
+  return html`<div class="focus" role="dialog" aria-label="Focus mode">
+    <div class="focus-top">
+      ${p ? html`<span class="chip"><${PMark} p=${p} />${p.name || "Untitled"}</span>` : html`<span></span>`}
+      <span class="spacer"></span>
+      ${!finished && html`<button class="linkbtn" onClick=${() => { close(); openTask(t.id); }}>Open details</button>`}
+      <button class="btn" onClick=${close}><${Icon} n="x" />Exit focus</button>
+    </div>
+    <div class="focus-body">
+      ${finished ? html`<div class="focus-done">
+        <span class="big-check"><${Icon} n="check" w="2.6" /></span>
+        <h1 class="focus-title">Done: ${finished}</h1>
+        ${upNext ? html`<p class="sub">Up next from your plan:</p>
+          <button class="focus-next" onClick=${() => { setFinished(null); onFocus(upNext.id); }}><span class="t">${upNext.title || "Untitled"}</span><${Weight} size=${upNext.size} label /><span class="btn primary"><${Icon} n="focus" />Focus on it</span></button>`
+        : html`<p class="sub">Nothing left in today's plan. Nice work.</p>`}
+        <button class="btn ghost" onClick=${close}>Back to the app</button>
+      </div>` : html`
+        <div class="focus-kicker">${t.status === "done" ? "Finished" : "You're working on"}${t.size ? html` <${Weight} size=${t.size} label />` : ""}</div>
+        <h1 class="focus-title">${t.title || "Untitled"}</h1>
+        ${next ? html`<div class="focus-step">
+            <div class="focus-kicker">Next step${subs.length > 1 ? html` <span class="mono muted">${doneN + 1} of ${subs.length}</span>` : ""}</div>
+            <div class="fs-row" key=${next.id}>
+              <button class="check big" aria-label=${"Mark step done: " + next.text} onClick=${e => tickStep(next, e.currentTarget)}></button>
+              <span>${next.text}</span>
+            </div>
+          </div>`
+        : html`<form class="focus-step" onSubmit=${addStep}>
+            <div class="focus-kicker">${subs.length ? "All steps done. Anything else before closing it?" : "What's the smallest first step?"}</div>
+            <div class="row"><input class="input" value=${step} onInput=${e => setStep(e.target.value)} placeholder="e.g. Open the file and read the first page" aria-label="Add a step" style=${{ flex: 1, width: "auto" }} /><button class="btn">Add step</button></div>
+          </form>`}
+        <${FocusTimer} />
+        ${t.status !== "done" && html`<button ref=${doneRef} class="btn primary focus-donebtn" onClick=${markDone}><${Icon} n="check" />Mark the task done</button>`}
+      `}
+    </div>
+  </div>`;
+}
+
+function NowBar({ st, onFocus, openTask }) {
+  const t = nowTask(st);
+  const tm = useTimer();
+  if (!t && !tm) return null;
+  const next = t && nextStepOf(t);
+  return html`<div class="nowbar">
+    ${t ? html`<span class="now-lab">Now</span>
+      <${Check} on=${false} label=${"Mark done: " + (t.title || "Untitled")} onClick=${() => setStatus(t, "done")} />
+      <button class="now-t" onClick=${() => openTask(t.id)} title="Open details"><span class="t">${t.title || "Untitled"}</span>${next && html`<span class="now-step hide-sm">${next.text}</span>`}</button>`
+    : html`<span class="now-lab">Focus</span><span class="spacer"></span>`}
+    <${TimerPill} onClick=${() => t && onFocus(t.id)} />
+    ${t && html`<button class="btn primary now-go" onClick=${() => onFocus(t.id)}><${Icon} n="focus" /><span>Focus</span></button>`}
+  </div>`;
+}
+
 /* ---------- sidebar ---------- */
-function Sidebar({ st, route, go, open, onSearch, onData }) {
+function Sidebar({ st, route, go, open, onSearch, onData, onClockOut, onPlan, density, setDensity }) {
   const projects = Object.values(st.projects).sort((a, b) => a.createdAt - b.createdAt);
   const t0 = today();
   const openTasks = Object.values(st.tasks).filter(t => t.status !== "done");
@@ -1243,22 +1912,26 @@ function Sidebar({ st, route, go, open, onSearch, onData }) {
   const addProject = () => { const p = newProject({}); go({ view: "project", id: p.id, fresh: true }); };
   return html`<aside class=${"side" + (open ? " open" : "")} aria-label="Workspace navigation">
     <div class="ws"><div class="ws-mark">R</div><div><div class="ws-name">${OWNER}'s Workspace</div><div class="ws-sub">${projects.length} ${projects.length === 1 ? "project" : "projects"} · ${openTasks.length} open</div></div></div>
+    <${ClockWidget} st=${st} onClockOut=${onClockOut} go=${go} />
     <button class="nav" onClick=${onSearch}><${Icon} n="search" />Search<span class="count"><span class="kbd">/</span></span></button>
     ${nav("dashboard", "home", "Dashboard")}
     ${nav("today", "sun", "Tasks", (overdue || dueToday) ? html`<span class=${"count" + (overdue ? " bad" : "")}>${overdue ? overdue + " late" : dueToday}</span>` : null)}
     ${nav("checklist", "steps", "Checklist", html`<span class="count">${openSteps || ""}</span>`)}
     ${nav("calendar", "grid", "Calendar")}
+    ${nav("time", "clock", "Time log")}
     ${nav("timeline", "timeline", "Timeline")}
     ${nav("notes", "note", "Notes", html`<span class="count">${Object.keys(st.notes).length || ""}</span>`)}
     <div class="side-h"><span>Projects</span><button class="icon-btn" aria-label="New project" title="New project" onClick=${addProject}><${Icon} n="plus" /></button></div>
     ${projects.map(p => {
       const left = Object.values(st.tasks).filter(t => t.projectId === p.id && t.status !== "done").length;
       return html`<button key=${p.id} class=${"nav" + (route.view === "project" && route.id === p.id ? " on" : "")} onClick=${() => go({ view: "project", id: p.id })}>
-        <span class="dot" style=${{ background: pcolor(p) }}></span><span style=${{ overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>${p.name || "Untitled"}</span><span class="count">${left || ""}</span></button>`;
+        <${PMark} p=${p} /><span style=${{ overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>${p.name || "Untitled"}</span><span class="count">${left || ""}</span></button>`;
     })}
     ${projects.length === 0 && html`<button class="nav" onClick=${addProject}><${Icon} n="plus" />New project</button>`}
     <div class="side-foot">
+      <button class="nav" onClick=${() => onPlan(nextWorkday(today()))}><${Icon} n="sunset" />Plan tomorrow</button>
       <button class="nav" onClick=${onData}><${Icon} n="archive" />Backup and import</button>
+      <button class="nav" onClick=${() => setDensity(density === "comfy" ? "compact" : "comfy")} title="Switch between larger and smaller text and icons"><${Icon} n="textsize" />${density === "comfy" ? "Smaller text" : "Larger text"}</button>
       <div class="sync-line" title=${st.mode === "db" ? "Changes save to your account and show up on any device" : "Changes are kept in this browser only"}>
         <span class=${"sync" + (st.mode === "db" ? "" : " local")}></span>${st.mode === "db" ? "Saved to your account" : "Saved in this browser"}
       </div>
@@ -1323,7 +1996,8 @@ function deriveEvents(st) {
   return ev.filter(e => e.at).sort((a, b) => b.at - a.at);
 }
 
-function Dashboard({ st, go, openTask }) {
+function Dashboard({ st, go, openTask, onPlan, onFocus }) {
+  const [more, setMore] = useLS("workspace.dashMore", false);
   const t0 = today();
   const tasks = Object.values(st.tasks);
   const open = tasks.filter(t => t.status !== "done");
@@ -1340,18 +2014,32 @@ function Dashboard({ st, go, openTask }) {
   const greet = h < 5 ? "Working late" : h < 12 ? "Good morning" : h < 18 ? "Good afternoon" : "Good evening";
   const now = new Date();
   const focus = sortTasks([...overdue, ...dueToday]).slice(0, 6);
+  const quickOnes = sortTasks(open.filter(t => t.size === "quick")).slice(0, 5);
   return html`<div class="page">
     <div>
       <div class="crumb">${now.toLocaleDateString([], { weekday: "long", month: "long", day: "numeric" })}</div>
       <h1 class="h1" style=${{ marginTop: 4 }}>${greet}, ${OWNER}</h1>
       <p class="sub">${open.length === 0 ? "Nothing open. Add a task or start a project to get going." : `You have ${dueToday.length} ${dueToday.length === 1 ? "task" : "tasks"} due today${overdue.length ? ` and ${overdue.length} running late` : ""}.`}</p>
     </div>
+    <${TodayPlan} st=${st} openTask=${openTask} onPlan=${onPlan} onFocus=${onFocus} />
     ${projects.length === 0 && tasks.length === 0 ? html`<div class="welcome">
       <h2 class="h2" style=${{ fontSize: 16, color: "var(--fg)" }}>Set up your workspace</h2>
       <p class="muted" style=${{ margin: 0 }}>Projects hold tasks, notes and a timeline. Start with whatever is on your mind this week.</p>
       <div class="row"><button class="btn primary" onClick=${() => { const p = newProject({}); go({ view: "project", id: p.id, fresh: true }); }}><${Icon} n="plus" />New project</button>
       <button class="btn" onClick=${() => { const n = newNote({}); go({ view: "notes", id: n.id }); }}><${Icon} n="note" />Write a note</button></div>
     </div>` : null}
+    ${quickOnes.length > 0 && html`<div class="section">
+      <h3 class="h2"><${Weight} size="quick" />Got 15 minutes? <span class="n">${quickOnes.length}</span></h3>
+      <div class="list">
+        ${quickOnes.map(t => html`<${TaskRow} key=${t.id} t=${t} projects=${st.projects} showProject open=${openTask} />`)}
+      </div>
+    </div>`}
+    <button class=${"more-toggle" + (more ? " on" : "")} onClick=${() => setMore(!more)} aria-expanded=${more}>
+      <span class="caret" style=${{ transform: more ? "rotate(90deg)" : "none" }}><${Icon} n="arrowR" /></span>
+      <span>${more ? "Hide the details" : "Stats, due dates and activity"}</span>
+      ${!more && html`<span class="more-sum">${overdue.length > 0 && html`<span class="chip due-bad">${overdue.length} late</span>`}${dueToday.length > 0 && html`<span class="chip due-today">${dueToday.length} due today</span>`}<span class="chip">${open.length} open</span></span>`}
+    </button>
+    ${more && html`
     <div class="tiles">
       <button class="tile" onClick=${() => go({ view: "today" })}><span class="k">Open tasks</span><span class="v">${open.length}</span><span class="hint">${doing} in progress</span></button>
       <button class="tile" onClick=${() => go({ view: "today" })}><span class="k">Due today</span><span class="v">${dueToday.length}</span><span class="hint">${upcoming.filter(t => t.due !== t0).length} more this week</span></button>
@@ -1385,7 +2073,7 @@ function Dashboard({ st, go, openTask }) {
             const done = ts.filter(t => t.status === "done").length;
             const pct = ts.length ? Math.round(done / ts.length * 100) : 0;
             return html`<button key=${p.id} class="prog-row" onClick=${() => go({ view: "project", id: p.id })}>
-              <span class="name"><span class="dot" style=${{ background: pcolor(p) }}></span>${p.name || "Untitled"}</span>
+              <span class="name"><${PMark} p=${p} />${p.name || "Untitled"}</span>
               <span class="mono muted" style=${{ fontSize: 12 }}>${done}/${ts.length} · ${pct}%</span>
               <span class="bar"><i style=${{ width: pct + "%", background: pcolor(p) }}></i></span>
             </button>`;
@@ -1405,6 +2093,7 @@ function Dashboard({ st, go, openTask }) {
         ${events.length === 0 && html`<div class="empty" style=${{ padding: 0 }}>Your activity will show up here.</div>`}
       </div>
     </div>
+    `}
   </div>`;
 }
 
@@ -1417,10 +2106,11 @@ function TasksView({ st, openTask }) {
   const [tag, setTag] = useState(null);
   const [owner, setOwner] = useState(null);
   const [dueF, setDueF] = useState(null);
+  const [quick, setQuick] = useState(false);
   const all = Object.values(st.tasks);
   const inTab = t => tab === "all" ? true : tab === "archived" ? isArchived(t) : tab === "done" ? t.status === "done" && !isArchived(t) : t.status !== "done";
   const dueOk = t => !dueF ? true : dueF === "overdue" ? t.status !== "done" && t.due && t.due < t0 : dueF === "today" ? t.due === t0 : t.due && t.due >= t0 && t.due <= addDays(t0, 7);
-  const list = all.filter(t => inTab(t) && dueOk(t) && (!tag || (t.tags || []).includes(tag)) && (!owner || t.assignee === owner) && matchesSearch(t, q, st));
+  const list = all.filter(t => inTab(t) && dueOk(t) && (!tag || (t.tags || []).includes(tag)) && (!owner || t.assignee === owner) && (!quick || t.size === "quick") && matchesSearch(t, q, st));
   const tags = allTags(st);
   const owners = [...new Set(all.filter(t => !isArchived(t) && t.assignee).map(t => t.assignee))].sort();
   const counts = { overdue: all.filter(t => t.status !== "done" && t.due && t.due < t0).length, today: all.filter(t => t.status !== "done" && t.due === t0).length, week: all.filter(t => t.status !== "done" && t.due && t.due >= t0 && t.due <= addDays(t0, 7)).length };
@@ -1432,7 +2122,7 @@ function TasksView({ st, openTask }) {
     ["Later", list.filter(t => t.due && t.due > addDays(t0, 7))],
     ["No date", list.filter(t => !t.due)],
   ] : [[tab === "archived" ? "Archived" : tab === "done" ? "Closed" : tab === "all" ? "All tasks" : "Open", list]];
-  const filtered = q || tag || owner || dueF;
+  const filtered = q || tag || owner || dueF || quick;
   const exportCsv = () => exportTasksCsv(sortTasks(list, sort), st);
   return html`<div class="page">
     <div><div class="crumb"><${Icon} n="sun" /> Every project</div><h1 class="h1">Tasks</h1><p class="sub">Everything across your projects. Closed tasks move to Archived after ${ARCHIVE_DAYS} days.</p></div>
@@ -1449,6 +2139,8 @@ function TasksView({ st, openTask }) {
         </select>
       </div>
       <div class="row chips-row">
+        <button class=${"fchip quickf" + (quick ? " on" : "")} onClick=${() => setQuick(!quick)} title="Only tasks sized Quick"><${Weight} size="quick" />Got 15 min? <span class="mono">${all.filter(t => t.status !== "done" && t.size === "quick").length}</span></button>
+        <span class="vsep"></span>
         ${[["overdue", "Overdue", counts.overdue], ["today", "Due today", counts.today], ["week", "Next 7 days", counts.week]].map(([k, l, n]) => html`<button key=${k} class=${"fchip" + (dueF === k ? " on" : "") + (k === "overdue" && n ? " bad" : "")} onClick=${() => setDueF(dueF === k ? null : k)}>${l} <span class="mono">${n}</span></button>`)}
         ${tags.length > 0 && html`<span class="vsep"></span>`}
         ${tags.slice(0, 14).map(([g, n]) => html`<button key=${g} class=${"fchip" + (tag === g ? " on" : "")} onClick=${() => setTag(tag === g ? null : g)}><${Icon} n="tag" />${g} <span class="mono">${n}</span></button>`)}
@@ -1457,7 +2149,7 @@ function TasksView({ st, openTask }) {
       </div>
       ${(filtered || list.length > 0) && html`<div class="row" style=${{ fontSize: 12.5 }}>
         <span class="muted">${list.length} ${list.length === 1 ? "task" : "tasks"}${filtered ? " match" : ""}</span>
-        ${filtered && html`<button class="linkbtn" onClick=${() => { setQ(""); setTag(null); setOwner(null); setDueF(null); }}>Clear filters</button>`}
+        ${filtered && html`<button class="linkbtn" onClick=${() => { setQ(""); setTag(null); setOwner(null); setDueF(null); setQuick(false); }}>Clear filters</button>`}
         <span class="spacer"></span>
         ${st.caps.downloads && list.length > 0 && html`<button class="linkbtn" onClick=${exportCsv}><${Icon} n="download" />Export these to CSV</button>`}
       </div>`}
@@ -1598,10 +2290,12 @@ function Board({ tasks, projectId, openTask }) {
         onDragOver=${e => { e.preventDefault(); setOver(key); }} onDragLeave=${() => setOver(null)}
         onDrop=${e => { e.preventDefault(); setOver(null); const id = e.dataTransfer.getData("text/plain"); const t = S.tasks[id]; if (t && t.status !== key) setStatus(t, key); }}>
         <div class="col-h"><span class=${"chip" + (key === "doing" ? " s-doing" : key === "done" ? " s-done" : "")}>${label}</span><span class="n">${list.length}</span></div>
-        ${list.map(t => html`<div key=${t.id} class=${"card" + (t.status === "done" ? " done" : "") + (drag === t.id ? " dragging" : "")} draggable="true" tabIndex="0" role="button"
+        ${list.map(t => html`<div key=${t.id} class=${"card" + (t.size ? " sz-" + t.size : "") + (t.status === "done" ? " done" : "") + (drag === t.id ? " dragging" : "")} draggable="true" tabIndex="0" role="button"
           onDragStart=${e => { e.dataTransfer.setData("text/plain", t.id); e.dataTransfer.effectAllowed = "move"; setDrag(t.id); }} onDragEnd=${() => setDrag(null)}
           onClick=${() => openTask(t.id)} onKeyDown=${e => e.key === "Enter" && openTask(t.id)}>
+          ${t.size && html`<${Weight} size=${t.size} label />`}
           <span class="t">${t.num ? html`<span class="num">${fmtNum(t.num)}</span> ` : ""}${t.title || "Untitled"}</span>
+          ${isBig(t) && t.status !== "done" && nextStepOf(t) && html`<span class="next-step">Next: ${nextStepOf(t).text}</span>`}
           <${TaskMeta} t=${t} compact />
         </div>`)}
         <${QuickAdd} projectId=${projectId} status=${key} compact />
@@ -1638,12 +2332,17 @@ function ProjectView({ st, id, fresh, go, openTask }) {
   return html`<div class="page">
     <div>
       <div class="row" style=${{ position: "relative" }}>
-        <div class="crumb"><span class="dot" style=${{ background: pcolor(p) }}></span>Project${dated.length ? html` · <span class="mono">${dueLabel(dated[0])} to ${dueLabel(dated[dated.length - 1])}</span>` : ""}</div>
+        <div class="crumb"><${PMark} p=${p} />Project${dated.length ? html` · <span class="mono">${dueLabel(dated[0])} to ${dueLabel(dated[dated.length - 1])}</span>` : ""}</div>
         <span class="spacer"></span>
         <button class="icon-btn" aria-label="Project settings" title="Project settings" onClick=${() => { setMenu(!menu); setArmed(false); }}><${Icon} n="dots" w="3" /></button>
         ${menu && html`<div class="menu-pop">
           <div class="h2">Color</div>
           <div class="color-pick">${[0, 1, 2, 3, 4, 5, 6, 7].map(c => html`<button key=${c} aria-label=${"Color " + (c + 1)} class=${p.color === c ? "on" : ""} style=${{ background: `var(--c${c})` }} onClick=${() => patch("projects", id, { color: c })}></button>`)}</div>
+          <div class="h2">Icon</div>
+          <div class="emoji-pick">
+            <button class=${!p.emoji ? "on" : ""} aria-label="No icon, use the color" onClick=${() => patch("projects", id, { emoji: "" })}><span class="dot" style=${{ background: pcolor(p) }}></span></button>
+            ${EMOJI.map(e => html`<button key=${e} class=${p.emoji === e ? "on" : ""} aria-label=${"Icon " + e} onClick=${() => patch("projects", id, { emoji: e })}>${e}</button>`)}
+          </div>
           <button class=${"btn danger" + (armed ? " armed" : "")} onClick=${delProject}><${Icon} n="trash" />${armed ? `Delete project and ${tasks.length} tasks` : "Delete project"}</button>
           ${armed && html`<span class="muted" style=${{ fontSize: 12 }}>Notes in this project are kept. Click again to confirm.</span>`}
         </div>`}
@@ -1805,7 +2504,7 @@ function Log({ t, st, onImage }) {
   </div>`;
 }
 
-function TaskPanel({ st, id, close, go, openTask }) {
+function TaskPanel({ st, id, close, go, openTask, onFocus }) {
   const t = st.tasks[id];
   const [title, setTitle] = useState(t ? t.title : "");
   const [notes, setNotes] = useState(t ? t.notes || "" : "");
@@ -1827,10 +2526,11 @@ function TaskPanel({ st, id, close, go, openTask }) {
     <div class="peek-scrim" onClick=${close}></div>
     <div class=${"peek" + (wide ? " wide" : "")} role="dialog" aria-label="Task details">
       <div class="peek-bar">
-        ${p ? html`<button class="btn ghost" onClick=${() => { close(); go({ view: "project", id: p.id }); }}><span class="dot" style=${{ background: pcolor(p) }}></span>${p.name || "Untitled"}</button>` : html`<span style=${{ padding: "0 6px" }}>No project</span>`}
+        ${p ? html`<button class="btn ghost" onClick=${() => { close(); go({ view: "project", id: p.id }); }}><${PMark} p=${p} />${p.name || "Untitled"}</button>` : html`<span style=${{ padding: "0 6px" }}>No project</span>`}
         ${t.num && html`<span class="num">${fmtNum(t.num)}</span>`}
         <span class="spacer"></span>
-        <button class=${"btn" + (t.status === "done" ? "" : " primary")} onClick=${() => setStatus(t, t.status === "done" ? "todo" : "done")}><${Icon} n="check" />${t.status === "done" ? "Reopen" : "Mark done"}</button>
+        ${t.status !== "done" && onFocus && html`<button class="btn" onClick=${() => onFocus(t.id)}><${Icon} n="focus" />Focus</button>`}
+        <button class=${"btn" + (t.status === "done" ? "" : " primary")} onClick=${e => { if (t.status !== "done") burst(e.currentTarget); setStatus(t, t.status === "done" ? "todo" : "done"); }}><${Icon} n="check" />${t.status === "done" ? "Reopen" : "Mark done"}</button>
         <button class="icon-btn hide-sm" aria-label=${wide ? "Narrow panel" : "Widen panel"} title=${wide ? "Narrow panel" : "Widen panel"} onClick=${() => setWide(!wide)}><${Icon} n=${wide ? "shrink" : "expand"} /></button>
         <button class="icon-btn" aria-label="Close" onClick=${close}><${Icon} n="x" /></button>
       </div>
@@ -1842,6 +2542,8 @@ function TaskPanel({ st, id, close, go, openTask }) {
           <div class="seg">${STATUS.map(([k, l]) => html`<button key=${k} class=${t.status === k ? "on" : ""} onClick=${() => setStatus(t, k)}>${l}</button>`)}</div>
           <span class="pk"><${Icon} n="flag" />Priority</span>
           <select value=${t.priority || "none"} onChange=${e => set({ priority: e.target.value })} aria-label="Priority">${PRIOS.map(([k, l]) => html`<option key=${k} value=${k}>${l}</option>`)}</select>
+          <span class="pk"><${Icon} n="bolt" />Size</span>
+          <${SizePicker} t=${t} set=${set} />
           <span class="pk"><${Icon} n="folder" />Project</span>
           <select value=${t.projectId || ""} onChange=${e => set({ projectId: e.target.value || null })} aria-label="Project"><option value="">No project</option>${projects.map(x => html`<option key=${x.id} value=${x.id}>${x.name || "Untitled"}</option>`)}</select>
           <span class="pk"><${Icon} n="user" />Owner</span>
@@ -1858,6 +2560,7 @@ function TaskPanel({ st, id, close, go, openTask }) {
           <span><select value=${t.recur || ""} onChange=${e => set({ recur: e.target.value, spawnedNext: null })} aria-label="Repeat">${RECUR.map(([k, l]) => html`<option key=${k} value=${k}>${l}</option>`)}</select>
             ${t.recur && html`<span class="muted" style=${{ fontSize: 12 }}> A fresh copy is created when you mark it done.</span>`}</span>
         </div>
+        <${FirstStep} t=${t} />
         <${Steps} t=${t} />
         <div class="section">
           <h3 class="h2"><${Icon} n="note" /> Description</h3>
@@ -1917,7 +2620,7 @@ function DataModal({ st, close }) {
   const fileRef = useRef(null);
   const counts = { tasks: Object.keys(st.tasks).length, projects: Object.keys(st.projects).length, notes: Object.keys(st.notes).length, templates: Object.keys(st.templates).length };
   const backup = () => {
-    const data = { app: "rodolfo-workspace", version: 2, exportedAt: new Date().toISOString(), projects: Object.values(S.projects), tasks: Object.values(S.tasks), notes: Object.values(S.notes), templates: Object.values(S.templates) };
+    const data = { app: "rodolfo-workspace", version: 2, exportedAt: new Date().toISOString(), projects: Object.values(S.projects), tasks: Object.values(S.tasks), notes: Object.values(S.notes), templates: Object.values(S.templates), days: Object.values(S.days) };
     saveFile(`workspace-backup-${today()}.json`, JSON.stringify(data, null, 2)).then(ok => ok && toast("Backup saved."));
   };
   const run = async file => {
@@ -1927,7 +2630,7 @@ function DataModal({ st, close }) {
     const writes = [];
     let skippedImages = 0, uploaded = 0;
     if (parsed && parsed.app === "rodolfo-workspace") {
-      ["projects", "notes", "templates", "tasks"].forEach(c => (parsed[c] || []).forEach(o => o && o.id && writes.push([c, o])));
+      ["projects", "notes", "templates", "tasks", "days"].forEach(c => (parsed[c] || []).forEach(o => o && o.id && writes.push([c, o])));
     } else if (parsed && Array.isArray(parsed.tickets)) {
       // a backup from the old Work Order app
       let proj = Object.values(S.projects).find(p => p.name === "Work Order");
@@ -2065,7 +2768,7 @@ function NotesView({ st, id, go }) {
         return html`<button key=${n.id} class=${"note-item" + (note && note.id === n.id ? " on" : "")} onClick=${() => go({ view: "notes", id: n.id })}>
           <span class="nt">${n.pinned ? "· " : ""}${n.title || "Untitled"}</span>
           <span class="np">${preview(n.body, 80) || "Empty note"}</span>
-          <span class="nm">${p && html`<span class="dot" style=${{ background: pcolor(p) }}></span>`}${p ? p.name : ""}${p ? " · " : ""}${ago(n.updatedAt)}</span>
+          <span class="nm">${p && html`<${PMark} p=${p} />`}${p ? p.name : ""}${p ? " · " : ""}${ago(n.updatedAt)}</span>
         </button>`;
       })}
       ${notes.length === 0 && html`<div class="empty">${q ? "No notes match." : "No notes yet. Write one for meeting notes, ideas or plans."}</div>`}
@@ -2218,7 +2921,7 @@ function TimelineView({ st, openTask }) {
 }
 
 /* ---------- search palette ---------- */
-function Palette({ st, close, go, openTask }) {
+function Palette({ st, close, go, openTask, onPlan, onClockOut, onFocus }) {
   const [q, setQ] = useState("");
   const [sel, setSel] = useState(0);
   const ql = q.trim().toLowerCase();
@@ -2232,7 +2935,12 @@ function Palette({ st, close, go, openTask }) {
     items.push({ k: "Create", icon: "plus", label: "New task", act: () => openTask(newTask({}).id) });
     items.push({ k: "Create", icon: "note", label: "New note", act: () => go({ view: "notes", id: newNote({}).id }) });
     items.push({ k: "Create", icon: "folder", label: "New project", act: () => go({ view: "project", id: newProject({}).id, fresh: true }) });
+    const nt = nowTask(st);
+    if (nt && onFocus) items.push({ k: "Do", icon: "focus", label: `Focus on “${nt.title || "Untitled"}”`, act: () => onFocus(nt.id) });
+    items.push({ k: "Do", icon: "sunset", label: "Plan tomorrow", act: () => onPlan && onPlan(nextWorkday(today())) });
+    items.push({ k: "Do", icon: openSession() ? "out" : "in", label: openSession() ? "Clock out" : "Clock in", act: () => openSession() ? onClockOut && onClockOut() : clockIn() });
     items.push({ k: "Go to", icon: "home", label: "Dashboard", act: () => go({ view: "dashboard" }) });
+    items.push({ k: "Go to", icon: "clock", label: "Time log", act: () => go({ view: "time" }) });
     items.push({ k: "Go to", icon: "sun", label: "Tasks", act: () => go({ view: "today" }) });
     items.push({ k: "Go to", icon: "steps", label: "Checklist", act: () => go({ view: "checklist" }) });
     items.push({ k: "Go to", icon: "grid", label: "Calendar", act: () => go({ view: "calendar" }) });
@@ -2262,7 +2970,19 @@ function App() {
   const [side, setSide] = useState(false);
   const [pal, setPal] = useState(false);
   const [data, setData] = useState(false);
+  const [planFor, setPlanFor] = useState(null);
+  const [focusId, setFocusId] = useState(null);
+  const [density, setDensity] = useLS("workspace.density", "comfy");
+  const onFocus = useCallback(id => {
+    const t0 = today(), d = dayDoc(t0);
+    if (d.now !== id) put("days", { ...d, now: id });
+    if (S.tasks[id] && S.tasks[id].status === "todo") setStatus(S.tasks[id], "doing");
+    setTaskId(null); setSide(false); setFocusId(id);
+  }, []);
+  const onPlan = useCallback(date => { setSide(false); setPlanFor({ date, at: null }); }, []);
+  const onClockOut = useCallback(() => { const at = clockOut(); setSide(false); setPlanFor({ date: nextWorkday(today()), at }); }, []);
   const mainRef = useRef(null);
+  const closeFocus = useCallback(() => setFocusId(null), []);
   const go = useCallback(r => { setRoute(r); setSide(false); setTaskId(null); try { localStorage.setItem("workspace.route", JSON.stringify(r)); } catch (e) {} if (mainRef.current) mainRef.current.scrollTop = 0; }, []);
   const openTask = useCallback(id => { setTaskId(id); setSide(false); }, []);
   useEffect(() => {
@@ -2278,13 +2998,16 @@ function App() {
     <b style=${{ fontSize: 15 }}>Your workspace couldn't open</b><span>${st.failReason}</span><button class="btn primary" onClick=${() => location.reload()}>Reload</button></div></div>`;
   if (st.mode === "loading") return html`<div class="loading"><div style=${{ display: "grid", gap: 10, justifyItems: "center" }}><div class="skel"></div><div class="skel" style=${{ width: 160 }}></div><div>Opening your workspace</div></div></div>`;
   const view = route.view === "project" && !st.projects[route.id] && !route.fresh ? "dashboard" : route.view;
-  const titles = { dashboard: "Dashboard", today: "Tasks", checklist: "Checklist", calendar: "Calendar", timeline: "Timeline", notes: "Notes", project: (st.projects[route.id] || {}).name || "Project" };
-  return html`<div class="shell">
-    <${Sidebar} st=${st} route=${{ ...route, view }} go=${go} open=${side} onSearch=${() => { setSide(false); setPal(true); }} onData=${() => { setSide(false); setData(true); }} />
+  const titles = { time: "Time log", dashboard: "Dashboard", today: "Tasks", checklist: "Checklist", calendar: "Calendar", timeline: "Timeline", notes: "Notes", project: (st.projects[route.id] || {}).name || "Project" };
+  return html`<div class=${"shell d-" + density}>
+    <${TimerWatcher} />
+    <${Sidebar} st=${st} route=${{ ...route, view }} go=${go} open=${side} onSearch=${() => { setSide(false); setPal(true); }} onData=${() => { setSide(false); setData(true); }} onClockOut=${onClockOut} onPlan=${onPlan} density=${density} setDensity=${setDensity} />
     <div class=${"scrim" + (side ? " open" : "")} onClick=${() => setSide(false)}></div>
     <main class="main" ref=${mainRef}>
       <div class="topbar"><button class="icon-btn" aria-label="Open menu" onClick=${() => setSide(true)}><${Icon} n="menu" /></button><b style=${{ fontWeight: 600 }}>${titles[view] || ""}</b><span class="spacer"></span><button class="icon-btn" aria-label="Search" onClick=${() => setPal(true)}><${Icon} n="search" /></button></div>
-      ${view === "dashboard" && html`<${Dashboard} st=${st} go=${go} openTask=${openTask} />`}
+      ${(view !== "dashboard" || TM) && html`<${NowBar} st=${st} onFocus=${onFocus} openTask=${openTask} />`}
+      ${view === "dashboard" && html`<${Dashboard} st=${st} go=${go} openTask=${openTask} onPlan=${onPlan} onFocus=${onFocus} />`}
+      ${view === "time" && html`<${TimeView} key=${route.focus || "w"} st=${st} focus=${route.focus} />`}
       ${view === "today" && html`<${TasksView} st=${st} openTask=${openTask} />`}
       ${view === "checklist" && html`<${ChecklistView} st=${st} openTask=${openTask} />`}
       ${view === "calendar" && html`<${CalendarView} st=${st} openTask=${openTask} />`}
@@ -2292,8 +3015,10 @@ function App() {
       ${view === "notes" && html`<${NotesView} st=${st} id=${route.id} go=${go} />`}
       ${view === "timeline" && html`<${TimelineView} st=${st} openTask=${openTask} />`}
     </main>
-    ${taskId && st.tasks[taskId] && html`<${TaskPanel} key=${taskId} st=${st} id=${taskId} close=${() => setTaskId(null)} go=${go} openTask=${openTask} />`}
-    ${pal && html`<${Palette} st=${st} close=${() => setPal(false)} go=${go} openTask=${openTask} />`}
+    ${taskId && st.tasks[taskId] && html`<${TaskPanel} key=${taskId} st=${st} id=${taskId} close=${() => setTaskId(null)} go=${go} openTask=${openTask} onFocus=${onFocus} />`}
+    ${focusId && st.tasks[focusId] && html`<${FocusMode} key=${focusId} st=${st} id=${focusId} close=${closeFocus} openTask=${openTask} onFocus=${onFocus} />`}
+    ${pal && html`<${Palette} st=${st} close=${() => setPal(false)} go=${go} openTask=${openTask} onPlan=${onPlan} onClockOut=${onClockOut} onFocus=${onFocus} />`}
+    ${planFor && html`<${PlanModal} key=${planFor.date} st=${st} initial=${planFor.date} clockedOutAt=${planFor.at} close=${() => setPlanFor(null)} openTask=${null} />`}
     ${data && html`<${DataModal} st=${st} close=${() => setData(false)} />`}
     ${st.toast && html`<div class=${"toast" + (st.toast.kind === "error" ? " err" : "")} role="status">${st.toast.text}
       ${st.toast.undo && html`<button onClick=${() => { const u = st.toast.undo; toast(null); u(); }}>Undo</button>`}
